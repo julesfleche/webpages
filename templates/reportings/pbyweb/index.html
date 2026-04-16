@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PBYweb — Reporting SEO · {{CLIENT_NAME}} · {{PERIOD}}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:      #0C0A08;
+    --bg2:     #141210;
+    --bg3:     #1D1A16;
+    --border:  rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --text:    #F4EFE6;
+    --muted:   rgba(244,239,230,0.42);
+    --accent:  #FF9500;
+    --accent2: #FFD040;
+    --red:     #FF5050;
+    --green:   #5CCC6A;
+    --font-head: 'Syne', sans-serif;
+    --font-body: 'Instrument Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(12,10,8,0.92); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); padding: 0 2.5rem; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-brand { font-family: var(--font-head); font-size: 13px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-period { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+  #cover { min-height: 72vh; padding-top: 0; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 60px; position: relative; overflow: hidden; max-width: 100%; }
+  .cover-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 55% 55% at 75% 35%, rgba(255,149,0,0.11) 0%, transparent 65%), radial-gradient(ellipse 30% 30% at 15% 80%, rgba(255,208,64,0.06) 0%, transparent 60%); }
+  .cover-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px); background-size: 80px 80px; }
+  .cover-content { position: relative; z-index: 1; padding: 0 4rem; padding-top: 6rem; }
+  .cover-eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.8rem; display: flex; align-items: center; gap: 14px; }
+  .cover-eyebrow::before { content: ''; display: inline-block; width: 32px; height: 1px; background: var(--accent); }
+  .cover-title { font-family: var(--font-head); font-size: clamp(2.8rem, 6vw, 5.5rem); font-weight: 800; line-height: 0.93; letter-spacing: -0.03em; margin-bottom: 2.2rem; }
+  .cover-title span { color: var(--accent); }
+  .cover-meta { display: flex; gap: 3.5rem; align-items: flex-end; flex-wrap: wrap; }
+  .cover-meta-item { display: flex; flex-direction: column; gap: 5px; }
+  .cover-meta-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+  .cover-meta-value { font-family: var(--font-head); font-size: 1.05rem; font-weight: 700; }
+  .cover-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,149,0,0.1); border: 1px solid rgba(255,149,0,0.22); border-radius: 100px; padding: 7px 16px; font-family: var(--font-mono); font-size: 11px; color: var(--accent); margin-top: 3rem; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; flex-shrink: 0; }
+  section { padding: 80px 2.5rem; max-width: 1200px; margin: 0 auto; }
+  .page-break { height: 1px; background: var(--border); max-width: 1200px; margin: 0 auto; }
+  .sec-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2.5rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--border); }
+  .sec-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 8px; }
+  .sec-title { font-family: var(--font-head); font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; }
+  .sec-title span { color: var(--accent); }
+  .sec-source { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 1.8rem; }
+  .kpi-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.5rem; position: relative; overflow: hidden; }
+  .kpi-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--border2); }
+  .kpi-card.accent::after { background: var(--accent); }
+  .kpi-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .kpi-value { font-family: var(--font-head); font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1; margin-bottom: 7px; }
+  .kpi-delta { font-family: var(--font-mono); font-size: 11px; display: inline-flex; align-items: center; gap: 3px; padding: 2px 8px; border-radius: 100px; }
+  .kpi-delta.up { background: rgba(92,204,106,0.13); color: var(--green); }
+  .kpi-delta.down { background: rgba(255,80,80,0.13); color: var(--red); }
+  .kpi-delta.neutral { background: rgba(255,255,255,0.06); color: var(--muted); }
+  .insight { background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; padding: 1.2rem 1.5rem; margin-top: 1.5rem; }
+  .insight-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+  .insight p { font-size: 14px; line-height: 1.75; color: rgba(244,239,230,0.72); }
+  .acq-row { display: flex; align-items: center; gap: 12px; margin-bottom: 11px; }
+  .acq-source { font-size: 13px; width: 160px; flex-shrink: 0; }
+  .acq-bar-wrap { flex: 1; height: 5px; background: rgba(255,255,255,0.07); border-radius: 100px; overflow: hidden; }
+  .acq-bar-fill { height: 100%; border-radius: 100px; background: var(--accent); }
+  .acq-bar-fill.alt { background: rgba(255,208,64,0.5); }
+  .acq-num { font-family: var(--font-mono); font-size: 12px; color: var(--muted); width: 60px; text-align: right; }
+  .acq-pct { font-family: var(--font-mono); font-size: 11px; color: var(--muted); width: 50px; text-align: right; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .data-table th { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 0 12px 12px; border-bottom: 1px solid var(--border2); }
+  .data-table th:not(:first-child) { text-align: right; }
+  .data-table td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; color: rgba(244,239,230,0.85); }
+  .data-table td:not(:first-child) { text-align: right; font-family: var(--font-mono); font-size: 12px; }
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .data-table tr:last-child td { border-bottom: none; }
+  .page-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 1px; }
+  .page-url { display: block; max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; color: rgba(244,239,230,0.35); font-family: var(--font-mono); margin-top: 2px; }
+  .delta-up { color: var(--green); }
+  .delta-down { color: var(--red); }
+  .chart-wrap { background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .chart-wrap-title { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; }
+  .gsc-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+  .nl-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 1.5rem; }
+  #contact { min-height: 50vh; display: flex; align-items: center; border-top: 1px solid var(--border); }
+  .contact-inner { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .contact-cta { font-family: var(--font-head); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; }
+  .contact-cta span { color: var(--accent); }
+  .contact-info { display: flex; flex-direction: column; gap: 20px; }
+  .contact-item { display: flex; flex-direction: column; gap: 3px; }
+  .contact-item-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .contact-item-value { font-size: 15px; font-weight: 500; }
+  .contact-avail { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,149,0,0.1); border: 1px solid rgba(255,149,0,0.22); border-radius: 100px; padding: 8px 16px; font-size: 13px; color: var(--accent); margin-top: 1rem; }
+  footer { text-align: center; padding: 2rem; font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.15); border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+<nav>
+  <a href="#cover" class="nav-brand">PBYweb</a>
+  <ul class="nav-links">
+    <li><a href="#global">Global</a></li>
+    <li><a href="#seo">SEO</a></li>
+    <li><a href="#pages">Pages</a></li>
+    <li><a href="#conversions">Conversions</a></li>
+    <li><a href="#netlinking">Netlinking</a></li>
+    <li><a href="#articles">Articles</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+  </ul>
+  <span class="nav-period">{{PERIOD}}</span>
+</nav>
+
+<div id="cover" style="padding:52px 0 0;min-height:auto;padding-bottom:60px;">
+  <div class="cover-bg"></div>
+  <div class="cover-grid"></div>
+  <div class="cover-content">
+    <div class="cover-eyebrow">Reporting mensuel SEO</div>
+    <h1 class="cover-title">{{CLIENT_NAME}}<br><span>{{PERIOD}}</span></h1>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><span class="cover-meta-label">Agence</span><span class="cover-meta-value">PBYweb</span></div>
+      <div class="cover-meta-item"><span class="cover-meta-label">Pour</span><span class="cover-meta-value">{{CONTACT_NOM}}</span></div>
+      <div class="cover-meta-item"><span class="cover-meta-label">Période</span><span class="cover-meta-value">{{PERIOD_DATES}}</span></div>
+    </div>
+    <div class="cover-badge"><span class="dot"></span>Rapport mensuel SEO · PBYweb</div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<section id="global">
+  <div class="sec-header">
+    <div><p class="sec-num">01 —</p><h2 class="sec-title">Performances <span>globales</span></h2></div>
+    <span class="sec-source">Google Analytics 4</span>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card accent"><p class="kpi-label">Sessions</p><p class="kpi-value">{{GA_SESSIONS}}</p><span class="kpi-delta down">{{GA_SESSIONS_DELTA}}</span></div>
+    <div class="kpi-card"><p class="kpi-label">Total utilisateurs</p><p class="kpi-value">{{GA_USERS}}</p><span class="kpi-delta down">{{GA_USERS_DELTA}}</span></div>
+    <div class="kpi-card"><p class="kpi-label">Nouveaux utilisateurs</p><p class="kpi-value">{{GA_NEW_USERS}}</p><span class="kpi-delta down">{{GA_NEW_USERS_DELTA}}</span></div>
+    <div class="kpi-card"><p class="kpi-label">% Nouveaux users</p><p class="kpi-value">{{GA_NEW_USERS_PCT}}</p><span class="kpi-delta neutral">— iso</span></div>
+    <div class="kpi-card"><p class="kpi-label">Pages / session</p><p class="kpi-value">{{GA_PAGES_PER_SESSION}}</p><span class="kpi-delta up">{{GA_PAGES_DELTA}}</span></div>
+    <div class="kpi-card"><p class="kpi-label">Durée moy. session</p><p class="kpi-value">{{GA_AVG_DURATION}}</p><span class="kpi-delta down">{{GA_USERS_DELTA}}</span></div>
+  </div>
+  <div class="insight"><p class="insight-label">Analyse</p><p>{{GA_INSIGHT}}</p></div>
+</section>
+
+<div class="page-break"></div>
+
+<section id="acquisition">
+  <div class="sec-header">
+    <div><p class="sec-num">02 —</p><h2 class="sec-title">Leviers d'<span>acquisition</span></h2></div>
+    <span class="sec-source">Google Analytics 4</span>
+  </div>
+  <div class="acq-row" style="margin-bottom:4px;"><span class="acq-source" style="font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);">Canal</span><span style="flex:1;"></span><span class="acq-num" style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em;">Sessions</span><span class="acq-pct" style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em;">Part</span></div>
+  <div class="acq-row"><span class="acq-source">Organic Search</span><div class="acq-bar-wrap"><div class="acq-bar-fill" style="width:{{ACQ_ORGANIC_BAR}}"></div></div><span class="acq-num">{{ACQ_ORGANIC}}</span><span class="acq-pct">{{ACQ_ORGANIC_PCT}}</span></div>
+  <div class="acq-row"><span class="acq-source">Direct</span><div class="acq-bar-wrap"><div class="acq-bar-fill alt" style="width:{{ACQ_DIRECT_BAR}}"></div></div><span class="acq-num">{{ACQ_DIRECT}}</span><span class="acq-pct">{{ACQ_DIRECT_PCT}}</span></div>
+  <div class="acq-row"><span class="acq-source">Paid Search</span><div class="acq-bar-wrap"><div class="acq-bar-fill alt" style="width:{{ACQ_PAID_BAR}}"></div></div><span class="acq-num">{{ACQ_PAID}}</span><span class="acq-pct">{{ACQ_PAID_PCT}}</span></div>
+  <div class="acq-row"><span class="acq-source">Organic Social</span><div class="acq-bar-wrap"><div class="acq-bar-fill alt" style="width:{{ACQ_SOCIAL_BAR}}"></div></div><span class="acq-num">{{ACQ_SOCIAL}}</span><span class="acq-pct">{{ACQ_SOCIAL_PCT}}</span></div>
+  <div class="acq-row"><span class="acq-source">Referral</span><div class="acq-bar-wrap"><div class="acq-bar-fill alt" style="width:{{ACQ_REFERRAL_BAR}}"></div></div><span class="acq-num">{{ACQ_REFERRAL}}</span><span class="acq-pct">{{ACQ_REFERRAL_PCT}}</span></div>
+  <div class="acq-row"><span class="acq-source">Autres</span><div class="acq-bar-wrap"><div class="acq-bar-fill alt" style="width:{{ACQ_OTHER_BAR}}"></div></div><span class="acq-num">{{ACQ_OTHER}}</span><span class="acq-pct">{{ACQ_OTHER_PCT}}</span></div>
+  <div class="insight" style="margin-top:1.5rem;"><p class="insight-label">Analyse</p><p>{{ACQ_INSIGHT}}</p></div>
+</section>
+
+<div class="page-break"></div>
+
+<section id="seo">
+  <div class="sec-header">
+    <div><p class="sec-num">03 —</p><h2 class="sec-title">Performances <span>SEO</span></h2></div>
+    <span class="sec-source">Google Search Console + GA4</span>
+  </div>
+  <p style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Google Search Console</p>
+  <div class="gsc-two">
+    <div class="kpi-card accent"><p class="kpi-label">Clics organiques</p><p class="kpi-value">{{GSC_CLICKS}}</p><span class="kpi-delta down">{{GSC_CLICKS_DELTA}}</span></div>
+    <div class="kpi-card"><p class="kpi-label">Impressions</p><p class="kpi-value">{{GSC_IMPRESSIONS}}</p><span class="kpi-delta down">{{GSC_IMP_DELTA}}</span></div>
+    <div class="kpi-card"><p class="kpi-label">CTR moyen</p><p class="kpi-value">{{GSC_CTR}}</p><span class="kpi-delta down">{{GSC_CTR_DELTA}}</span></div>
+    <div class="kpi-card"><p class="kpi-label">Position moyenne</p><p class="kpi-value">{{GSC_POSITION}}</p><span class="kpi-delta up">{{GSC_POS_DELTA}}</span></div>
+  </div>
+  <p style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin:1.5rem 0 12px;">GA4 — Trafic organique uniquement</p>
+  <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);">
+    <div class="kpi-card"><p class="kpi-label">Sessions SEO</p><p class="kpi-value">{{SEO_SESSIONS}}</p><span class="kpi-delta down">{{SEO_SESSIONS_DELTA}}</span></div>
+    <div class="kpi-card"><p class="kpi-label">Utilisateurs SEO</p><p class="kpi-value">{{SEO_USERS}}</p><span class="kpi-delta down">{{SEO_USERS_DELTA}}</span></div>
+    <div class="kpi-card"><p class="kpi-label">Pages / session SEO</p><p class="kpi-value">{{SEO_PAGES}}</p><span class="kpi-delta down">{{SEO_DELTA_7}}</span></div>
+    <div class="kpi-card"><p class="kpi-label">Durée moy. SEO</p><p class="kpi-value">{{SEO_DURATION}}</p><span class="kpi-delta down">{{SEO_DELTA_7}}</span></div>
+  </div>
+  <div class="chart-wrap" style="margin-top:2rem;">
+    <div style="display:flex;gap:20px;margin-bottom:12px;font-size:11px;font-family:'DM Mono',monospace;color:rgba(244,239,230,0.4);">
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#FF9500;border-radius:2px;display:inline-block;"></span>Clics (axe gauche)</span>
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:0;border-top:1.5px dashed #FFD040;display:inline-block;"></span>Impressions ÷1000 (axe droit)</span>
+    </div>
+    <p class="chart-wrap-title">Évolution clics & impressions — {{PERIOD}}</p>
+    <div style="position:relative;height:260px;">
+      <canvas id="trendChart" role="img" aria-label="Évolution journalière des clics et impressions">Clics et impressions journaliers.</canvas>
+    </div>
+  </div>
+  <div class="insight"><p class="insight-label">Analyse</p><p>{{SEO_INSIGHT}}</p></div>
+</section>
+
+<div class="page-break"></div>
+
+<section id="pages">
+  <div class="sec-header">
+    <div><p class="sec-num">04 —</p><h2 class="sec-title">Top <span>Pages</span></h2></div>
+    <span class="sec-source">Google Search Console</span>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="data-table">
+      <thead><tr><th>Page</th><th>Impressions</th><th>Clics</th><th>CTR</th><th>Position</th><th>&#916; Pos.</th></tr></thead>
+      <tbody>{{TOP_PAGES_ROWS}}</tbody>
+    </table>
+  </div>
+  <div class="insight"><p class="insight-label">Analyse</p><p>{{PAGES_INSIGHT}}</p></div>
+</section>
+
+<div class="page-break"></div>
+
+<section id="services">
+  <div class="sec-header">
+    <div><p class="sec-num">05 —</p><h2 class="sec-title">Pages <span>Services</span></h2></div>
+    <span class="sec-source">Google Search Console</span>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="data-table">
+      <thead><tr><th>Page</th><th>Impressions</th><th>Clics (P. act. vs P-1)</th><th>CTR</th><th>Position</th><th>&#916; Pos.</th></tr></thead>
+      <tbody>{{SERVICE_PAGES_ROWS}}</tbody>
+    </table>
+  </div>
+  <div class="insight"><p class="insight-label">Analyse</p><p>{{SERVICES_INSIGHT}}</p></div>
+</section>
+
+<div class="page-break"></div>
+
+<section id="conversions">
+  <div class="sec-header">
+    <div><p class="sec-num">06 —</p><h2 class="sec-title">Conversions <span>&amp; Leads</span></h2></div>
+    <span class="sec-source">Google Analytics 4</span>
+  </div>
+  <div style="background:rgba(255,149,0,0.06);border:1px solid rgba(255,149,0,0.18);border-radius:8px;padding:9px 14px;margin-bottom:1.5rem;display:flex;align-items:center;gap:8px;">
+    <span style="font-size:13px;color:var(--accent);">&#9998;</span>
+    <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">Champs éditables — cliquez pour modifier</span>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="kpi-card accent"><p class="kpi-label">Conversions SEO</p><p class="kpi-value" contenteditable="true" spellcheck="false" style="outline:none;cursor:text;border-bottom:1px dashed rgba(255,149,0,0.4);padding-bottom:2px;min-width:20px;">{{CONV_SEO}}</p><span class="kpi-delta neutral" contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">— à confirmer</span></div>
+    <div class="kpi-card"><p class="kpi-label">Conversions total</p><p class="kpi-value" contenteditable="true" spellcheck="false" style="outline:none;cursor:text;border-bottom:1px dashed rgba(255,255,255,0.15);padding-bottom:2px;min-width:20px;">—</p><span class="kpi-delta neutral" contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">— tous canaux</span></div>
+    <div class="kpi-card"><p class="kpi-label">Taux conversion SEO</p><p class="kpi-value" contenteditable="true" spellcheck="false" style="outline:none;cursor:text;border-bottom:1px dashed rgba(255,255,255,0.15);padding-bottom:2px;min-width:20px;">{{CONV_RATE}}</p><span class="kpi-delta neutral" contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">— iso</span></div>
+  </div>
+  <div class="chart-wrap" style="margin-top:1.5rem;">
+    <p class="chart-wrap-title">Détail des événements de conversion</p>
+    <table class="data-table">
+      <thead><tr><th>Événement</th><th>Nombre</th><th>Canal principal</th></tr></thead>
+      <tbody id="conv-body">{{CONV_EVENTS_ROWS}}</tbody>
+    </table>
+    <button onclick="addConvRow()" style="margin-top:12px;background:transparent;border:1px dashed rgba(255,149,0,0.3);border-radius:8px;padding:7px 16px;font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(255,149,0,0.08)'" onmouseout="this.style.background='transparent'">+ Ajouter une ligne</button>
+  </div>
+  <div class="insight"><p class="insight-label">Analyse</p><p contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">{{CONV_INSIGHT}}</p></div>
+</section>
+
+<div class="page-break"></div>
+
+<section id="netlinking">
+  <div class="sec-header">
+    <div><p class="sec-num">07 —</p><h2 class="sec-title">Net<span>linking</span></h2></div>
+    <span class="sec-source">Source : DataForSEO via Cuik</span>
+  </div>
+  <div class="nl-grid">
+    <div class="kpi-card accent"><p class="kpi-label">Total backlinks</p><p class="kpi-value">{{NL_TOTAL}}</p><span class="kpi-delta neutral">— live</span></div>
+    <div class="kpi-card"><p class="kpi-label">Nouveaux liens</p><p class="kpi-value">{{NL_NEW}}</p><span class="kpi-delta up">&#9650; ce mois</span></div>
+    <div class="kpi-card"><p class="kpi-label">Meilleur DR source</p><p class="kpi-value">{{NL_BEST_DR}}</p><span class="kpi-delta neutral">— meilleur domaine</span></div>
+    <div class="kpi-card"><p class="kpi-label">Liens dofollow</p><p class="kpi-value">{{NL_DOFOLLOW_PCT}}</p><span class="kpi-delta up">&#9650; dofollow</span></div>
+  </div>
+  <div class="chart-wrap">
+    <p class="chart-wrap-title">Top domaines sources — DR &amp; qualité</p>
+    <table class="data-table">
+      <thead><tr><th>Domaine source</th><th>DR</th><th>Ancre</th><th>Page cible</th><th>Spam</th><th>Statut</th></tr></thead>
+      <tbody>{{NL_ROWS}}</tbody>
+    </table>
+  </div>
+  <div class="insight"><p class="insight-label">Analyse</p><p>{{NL_INSIGHT}}</p></div>
+</section>
+
+<div class="page-break"></div>
+
+<section id="articles">
+  <div class="sec-header">
+    <div><p class="sec-num">08 —</p><h2 class="sec-title">Articles <span>produits</span></h2></div>
+    <span class="sec-source">Source : Notion</span>
+  </div>
+  <table class="data-table">
+    <thead><tr><th>Titre</th><th>Statut</th><th>Dates</th></tr></thead>
+    <tbody>{{ARTICLES_ROWS}}</tbody>
+  </table>
+  <div class="insight"><p class="insight-label">Analyse</p><p>{{ARTICLES_INSIGHT}}</p></div>
+</section>
+
+<div class="page-break"></div>
+
+<section id="roadmap">
+  <div class="sec-header">
+    <div><p class="sec-num">09 —</p><h2 class="sec-title">Road<span>map</span></h2></div>
+    <span class="sec-source">Source : Notion</span>
+  </div>
+  <div style="display:flex;gap:20px;font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-bottom:1.5rem;">
+    <span style="display:flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:2px;background:#3B82F6;display:inline-block;"></span>Technique</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:2px;background:#FF9500;display:inline-block;"></span>Netlinking</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:2px;background:#5CCC6A;display:inline-block;"></span>Contenu</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:2px;background:#666;display:inline-block;"></span>Admin</span>
+  </div>
+  <div id="gantt" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1.5rem;overflow-x:auto;"></div>
+</section>
+
+<div class="page-break"></div>
+
+<section id="contact">
+  <div class="contact-inner">
+    <div>
+      <h2 class="contact-cta">Une question ?<br>On est <span>disponibles.</span></h2>
+      <div class="contact-avail"><span class="dot"></span>Support 6j / 7</div>
+    </div>
+    <div class="contact-info">
+      <div class="contact-item"><span class="contact-item-label">Agence</span><span class="contact-item-value">PBYweb — SEO Agency</span></div>
+      <div class="contact-item"><span class="contact-item-label">Contact</span><span class="contact-item-value">Flavien Perbey</span></div>
+      <div class="contact-item"><span class="contact-item-label">Email</span><span class="contact-item-value">fperbey@pbyweb.fr</span></div>
+      <div class="contact-item"><span class="contact-item-label">Téléphone</span><span class="contact-item-value">+33 7 45 18 44 68</span></div>
+      <div class="contact-item"><span class="contact-item-label">Prochain rapport</span><span class="contact-item-value">{{NEXT_REPORT}}</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>PBYweb × {{CLIENT_NAME}} — Rapport mensuel SEO · {{PERIOD}} · Données : Google Analytics 4 &amp; Search Console</footer>
+
+<script>
+const labels = {{CHART_DATES}};
+const clicks = {{CHART_CLICKS}};
+const impsK = {{CHART_IMPS_K}};
+new Chart(document.getElementById('trendChart').getContext('2d'), {
+  type: 'line',
+  data: { labels, datasets: [
+    { label:'Clics', data:clicks, borderColor:'#FF9500', backgroundColor:'rgba(255,149,0,0.08)', borderWidth:2, pointRadius:0, pointHoverRadius:4, fill:true, tension:0.35, yAxisID:'y' },
+    { label:'Impressions (K)', data:impsK, borderColor:'#FFD040', backgroundColor:'transparent', borderWidth:1.5, borderDash:[5,4], pointRadius:0, pointHoverRadius:4, fill:false, tension:0.35, yAxisID:'y1' }
+  ]},
+  options: { responsive:true, maintainAspectRatio:false, interaction:{ mode:'index', intersect:false },
+    plugins:{ legend:{ display:false }, tooltip:{ backgroundColor:'#1D1A16', borderColor:'rgba(255,149,0,0.25)', borderWidth:1, titleColor:'#FF9500', bodyColor:'rgba(244,239,230,0.75)', padding:10, callbacks:{ label: c => ` ${c.dataset.label}: ${c.raw.toLocaleString('fr-FR')}` } } },
+    scales:{
+      x:{ grid:{ color:'rgba(255,255,255,0.05)', drawBorder:false }, ticks:{ color:'rgba(244,239,230,0.3)', font:{ family:'DM Mono', size:10 }, maxTicksLimit:8, maxRotation:0 } },
+      y:{ position:'left', grid:{ color:'rgba(255,255,255,0.05)', drawBorder:false }, ticks:{ color:'#FF9500', font:{ family:'DM Mono', size:10 }, callback: v=>v } },
+      y1:{ position:'right', grid:{ display:false }, ticks:{ color:'#FFD040', font:{ family:'DM Mono', size:10 }, callback: v=>v+'K' } }
+    }
+  }
+});
+function addConvRow() {
+  const tr = document.createElement('tr');
+  tr.innerHTML = '<td contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">Nouvel événement</td><td contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">0</td><td contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">—</td>';
+  document.getElementById('conv-body').appendChild(tr);
+  tr.querySelector('td').focus();
+}
+(function() {
+  const START = new Date('{{GANTT_START}}');
+  const END   = new Date('{{GANTT_END}}');
+  const TODAY = new Date('{{TODAY}}');
+  const totalDays = (END - START) / 86400000;
+  const items = {{GANTT_ITEMS}};
+  const colors = { T:'#3B82F6', N:'#FF9500', C:'#5CCC6A', A:'#666' };
+  const bg = { T:'rgba(59,130,246,0.15)', N:'rgba(255,149,0,0.15)', C:'rgba(92,204,106,0.15)', A:'rgba(100,100,100,0.15)' };
+  function pct(d) { return ((new Date(d) - START) / 86400000 / totalDays * 100).toFixed(2) + '%'; }
+  const ticks = {{GANTT_TICKS}};
+  let headerHTML = '<div style="display:grid;grid-template-columns:190px 1fr;gap:0;margin-bottom:6px;align-items:end;"><div></div><div style="position:relative;height:22px;">';
+  ticks.forEach(t => { headerHTML += `<span style="position:absolute;left:${pct(t.date)};font-family:'DM Mono',monospace;font-size:9px;color:rgba(244,239,230,0.3);transform:translateX(-50%);white-space:nowrap;">${t.label}</span>`; });
+  headerHTML += '</div></div>';
+  const todayPct = ((TODAY - START) / (END - START) * 100).toFixed(2);
+  let rowsHTML = '';
+  items.forEach(item => {
+    const width = ((new Date(item.end).getTime() + 86400000 - new Date(item.start)) / 86400000 / totalDays * 100).toFixed(2) + '%';
+    const isDone = new Date(item.end) < TODAY;
+    const isActive = new Date(item.start) <= TODAY && new Date(item.end) >= TODAY;
+    rowsHTML += `<div style="display:grid;grid-template-columns:190px 1fr;gap:0;align-items:center;margin-bottom:5px;"><div style="font-size:12px;color:rgba(244,239,230,${isDone?'0.35':'0.8'});padding-right:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${item.name}">${item.name}</div><div style="position:relative;height:24px;background:rgba(255,255,255,0.03);border-radius:4px;overflow:visible;"><div style="position:absolute;left:${pct(item.start)};width:${width};height:100%;background:${isDone?'rgba(255,255,255,0.08)':bg[item.type]};border-radius:4px;border-left:2px solid ${isDone?'rgba(255,255,255,0.15)':colors[item.type]};display:flex;align-items:center;padding-left:7px;overflow:hidden;">${isActive ? `<span style="font-family:'DM Mono',monospace;font-size:9px;color:${colors[item.type]};font-weight:500;">EN COURS</span>` : ''}</div><div style="position:absolute;left:${todayPct}%;top:-2px;width:1px;height:28px;background:rgba(255,149,0,0.5);pointer-events:none;"></div></div></div>`;
+  });
+  let gridHTML = '';
+  ticks.forEach(t => { gridHTML += `<div style="position:absolute;left:${pct(t.date)};top:0;bottom:0;width:1px;background:rgba(255,255,255,0.04);pointer-events:none;"></div>`; });
+  document.getElementById('gantt').innerHTML = headerHTML + `<div style="position:relative;">${gridHTML}${rowsHTML}</div>` + `<div style="margin-top:10px;font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,149,0,0.5);display:flex;align-items:center;gap:6px;"><span style="width:1px;height:12px;background:rgba(255,149,0,0.5);display:inline-block;"></span>Aujourd'hui</div>`;
+})();
+</script>
+</body>
+</html>
