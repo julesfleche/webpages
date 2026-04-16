@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PBYweb — Reporting SEO · Agence OOO · 17 mars → 16 avril 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0C0A08; --bg2: #141210; --bg3: #1D1A16;
+    --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.13);
+    --text: #F4EFE6; --muted: rgba(244,239,230,0.42);
+    --accent: #FF9500; --accent2: #FFD040; --red: #FF5050; --green: #5CCC6A;
+    --font-head: 'Syne', sans-serif; --font-body: 'Instrument Sans', sans-serif; --font-mono: 'DM Mono', monospace;
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: 15px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(12,10,8,0.92); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); padding: 0 2.5rem; height: 52px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-brand { font-family: var(--font-head); font-size: 13px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); text-decoration: none; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color .2s; }
+  .nav-links a:hover { color: var(--text); }
+  .nav-period { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+  #cover { min-height: 72vh; padding-top: 0; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 60px; position: relative; overflow: hidden; max-width: 100%; }
+  .cover-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 55% 55% at 75% 35%, rgba(255,149,0,0.11) 0%, transparent 65%), radial-gradient(ellipse 30% 30% at 15% 80%, rgba(255,208,64,0.06) 0%, transparent 60%); }
+  .cover-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.028) 1px, transparent 1px); background-size: 80px 80px; }
+  .cover-content { position: relative; z-index: 1; padding: 0 4rem; padding-top: 6rem; }
+  .cover-eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.8rem; display: flex; align-items: center; gap: 14px; }
+  .cover-eyebrow::before { content: ''; display: inline-block; width: 32px; height: 1px; background: var(--accent); }
+  .cover-title { font-family: var(--font-head); font-size: clamp(2.8rem, 6vw, 5.5rem); font-weight: 800; line-height: 0.93; letter-spacing: -0.03em; margin-bottom: 2.2rem; }
+  .cover-title span { color: var(--accent); }
+  .cover-meta { display: flex; gap: 3.5rem; align-items: flex-end; flex-wrap: wrap; }
+  .cover-meta-item { display: flex; flex-direction: column; gap: 5px; }
+  .cover-meta-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+  .cover-meta-value { font-family: var(--font-head); font-size: 1.05rem; font-weight: 700; }
+  .cover-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,149,0,0.1); border: 1px solid rgba(255,149,0,0.22); border-radius: 100px; padding: 7px 16px; font-family: var(--font-mono); font-size: 11px; color: var(--accent); margin-top: 3rem; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); display: inline-block; flex-shrink: 0; }
+  section { padding: 80px 2.5rem; max-width: 1200px; margin: 0 auto; }
+  .page-break { height: 1px; background: var(--border); max-width: 1200px; margin: 0 auto; }
+  .sec-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2.5rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--border); }
+  .sec-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 8px; }
+  .sec-title { font-family: var(--font-head); font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; }
+  .sec-title span { color: var(--accent); }
+  .sec-source { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 1.8rem; }
+  .kpi-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem 1.5rem; position: relative; overflow: hidden; }
+  .kpi-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--border2); }
+  .kpi-card.accent::after { background: var(--accent); }
+  .kpi-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+  .kpi-value { font-family: var(--font-head); font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; line-height: 1; margin-bottom: 7px; }
+  .kpi-delta { font-family: var(--font-mono); font-size: 11px; display: inline-flex; align-items: center; gap: 3px; padding: 2px 8px; border-radius: 100px; }
+  .kpi-delta.up { background: rgba(92,204,106,0.13); color: var(--green); }
+  .kpi-delta.down { background: rgba(255,80,80,0.13); color: var(--red); }
+  .kpi-delta.neutral { background: rgba(255,255,255,0.06); color: var(--muted); }
+  .insight { background: var(--bg2); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; padding: 1.2rem 1.5rem; margin-top: 1.5rem; }
+  .insight-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+  .insight p { font-size: 14px; line-height: 1.75; color: rgba(244,239,230,0.72); }
+  .acq-row { display: flex; align-items: center; gap: 12px; margin-bottom: 11px; }
+  .acq-source { font-size: 13px; width: 160px; flex-shrink: 0; }
+  .acq-bar-wrap { flex: 1; height: 5px; background: rgba(255,255,255,0.07); border-radius: 100px; overflow: hidden; }
+  .acq-bar-fill { height: 100%; border-radius: 100px; background: var(--accent); }
+  .acq-bar-fill.alt { background: rgba(255,208,64,0.5); }
+  .acq-num { font-family: var(--font-mono); font-size: 12px; color: var(--muted); width: 60px; text-align: right; }
+  .acq-pct { font-family: var(--font-mono); font-size: 11px; color: var(--muted); width: 50px; text-align: right; }
+  .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .data-table th { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 0 12px 12px; border-bottom: 1px solid var(--border2); }
+  .data-table th:not(:first-child) { text-align: right; }
+  .data-table td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; color: rgba(244,239,230,0.85); }
+  .data-table td:not(:first-child) { text-align: right; font-family: var(--font-mono); font-size: 12px; }
+  .data-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .data-table tr:last-child td { border-bottom: none; }
+  .page-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 1px; }
+  .page-url { display: block; max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; color: rgba(244,239,230,0.35); font-family: var(--font-mono); margin-top: 2px; }
+  .delta-up { color: var(--green); } .delta-down { color: var(--red); }
+  .chart-wrap { background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .chart-wrap-title { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem; }
+  .gsc-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 1.5rem; }
+  .nl-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 1.5rem; }
+  #contact { min-height: 50vh; display: flex; align-items: center; border-top: 1px solid var(--border); }
+  .contact-inner { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .contact-cta { font-family: var(--font-head); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; }
+  .contact-cta span { color: var(--accent); }
+  .contact-info { display: flex; flex-direction: column; gap: 20px; }
+  .contact-item { display: flex; flex-direction: column; gap: 3px; }
+  .contact-item-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .contact-item-value { font-size: 15px; font-weight: 500; }
+  .contact-avail { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,149,0,0.1); border: 1px solid rgba(255,149,0,0.22); border-radius: 100px; padding: 8px 16px; font-size: 13px; color: var(--accent); margin-top: 1rem; }
+  footer { text-align: center; padding: 2rem; font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.15); border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+<nav>
+  <a href="#cover" class="nav-brand">PBYweb</a>
+  <ul class="nav-links">
+    <li><a href="#global">Global</a></li><li><a href="#seo">SEO</a></li>
+    <li><a href="#pages">Pages</a></li><li><a href="#conversions">Conversions</a></li>
+    <li><a href="#netlinking">Netlinking</a></li><li><a href="#articles">Articles</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+  </ul>
+  <span class="nav-period">Mars–Avril 2026</span>
+</nav>
+<div id="cover" style="padding:52px 0 0;padding-bottom:60px;">
+  <div class="cover-bg"></div><div class="cover-grid"></div>
+  <div class="cover-content">
+    <div class="cover-eyebrow">Reporting mensuel SEO</div>
+    <h1 class="cover-title">Agence OOO<br><span>17 mars → 16 avril 2026</span></h1>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><span class="cover-meta-label">Agence</span><span class="cover-meta-value">PBYweb</span></div>
+      <div class="cover-meta-item"><span class="cover-meta-label">Pour</span><span class="cover-meta-value">Jules Fléchet</span></div>
+      <div class="cover-meta-item"><span class="cover-meta-label">Période</span><span class="cover-meta-value">17/03/2026 → 16/04/2026</span></div>
+    </div>
+    <div class="cover-badge"><span class="dot"></span>Rapport mensuel SEO · PBYweb</div>
+  </div>
+</div>
+<div class="page-break"></div>
+<section id="global">
+  <div class="sec-header">
+    <div><p class="sec-num">01 —</p><h2 class="sec-title">Performances <span>globales</span></h2></div>
+    <span class="sec-source">Google Analytics 4</span>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card accent"><p class="kpi-label">Sessions</p><p class="kpi-value">300</p><span class="kpi-delta down">▼ 6.2%</span></div>
+    <div class="kpi-card"><p class="kpi-label">Total utilisateurs</p><p class="kpi-value">226</p><span class="kpi-delta down">▼ 6.6%</span></div>
+    <div class="kpi-card"><p class="kpi-label">Nouveaux utilisateurs</p><p class="kpi-value">264</p><span class="kpi-delta down">▼ 1.1%</span></div>
+    <div class="kpi-card"><p class="kpi-label">% Nouveaux users</p><p class="kpi-value">88%</p><span class="kpi-delta neutral">— iso</span></div>
+    <div class="kpi-card"><p class="kpi-label">Pages / session</p><p class="kpi-value">1.60</p><span class="kpi-delta down">▼ 9.7%</span></div>
+    <div class="kpi-card"><p class="kpi-label">Durée moy. session</p><p class="kpi-value">2m08s</p><span class="kpi-delta up">+13.2%</span></div>
+  </div>
+  <div class="insight"><p class="insight-label">Analyse</p><p>Le trafic est légèrement en baisse (-6%) mais la durée de session progresse fortement (+13%), signe d’un engagement croissant. Le contenu attire moins mais retient mieux — bon indicateur de qualité.</p></div>
+</section>
+<div class="page-break"></div>
+<section id="acquisition">
+  <div class="sec-header">
+    <div><p class="sec-num">02 —</p><h2 class="sec-title">Leviers d’<span>acquisition</span></h2></div>
+    <span class="sec-source">Google Analytics 4</span>
+  </div>
+  <div class="acq-row" style="margin-bottom:4px;"><span class="acq-source" style="font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);">Canal</span><span style="flex:1;"></span><span class="acq-num" style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em;">Sessions</span><span class="acq-pct" style="color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em;">Part</span></div>
+  <div class="acq-row"><span class="acq-source">Direct</span><div class="acq-bar-wrap"><div class="acq-bar-fill" style="width:59%"></div></div><span class="acq-num">172</span><span class="acq-pct">58.9%</span></div>
+  <div class="acq-row"><span class="acq-source">Organic Search</span><div class="acq-bar-wrap"><div class="acq-bar-fill alt" style="width:20%"></div></div><span class="acq-num">57</span><span class="acq-pct">19.5%</span></div>
+  <div class="acq-row"><span class="acq-source">Organic Social</span><div class="acq-bar-wrap"><div class="acq-bar-fill alt" style="width:13%"></div></div><span class="acq-num">37</span><span class="acq-pct">12.7%</span></div>
+  <div class="acq-row"><span class="acq-source">Organic Video</span><div class="acq-bar-wrap"><div class="acq-bar-fill alt" style="width:5%"></div></div><span class="acq-num">14</span><span class="acq-pct">4.8%</span></div>
+  <div class="acq-row"><span class="acq-source">Referral</span><div class="acq-bar-wrap"><div class="acq-bar-fill alt" style="width:3%"></div></div><span class="acq-num">10</span><span class="acq-pct">3.4%</span></div>
+  <div class="insight" style="margin-top:1.5rem;"><p class="insight-label">Analyse</p><p>Le Direct domine à 58.9%, reflet d’une forte notoriété de marque. L’Organique représente 19.5% et progresse. L’Organic Social (12.7%) et l’Organic Video (4.8%) sont des canaux à développer.</p></div>
+</section>
+<div class="page-break"></div>
+<section id="seo">
+  <div class="sec-header">
+    <div><p class="sec-num">03 —</p><h2 class="sec-title">Performances <span>SEO</span></h2></div>
+    <span class="sec-source">Google Search Console + GA4</span>
+  </div>
+  <p style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Google Search Console</p>
+  <div class="gsc-two">
+    <div class="kpi-card accent"><p class="kpi-label">Clics organiques</p><p class="kpi-value">13</p><span class="kpi-delta up">▲ 18.2%</span></div>
+    <div class="kpi-card"><p class="kpi-label">Impressions</p><p class="kpi-value">1 K</p><span class="kpi-delta up">▲ 205.6%</span></div>
+    <div class="kpi-card"><p class="kpi-label">CTR moyen</p><p class="kpi-value">1.09%</p><span class="kpi-delta down">▼ 61.2%</span></div>
+    <div class="kpi-card"><p class="kpi-label">Position moyenne</p><p class="kpi-value">17.4</p><span class="kpi-delta up">▲ 26.0%</span></div>
+  </div>
+  <p style="font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin:1.5rem 0 12px;">GA4 — Trafic organique</p>
+  <div class="kpi-grid" style="grid-template-columns:repeat(4,1fr);">
+    <div class="kpi-card"><p class="kpi-label">Sessions SEO</p><p class="kpi-value">57</p><span class="kpi-delta neutral">—</span></div>
+    <div class="kpi-card"><p class="kpi-label">Utilisateurs SEO</p><p class="kpi-value">—</p><span class="kpi-delta neutral">—</span></div>
+    <div class="kpi-card"><p class="kpi-label">Pages / session SEO</p><p class="kpi-value">—</p><span class="kpi-delta neutral">—</span></div>
+    <div class="kpi-card"><p class="kpi-label">Durée moy. SEO</p><p class="kpi-value">—</p><span class="kpi-delta neutral">—</span></div>
+  </div>
+  <div class="chart-wrap" style="margin-top:2rem;">
+    <div style="display:flex;gap:20px;margin-bottom:12px;font-size:11px;font-family:'DM Mono',monospace;color:rgba(244,239,230,0.4);">
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:2px;background:#FF9500;border-radius:2px;display:inline-block;"></span>Clics (axe gauche)</span>
+      <span style="display:flex;align-items:center;gap:7px;"><span style="width:16px;height:0;border-top:1.5px dashed #FFD040;display:inline-block;"></span>Impressions ÷1000 (axe droit)</span>
+    </div>
+    <p class="chart-wrap-title">Évolution clics &amp; impressions — 17 mars → 16 avril 2026</p>
+    <div style="position:relative;height:260px;">
+      <canvas id="trendChart" role="img" aria-label="Évolution journalière des clics et impressions">Clics et impressions journaliers.</canvas>
+    </div>
+  </div>
+  <div class="insight"><p class="insight-label">Analyse</p><p>Les impressions explosent (+205%) avec la mise en ligne de nouvelles pages, mais le CTR baisse (-61%). La position moyenne s’améliore significativement (23.5 → 17.4). Les clics restent limités — les pages ont besoin d’optimisation des title/meta.</p></div>
+</section>
+<div class="page-break"></div>
+<section id="pages">
+  <div class="sec-header">
+    <div><p class="sec-num">04 —</p><h2 class="sec-title">Top <span>Pages</span></h2></div>
+    <span class="sec-source">Google Search Console</span>
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="data-table">
+      <thead><tr><th>Page</th><th>Impressions</th><th>Clics</th><th>CTR</th><th>Position</th><th>&#916; Pos.</th></tr></thead>
+      <tbody>
+<tr><td><span class="page-name">agenceooo.com/</span><span class="page-url">agenceooo.com/</span></td><td>1 198</td><td>30</td><td>2.50%</td><td>14.4</td><td><span style="color:var(--muted);">—</span></td></tr>
+<tr><td><span class="page-name">Blog</span><span class="page-url">agenceooo.com/blog</span></td><td>29</td><td>1</td><td>3.45%</td><td>4.3</td><td><span style="color:var(--muted);">—</span></td></tr>
+<tr><td><span class="page-name">Refund Policy (US)</span><span class="page-url">agenceooo.com/us/legal-pages/refund-policy</span></td><td>40</td><td>1</td><td>2.50%</td><td>4.7</td><td><span style="color:var(--muted);">—</span></td></tr>
+<tr><td><span class="page-name">Agence n8n</span><span class="page-url">agenceooo.com/agencen8n</span></td><td>98</td><td>0</td><td>0.00%</td><td>41.0</td><td><span style="color:var(--muted);">—</span></td></tr>
+<tr><td><span class="page-name">Automatisations</span><span class="page-url">agenceooo.com/automatisations</span></td><td>9</td><td>0</td><td>0.00%</td><td>6.6</td><td><span style="color:var(--muted);">—</span></td></tr>
+<tr><td><span class="page-name">Blog — IA &amp; Onboarding</span><span class="page-url">agenceooo.com/blog/comment-l-ia-transforme-l-onboarding-client</span></td><td>14</td><td>0</td><td>0.00%</td><td>8.9</td><td><span style="color:var(--muted);">—</span></td></tr>
+<tr><td><span class="page-name">Contact</span><span class="page-url">agenceooo.com/contact</span></td><td>22</td><td>0</td><td>0.00%</td><td>3.0</td><td><span style="color:var(--muted);">—</span></td></tr>
+<tr><td><span class="page-name">Terms &amp; Conditions</span><span class="page-url">agenceooo.com/legal-pages/terms-conditions</span></td><td>8</td><td>0</td><td>0.00%</td><td>4.9</td><td><span style="color:var(--muted);">—</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="insight"><p class="insight-label">Analyse</p><p>La homepage capte l’essentiel des clics. La page /agencen8n génère 98 impressions sans aucun clic — fort potentiel d’optimisation du titre et de la meta. Les pages blog sont encore peu indexées.</p></div>
+</section>
+<div class="page-break"></div>
+<section id="conversions">
+  <div class="sec-header">
+    <div><p class="sec-num">05 —</p><h2 class="sec-title">Conversions <span>&amp; Leads</span></h2></div>
+    <span class="sec-source">Google Analytics 4</span>
+  </div>
+  <div style="background:rgba(255,149,0,0.06);border:1px solid rgba(255,149,0,0.18);border-radius:8px;padding:9px 14px;margin-bottom:1.5rem;display:flex;align-items:center;gap:8px;">
+    <span style="font-size:13px;color:var(--accent);">&#9998;</span>
+    <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">Champs éditables — cliquez pour modifier</span>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="kpi-card accent"><p class="kpi-label">Conversions SEO</p><p class="kpi-value" contenteditable="true" spellcheck="false" style="outline:none;cursor:text;border-bottom:1px dashed rgba(255,149,0,0.4);padding-bottom:2px;">—</p><span class="kpi-delta neutral" contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">— à confirmer</span></div>
+    <div class="kpi-card"><p class="kpi-label">Conversions total</p><p class="kpi-value" contenteditable="true" spellcheck="false" style="outline:none;cursor:text;border-bottom:1px dashed rgba(255,255,255,0.15);padding-bottom:2px;">—</p><span class="kpi-delta neutral" contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">— tous canaux</span></div>
+    <div class="kpi-card"><p class="kpi-label">Taux conversion</p><p class="kpi-value" contenteditable="true" spellcheck="false" style="outline:none;cursor:text;border-bottom:1px dashed rgba(255,255,255,0.15);padding-bottom:2px;">—</p><span class="kpi-delta neutral" contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">— iso</span></div>
+  </div>
+  <div class="chart-wrap" style="margin-top:1.5rem;">
+    <p class="chart-wrap-title">Détail des événements</p>
+    <table class="data-table">
+      <thead><tr><th>Événement</th><th>Nombre</th><th>Canal principal</th></tr></thead>
+      <tbody id="conv-body">
+        <tr><td contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">—</td><td contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">—</td><td contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">—</td></tr>
+      </tbody>
+    </table>
+    <button onclick="addConvRow()" style="margin-top:12px;background:transparent;border:1px dashed rgba(255,149,0,0.3);border-radius:8px;padding:7px 16px;font-family:'DM Mono',monospace;font-size:11px;color:var(--accent);cursor:pointer;">+ Ajouter une ligne</button>
+  </div>
+  <div class="insight"><p class="insight-label">Analyse</p><p contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">À compléter lors du prochain call client.</p></div>
+</section>
+<div class="page-break"></div>
+<section id="netlinking">
+  <div class="sec-header">
+    <div><p class="sec-num">06 —</p><h2 class="sec-title">Net<span>linking</span></h2></div>
+    <span class="sec-source">DataForSEO via Cuik</span>
+  </div>
+  <div class="nl-grid">
+    <div class="kpi-card accent"><p class="kpi-label">Total backlinks</p><p class="kpi-value">13</p><span class="kpi-delta neutral">— live</span></div>
+    <div class="kpi-card"><p class="kpi-label">Nouveaux liens</p><p class="kpi-value">8</p><span class="kpi-delta up">&#9650; ce mois</span></div>
+    <div class="kpi-card"><p class="kpi-label">Meilleur DR source</p><p class="kpi-value">394</p><span class="kpi-delta neutral">— meilleur domaine</span></div>
+    <div class="kpi-card"><p class="kpi-label">Liens dofollow</p><p class="kpi-value" style="color:var(--red);">0% ⚠️</p><span class="kpi-delta down">&#9660; alerte</span></div>
+  </div>
+  <div class="chart-wrap">
+    <p class="chart-wrap-title">Domaines sources — DR &amp; qualité</p>
+    <table class="data-table">
+      <thead><tr><th>Domaine source</th><th>DR</th><th>Ancre</th><th>Page cible</th><th>Spam</th><th>Statut</th></tr></thead>
+      <tbody>
+<tr><td><span class="page-name">drjack.world</span></td><td>394</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">agenceooo.com</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">/</td><td><span style="color:var(--red);">50</span></td><td><span class="kpi-delta neutral" style="padding:1px 6px;font-size:10px;">Live</span></td></tr>
+<tr><td><span class="page-name">bye.fyi</span></td><td>324</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">agenceooo.com</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">/</td><td><span style="color:var(--red);">50</span></td><td><span class="kpi-delta up" style="padding:1px 6px;font-size:10px;">Nouveau</span></td></tr>
+<tr><td><span class="page-name">quero.party</span></td><td>312</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">agenceooo.com</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">/</td><td><span style="color:var(--red);">50</span></td><td><span class="kpi-delta up" style="padding:1px 6px;font-size:10px;">Nouveau</span></td></tr>
+<tr><td><span class="page-name">buzzshrink.website</span></td><td>298</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">agenceooo.com</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">/</td><td><span style="color:var(--red);">50</span></td><td><span class="kpi-delta neutral" style="padding:1px 6px;font-size:10px;">Live</span></td></tr>
+<tr><td><span class="page-name">toplikevideo.com</span></td><td>286</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">agenceooo.com</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">/</td><td><span style="color:var(--green);">15</span></td><td><span class="kpi-delta up" style="padding:1px 6px;font-size:10px;">Nouveau</span></td></tr>
+<tr><td><span class="page-name">screenshots.wiki</span></td><td>277</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">agenceooo.com</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">/</td><td><span style="color:var(--red);">50</span></td><td><span class="kpi-delta up" style="padding:1px 6px;font-size:10px;">Nouveau</span></td></tr>
+<tr><td><span class="page-name">sites.jake.eu</span></td><td>218</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">agenceooo.com</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">/</td><td><span style="color:var(--red);">50</span></td><td><span class="kpi-delta up" style="padding:1px 6px;font-size:10px;">Nouveau</span></td></tr>
+<tr><td><span class="page-name">seoexpress.org</span></td><td>0</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">agenceooo.com</td><td style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:right;">/</td><td><span style="color:var(--red);">55</span></td><td><span class="kpi-delta up" style="padding:1px 6px;font-size:10px;">Nouveau</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="insight"><p class="insight-label">Analyse</p><p>⚠️ L’intégralité des 13 backlinks est nofollow et provient de plateformes de raccourcisseurs d’URL à spam score élevé (50+). Ces liens n’apportent aucune valeur SEO. Action prioritaire : obtenir des liens dofollow de qualité sur des domaines thématiques.</p></div>
+</section>
+<div class="page-break"></div>
+<section id="articles">
+  <div class="sec-header">
+    <div><p class="sec-num">07 —</p><h2 class="sec-title">Articles <span>produits</span></h2></div>
+    <span class="sec-source">Notion</span>
+  </div>
+  <table class="data-table">
+    <thead><tr><th>Titre</th><th>Statut</th><th>Dates</th></tr></thead>
+    <tbody><tr><td colspan="3" style="font-family:var(--font-mono);font-size:11px;color:var(--muted);text-align:center;padding:16px;">Aucun article encore planifié — à définir en call.</td></tr></tbody>
+  </table>
+  <div class="insight"><p class="insight-label">Analyse</p><p>Aucun article planifié à ce stade. Le calendrier éditorial sera défini lors du prochain call OOO × Flavien.</p></div>
+</section>
+<div class="page-break"></div>
+<section id="roadmap">
+  <div class="sec-header">
+    <div><p class="sec-num">08 —</p><h2 class="sec-title">Road<span>map</span></h2></div>
+    <span class="sec-source">Notion</span>
+  </div>
+  <div style="display:flex;gap:20px;font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-bottom:1.5rem;">
+    <span style="display:flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:2px;background:#3B82F6;display:inline-block;"></span>Technique</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:2px;background:#FF9500;display:inline-block;"></span>Netlinking</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:2px;background:#5CCC6A;display:inline-block;"></span>Contenu</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="width:8px;height:8px;border-radius:2px;background:#666;display:inline-block;"></span>Admin</span>
+  </div>
+  <div id="gantt" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:1.5rem;overflow-x:auto;"></div>
+</section>
+<div class="page-break"></div>
+<section id="contact">
+  <div class="contact-inner">
+    <div>
+      <h2 class="contact-cta">Une question ?<br>On est <span>disponibles.</span></h2>
+      <div class="contact-avail"><span class="dot"></span>Support 6j / 7</div>
+    </div>
+    <div class="contact-info">
+      <div class="contact-item"><span class="contact-item-label">Agence</span><span class="contact-item-value">PBYweb — SEO Agency</span></div>
+      <div class="contact-item"><span class="contact-item-label">Contact</span><span class="contact-item-value">Flavien Perbey</span></div>
+      <div class="contact-item"><span class="contact-item-label">Email</span><span class="contact-item-value">fperbey@pbyweb.fr</span></div>
+      <div class="contact-item"><span class="contact-item-label">Téléphone</span><span class="contact-item-value">+33 7 45 18 44 68</span></div>
+      <div class="contact-item"><span class="contact-item-label">Prochain rapport</span><span class="contact-item-value">Mi-mai 2026</span></div>
+    </div>
+  </div>
+</section>
+<footer>PBYweb × Agence OOO — Rapport mensuel SEO · 17 mars → 16 avril 2026 · Données : Google Analytics 4 &amp; Search Console</footer>
+<script>
+const labels=["17/03","18/03","19/03","20/03","21/03","22/03","23/03","24/03","25/03","26/03","27/03","28/03","29/03","30/03","31/03","01/04","02/04","03/04","04/04","05/04","06/04","07/04","08/04","09/04","10/04","11/04","12/04","13/04","14/04"];
+const clicks=[0,1,2,2,2,0,1,3,5,0,0,1,1,2,1,0,4,2,0,0,0,1,0,1,0,0,2,1,0];
+const impsK=[0.06,0.02,0.01,0.04,0.05,0.05,0.06,0.04,0.06,0.05,0.05,0.04,0.04,0.03,0.04,0.05,0.06,0.04,0.04,0.03,0.03,0.05,0.04,0.1,0.05,0.05,0.07,0.06,0.05];
+new Chart(document.getElementById('trendChart').getContext('2d'),{type:'line',data:{labels,datasets:[{label:'Clics',data:clicks,borderColor:'#FF9500',backgroundColor:'rgba(255,149,0,0.08)',borderWidth:2,pointRadius:0,pointHoverRadius:4,fill:true,tension:0.35,yAxisID:'y'},{label:'Impressions (K)',data:impsK,borderColor:'#FFD040',backgroundColor:'transparent',borderWidth:1.5,borderDash:[5,4],pointRadius:0,pointHoverRadius:4,fill:false,tension:0.35,yAxisID:'y1'}]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1D1A16',borderColor:'rgba(255,149,0,0.25)',borderWidth:1,titleColor:'#FF9500',bodyColor:'rgba(244,239,230,0.75)',padding:10,callbacks:{label:c=>` ${c.dataset.label}: ${c.raw.toLocaleString('fr-FR')}`}}},scales:{x:{grid:{color:'rgba(255,255,255,0.05)',drawBorder:false},ticks:{color:'rgba(244,239,230,0.3)',font:{family:'DM Mono',size:10},maxTicksLimit:8,maxRotation:0}},y:{position:'left',grid:{color:'rgba(255,255,255,0.05)',drawBorder:false},ticks:{color:'#FF9500',font:{family:'DM Mono',size:10},callback:v=>v}},y1:{position:'right',grid:{display:false},ticks:{color:'#FFD040',font:{family:'DM Mono',size:10},callback:v=>v+'K'}}}}});
+function addConvRow(){const tr=document.createElement('tr');tr.innerHTML='<td contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">Nouvel événement</td><td contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">0</td><td contenteditable="true" spellcheck="false" style="outline:none;cursor:text;">—</td>';document.getElementById('conv-body').appendChild(tr);tr.querySelector('td').focus();}
+(function(){
+  const START=new Date('2026-04-14');const END=new Date('2026-05-29');const TODAY=new Date('2026-04-16');
+  const totalDays=(END-START)/86400000;
+  const items=[{"name":"Refonte page d'accueil agenceooo.com","type":"T","start":"2026-04-14","end":"2026-04-25"},{"name":"Setup MCP Notion + n8n pour Flavien","type":"T","start":"2026-04-15","end":"2026-04-22"},{"name":"Spot netlinking DA55+ SaaS / outils","type":"N","start":"2026-04-16","end":"2026-04-30"},{"name":"Article : Automatiser reporting SEO","type":"C","start":"2026-04-17","end":"2026-04-24"},{"name":"Bilan sprint 1 — call Flavien","type":"A","start":"2026-04-17","end":"2026-04-17"},{"name":"Core Web Vitals — pages services","type":"T","start":"2026-04-21","end":"2026-05-02"},{"name":"Article : SEO local sous-estimé","type":"C","start":"2026-04-28","end":"2026-05-05"},{"name":"2 spots netlinking SEO / SEA","type":"N","start":"2026-05-04","end":"2026-05-15"},{"name":"Article : Guide maillage interne 2026","type":"C","start":"2026-05-11","end":"2026-05-18"},{"name":"Audit sémantique Q2 — corpus","type":"T","start":"2026-05-18","end":"2026-05-29"}];
+  const colors={T:'#3B82F6',N:'#FF9500',C:'#5CCC6A',A:'#666'};
+  const bg={T:'rgba(59,130,246,0.15)',N:'rgba(255,149,0,0.15)',C:'rgba(92,204,106,0.15)',A:'rgba(100,100,100,0.15)'};
+  function pct(d){return((new Date(d)-START)/86400000/totalDays*100).toFixed(2)+'%';}
+  const ticks=[{"date":"2026-04-14","label":"14 avr"},{"date":"2026-04-21","label":"21 avr"},{"date":"2026-04-28","label":"28 avr"},{"date":"2026-05-05","label":"5 mai"},{"date":"2026-05-12","label":"12 mai"},{"date":"2026-05-19","label":"19 mai"},{"date":"2026-05-26","label":"26 mai"}];
+  let h='<div style="display:grid;grid-template-columns:190px 1fr;gap:0;margin-bottom:6px;align-items:end;"><div></div><div style="position:relative;height:22px;">';
+  ticks.forEach(t=>{h+=`<span style="position:absolute;left:${pct(t.date)};font-family:'DM Mono',monospace;font-size:9px;color:rgba(244,239,230,0.3);transform:translateX(-50%);white-space:nowrap;">${t.label}</span>`;});
+  h+='</div></div>';
+  const tPct=((TODAY-START)/(END-START)*100).toFixed(2);
+  let rows='';
+  items.forEach(item=>{
+    const w=((new Date(item.end).getTime()+86400000-new Date(item.start))/86400000/totalDays*100).toFixed(2)+'%';
+    const done=new Date(item.end)<TODAY;const active=new Date(item.start)<=TODAY&&new Date(item.end)>=TODAY;
+    rows+=`<div style="display:grid;grid-template-columns:190px 1fr;gap:0;align-items:center;margin-bottom:5px;"><div style="font-size:12px;color:rgba(244,239,230,${done?'0.35':'0.8'});padding-right:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${item.name}">${item.name}</div><div style="position:relative;height:24px;background:rgba(255,255,255,0.03);border-radius:4px;overflow:visible;"><div style="position:absolute;left:${pct(item.start)};width:${w};height:100%;background:${done?'rgba(255,255,255,0.08)':bg[item.type]};border-radius:4px;border-left:2px solid ${done?'rgba(255,255,255,0.15)':colors[item.type]};display:flex;align-items:center;padding-left:7px;overflow:hidden;">${active?`<span style="font-family:'DM Mono',monospace;font-size:9px;color:${colors[item.type]};font-weight:500;">EN COURS</span>`:''}</div><div style="position:absolute;left:${tPct}%;top:-2px;width:1px;height:28px;background:rgba(255,149,0,0.5);pointer-events:none;"></div></div></div>`;
+  });
+  let grid='';ticks.forEach(t=>{grid+=`<div style="position:absolute;left:${pct(t.date)};top:0;bottom:0;width:1px;background:rgba(255,255,255,0.04);pointer-events:none;"></div>`;});
+  document.getElementById('gantt').innerHTML=h+`<div style="position:relative;">${grid}${rows}</div>`+`<div style="margin-top:10px;font-family:'DM Mono',monospace;font-size:9px;color:rgba(255,149,0,0.5);display:flex;align-items:center;gap:6px;"><span style="width:1px;height:12px;background:rgba(255,149,0,0.5);display:inline-block;"></span>Aujourd’hui</div>`;
+})();
+</script>
+</body>
+</html>
