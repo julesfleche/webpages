@@ -20,6 +20,7 @@ webpages/
 | Page | Catégorie | URL | Date |
 |------|-----------|-----|------|
 | Template Reporting SEO PBYweb | templates/reportings | https://julesfleche.github.io/webpages/templates/reportings/pbyweb/ | Avril 2026 |
+| EVG Paul — QLR × SB juin 2026 | autres | https://julesfleche.github.io/webpages/autres/evg-paul-2026/ | Avril 2026 |
 
 ---
 *Repo géré par Out of Office — julesfleche*
