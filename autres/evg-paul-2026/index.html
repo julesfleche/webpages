@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EVG Paul · QLR × SB · Nantes 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  :root{
+    --black:#080808;
+    --black-2:#111111;
+    --black-3:#1a1a1a;
+    --black-4:#1e1e1e;
+    --white:#ffffff;
+    --off-white:#f5f4f0;
+    --muted:#888884;
+    --muted-2:#555552;
+    --accent:#5b6af0;
+    --accent-2:#a78bfa;
+    --accent-3:#f472b6;
+    --accent-light:rgba(91,106,240,0.15);
+    --border-dark:rgba(255,255,255,0.08);
+    --border-light:rgba(0,0,0,0.08);
+    --font-display:'Poppins',sans-serif;
+    --font-body:'DM Sans',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--font-body);
+    background:var(--black);
+    color:var(--white);
+    line-height:1.65;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:1000;
+    padding:18px 48px;
+    background:rgba(8,8,8,0.72);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border-dark);
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .nav-brand{
+    font-family:var(--font-display);font-weight:600;
+    font-size:15px;letter-spacing:-0.3px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .nav-brand-dot{
+    width:8px;height:8px;border-radius:50%;
+    background:linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6);
+    box-shadow:0 0 12px rgba(167,139,250,0.6);
+  }
+  .nav-links{
+    display:flex;gap:8px;list-style:none;
+    background:rgba(255,255,255,0.04);
+    border:1px solid var(--border-dark);
+    padding:4px;border-radius:999px;
+  }
+  .nav-links a{
+    padding:8px 16px;border-radius:999px;
+    font-size:13px;color:var(--muted);
+    transition:all .2s;
+  }
+  .nav-links a:hover{color:var(--white);background:rgba(255,255,255,0.06);}
+  .nav-links a.active{color:var(--white);background:rgba(91,106,240,0.18);}
+  .btn-nav{
+    background:var(--white);color:var(--black);
+    padding:10px 18px;border-radius:999px;
+    font-size:13px;font-weight:600;
+    position:relative;overflow:hidden;isolation:isolate;
+    transition:transform .2s,box-shadow .2s;
+  }
+  .btn-nav::after{
+    content:'';position:absolute;inset:0;border-radius:999px;
+    background:linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6);
+    opacity:0;transition:opacity .3s;z-index:-1;
+  }
+  .btn-nav:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(167,139,250,0.35);}
+  .btn-nav:hover::after{opacity:1;}
+  .btn-nav:hover,.btn-nav:hover span{color:#000;}
+  .hero{
+    min-height:92vh;padding:140px 48px 80px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;position:relative;overflow:hidden;
+  }
+  .hero::before{
+    content:'';position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 90%);
+    -webkit-mask-image:radial-gradient(ellipse 80% 60% at 50% 40%, #000 40%, transparent 90%);
+    z-index:0;
+  }
+  .hero::after{
+    content:'';position:absolute;top:-10%;left:50%;transform:translateX(-50%);
+    width:120%;height:70%;
+    background:radial-gradient(ellipse 50% 60% at 50% 0%, rgba(167,139,250,0.22) 0%, rgba(91,106,240,0.12) 35%, transparent 70%);
+    z-index:0;pointer-events:none;
+  }
+  .hero-inner{position:relative;z-index:1;max-width:980px;}
+  .hero-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid var(--border-dark);
+    padding:7px 16px;border-radius:999px;
+    font-size:13px;color:#d4d4d0;margin-bottom:32px;
+  }
+  .hero-badge-dot{
+    width:7px;height:7px;border-radius:50%;
+    background:#86efac;box-shadow:0 0 10px rgba(134,239,172,0.7);
+    animation:pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
+  h1{
+    font-family:var(--font-display);font-weight:600;
+    font-size:clamp(48px,7.5vw,92px);
+    letter-spacing:-2.5px;line-height:1.02;
+    margin-bottom:28px;
+  }
+  h1 em{
+    font-style:italic;
+    background:linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+  .hero-sub{
+    font-size:clamp(17px,1.5vw,19px);
+    color:var(--muted);max-width:620px;margin:0 auto 36px;
+    line-height:1.65;
+  }
+  .hero-pills{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:40px;}
+  .pill{padding:7px 14px;border-radius:999px;font-size:13px;font-weight:500;}
+  .pill-violet{background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.3);color:#c4b5fd;}
+  .pill-rose{background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.3);color:#fda4af;}
+  .pill-amber{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);color:#fcd34d;}
+  .pill-teal{background:rgba(20,184,166,0.1);border:1px solid rgba(20,184,166,0.3);color:#5eead4;}
+  .pill-blue{background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);color:#93c5fd;}
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:32px;
+    max-width:820px;margin:0 auto;padding:32px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--border-dark);
+    border-radius:24px;
+  }
+  .stat-num{
+    font-family:var(--font-display);font-weight:600;
+    font-size:clamp(28px,3vw,40px);
+    letter-spacing:-1px;line-height:1;
+    background:linear-gradient(135deg,#a78bfa,#f472b6);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;
+    margin-bottom:6px;
+  }
+  .stat-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:0.8px;}
+  section{padding:120px 48px;position:relative;background-color:#080808;}
+  .map-section{background-color:#f5f4f0 !important;color:var(--black);}
+  .vlog-section{background-color:#0a0a12 !important;}
+  footer{background-color:#080808;}
+  .section-inner{max-width:1280px;margin:0 auto;}
+  .section-label{
+    display:inline-block;font-size:13px;font-weight:500;
+    color:var(--accent);text-transform:uppercase;letter-spacing:1.2px;
+    margin-bottom:16px;
+  }
+  h2{
+    font-family:var(--font-display);font-weight:600;
+    font-size:clamp(36px,4.5vw,56px);
+    letter-spacing:-2px;line-height:1.05;
+    margin-bottom:20px;
+  }
+  .section-sub{font-size:17px;color:var(--muted);max-width:640px;line-height:1.6;margin-bottom:60px;}
+  .day-section{border-top:1px solid var(--border-dark);}
+  .day-header{display:flex;align-items:baseline;gap:24px;margin-bottom:56px;flex-wrap:wrap;}
+  .day-num{
+    font-family:var(--font-display);font-weight:600;
+    font-size:clamp(80px,12vw,140px);
+    letter-spacing:-6px;line-height:0.9;
+    background:linear-gradient(180deg,#ffffff 0%,#555552 100%);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    background-clip:text;
+  }
+  .day-name{font-family:var(--font-display);font-weight:600;font-size:clamp(28px,3vw,40px);letter-spacing:-1px;}
+  .day-tag{
+    font-size:13px;color:var(--muted);
+    background:rgba(255,255,255,0.04);
+    border:1px solid var(--border-dark);
+    padding:6px 14px;border-radius:999px;
+    margin-left:auto;align-self:center;
+  }
+  .timeline{display:grid;grid-template-columns:120px 1fr;gap:0;position:relative;}
+  .timeline::before{
+    content:'';position:absolute;left:120px;top:12px;bottom:0;
+    width:1px;background:linear-gradient(180deg,var(--accent) 0%,rgba(91,106,240,0.2) 30%,var(--border-dark) 100%);
+  }
+  .tl-item{display:contents;}
+  .tl-time{
+    padding:4px 24px 48px 0;text-align:right;
+    font-family:var(--font-display);font-weight:500;
+    font-size:15px;color:var(--white);
+    letter-spacing:-0.3px;position:relative;
+  }
+  .tl-time-sub{
+    display:block;font-family:var(--font-body);font-weight:400;
+    font-size:11px;color:var(--muted);
+    text-transform:uppercase;letter-spacing:1px;margin-top:2px;
+  }
+  .tl-dot{
+    position:absolute;right:-6px;top:9px;
+    width:11px;height:11px;border-radius:50%;
+    background:var(--black);border:2px solid var(--accent);z-index:2;
+  }
+  .tl-dot.hot{border-color:#f472b6;background:rgba(244,114,182,0.15);box-shadow:0 0 12px rgba(244,114,182,0.4);}
+  .tl-dot.meal{border-color:#fcd34d;}
+  .tl-dot.party{border-color:#a78bfa;background:rgba(167,139,250,0.2);box-shadow:0 0 14px rgba(167,139,250,0.5);}
+  .tl-dot.chill{border-color:#5eead4;}
+  .tl-content{padding:0 0 48px 32px;}
+  .tl-card{
+    background:var(--black-2);
+    border:1px solid var(--border-dark);
+    border-radius:20px;padding:28px 32px;
+    transition:all .3s;position:relative;overflow:hidden;
+  }
+  .tl-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(91,106,240,0.4),transparent);
+    opacity:0;transition:opacity .3s;
+  }
+  .tl-card:hover{border-color:rgba(91,106,240,0.35);transform:translateY(-2px);}
+  .tl-card:hover::before{opacity:1;}
+  .tl-card.hot{background:linear-gradient(135deg,rgba(244,114,182,0.06),rgba(167,139,250,0.04));}
+  .tl-card.party{background:linear-gradient(135deg,rgba(167,139,250,0.08),rgba(91,106,240,0.04));}
+  .tl-title{
+    font-family:var(--font-display);font-weight:600;
+    font-size:20px;letter-spacing:-0.5px;margin-bottom:10px;
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  }
+  .tl-chip{font-family:var(--font-body);font-weight:500;font-size:11px;padding:3px 10px;border-radius:999px;letter-spacing:0.3px;}
+  .tl-desc{color:var(--muted);font-size:15px;line-height:1.65;}
+  .tl-desc strong{color:var(--white);font-weight:500;}
+  .tl-desc a{color:#c4b5fd;border-bottom:1px dashed rgba(196,181,253,0.4);transition:color .2s;}
+  .tl-desc a:hover{color:#e9d5ff;}
+  .tl-rules{
+    margin-top:14px;padding:14px 18px;
+    background:rgba(91,106,240,0.08);
+    border-left:2px solid var(--accent);
+    border-radius:8px;font-size:14px;color:#d4d4d0;
+  }
+  .tl-rules-label{
+    display:block;font-size:11px;color:var(--accent);
+    text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:6px;
+  }
+  .map-section{background:var(--off-white);background-color:#f5f4f0;color:var(--black);}
+  .map-section .section-label{color:#5b6af0;}
+  .map-section h2{color:var(--black);}
+  .map-section .section-sub{color:var(--muted-2);}
+  #nantesMap{
+    height:560px;width:100%;
+    border-radius:24px;border:1px solid var(--border-light);
+    box-shadow:0 20px 60px rgba(0,0,0,0.08);z-index:0;
+  }
+  .leaflet-popup-content-wrapper{background:var(--black);color:var(--white);border-radius:14px;box-shadow:0 8px 24px rgba(0,0,0,0.3);}
+  .leaflet-popup-tip{background:var(--black);}
+  .leaflet-popup-content{font-family:var(--font-body);font-size:14px;margin:14px 18px;line-height:1.5;}
+  .leaflet-popup-content b{
+    font-family:var(--font-display);font-weight:600;font-size:15px;
+    background:linear-gradient(135deg,#a78bfa,#f472b6);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+  .map-legend{
+    display:flex;flex-wrap:wrap;gap:16px;margin-top:32px;
+    padding:20px 24px;background:var(--white);
+    border:1px solid var(--border-light);border-radius:16px;
+  }
+  .legend-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted-2);}
+  .legend-dot{width:12px;height:12px;border-radius:50%;}
+  .legend-mythic{background:#a78bfa;}
+  .legend-food{background:#fcd34d;}
+  .legend-party{background:#f472b6;}
+  .legend-activity{background:#5eead4;}
+  .vlog-section{
+    background:#0a0a12;
+    background:linear-gradient(135deg,#0a0a12 0%,#1a0e1e 100%);
+    overflow:hidden;position:relative;
+  }
+  .vlog-section::before{
+    content:'';position:absolute;top:-50%;right:-20%;
+    width:600px;height:600px;
+    background:radial-gradient(circle,rgba(244,114,182,0.15),transparent 70%);z-index:0;
+  }
+  .vlog-section::after{
+    content:'';position:absolute;bottom:-50%;left:-20%;
+    width:600px;height:600px;
+    background:radial-gradient(circle,rgba(91,106,240,0.15),transparent 70%);z-index:0;
+  }
+  .vlog-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center;}
+  .vlog-title{
+    font-family:var(--font-display);font-weight:600;
+    font-size:clamp(32px,4vw,52px);letter-spacing:-1.8px;
+    line-height:1.08;margin-bottom:24px;
+  }
+  .vlog-title em{
+    font-style:italic;
+    background:linear-gradient(135deg,#f472b6,#a78bfa);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+  .vlog-desc{font-size:17px;color:var(--muted);line-height:1.65;margin-bottom:28px;}
+  .vlog-visual{
+    aspect-ratio:1/1;border-radius:24px;
+    background:linear-gradient(135deg,#1a0e1e,#0f0f1e);
+    border:1px solid var(--border-dark);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
+  }
+  .vlog-visual-bg{
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size:32px 32px;
+  }
+  .vlog-rec{position:relative;text-align:center;}
+  .vlog-rec-dot{
+    width:18px;height:18px;border-radius:50%;background:#ef4444;
+    display:inline-block;margin-right:10px;vertical-align:middle;
+    animation:blink 1.4s ease-in-out infinite;
+    box-shadow:0 0 16px rgba(239,68,68,0.7);
+  }
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+  .vlog-rec-label{font-family:var(--font-display);font-weight:600;font-size:22px;letter-spacing:2px;vertical-align:middle;}
+  .vlog-rec-sub{margin-top:20px;font-size:13px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+  .vlog-timer{
+    margin-top:28px;
+    font-family:var(--font-display);font-weight:600;
+    font-size:clamp(40px,5vw,64px);letter-spacing:2px;
+    background:linear-gradient(135deg,#f472b6,#a78bfa);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+  .countdown-section{background-color:#080808;border-top:1px solid var(--border-dark);text-align:center;}
+  .countdown-label{font-size:13px;font-weight:500;color:var(--accent);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:20px;}
+  .countdown-title{
+    font-family:var(--font-display);font-weight:600;
+    font-size:clamp(24px,3vw,36px);letter-spacing:-1px;margin-bottom:48px;color:var(--white);
+  }
+  .countdown-grid{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:24px;}
+  .countdown-unit{
+    background:var(--black-2);border:1px solid var(--border-dark);
+    border-radius:20px;padding:28px 32px;min-width:120px;
+    position:relative;overflow:hidden;transition:border-color .3s;
+  }
+  .countdown-unit::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,rgba(91,106,240,0.5),transparent);
+  }
+  .countdown-unit:hover{border-color:rgba(91,106,240,0.4);}
+  .countdown-num{
+    font-family:var(--font-display);font-weight:600;
+    font-size:clamp(40px,6vw,72px);letter-spacing:-2px;line-height:1;
+    background:linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    display:block;margin-bottom:8px;
+  }
+  .countdown-unit-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+  .countdown-date{font-size:14px;color:var(--muted);margin-top:8px;}
+  footer{padding:80px 48px 48px;border-top:1px solid var(--border-dark);text-align:center;}
+  .footer-tag{
+    font-family:var(--font-display);font-weight:600;
+    font-size:clamp(32px,4vw,48px);letter-spacing:-1.5px;line-height:1.1;margin-bottom:16px;
+  }
+  .footer-tag em{
+    font-style:italic;
+    background:linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6);
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  }
+  .footer-sub{font-size:15px;color:var(--muted);margin-bottom:32px;}
+  .footer-credit{margin-top:48px;padding-top:32px;border-top:1px solid var(--border-dark);font-size:12px;color:var(--muted-2);letter-spacing:0.5px;}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+  @media (max-width:900px){
+    nav{padding:14px 20px;}
+    .nav-links{display:none;}
+    .hero{padding:110px 20px 60px;}
+    section{padding:80px 20px;}
+    .stats{grid-template-columns:repeat(2,1fr);gap:20px;padding:24px;}
+    .timeline{grid-template-columns:80px 1fr;}
+    .timeline::before{left:80px;}
+    .tl-time{padding-right:16px;font-size:13px;}
+    .tl-content{padding-left:22px;}
+    .tl-card{padding:22px 20px;}
+    .day-header{gap:16px;}
+    .day-tag{margin-left:0;}
+    .vlog-inner{grid-template-columns:1fr;gap:32px;}
+    .vlog-visual{aspect-ratio:16/10;}
+    #nantesMap{height:420px;}
+    body{background-color:#080808;}
+    .tl-card{background-color:#111111;}
+    .tl-card.hot{background-color:#130d10;}
+    .tl-card.party{background-color:#0f0d18;}
+    .tl-rules{background-color:rgba(91,106,240,0.1);}
+    .stats{background-color:rgba(255,255,255,0.03);}
+  }
+  @media (max-width:500px){
+    .btn-nav{font-size:12px;padding:8px 14px;}
+    .nav-brand{font-size:13px;}
+    .map-legend{flex-direction:column;gap:10px;}
+    .tl-title{font-size:17px;}
+    .day-num{font-size:clamp(60px,15vw,100px);}
+    .countdown-unit{min-width:80px;padding:20px 16px;}
+    .countdown-grid{gap:10px;}
+  }
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-brand"><span class="nav-brand-dot"></span><span>QLR × SB · EVG 2026</span></div>
+  <ul class="nav-links">
+    <li><a href="#hero">Intro</a></li>
+    <li><a href="#vendredi">Vendredi</a></li>
+    <li><a href="#samedi">Samedi</a></li>
+    <li><a href="#dimanche">Dimanche</a></li>
+    <li><a href="#map">Carte</a></li>
+    <li><a href="#vlog">Vlog</a></li>
+  </ul>
+  <a href="#vendredi" class="btn-nav"><span>C'est parti →</span></a>
+</nav>
+<section class="hero" id="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="hero-badge-dot"></span><span>QLR × SB · EVG #1 · Nantes 2026</span></div>
+    <h1>Trois jours pour <em>plomber</em> Paul<br/>proprement.</h1>
+    <p class="hero-sub">Du vendredi matin au lundi retour. Premier EVG de la team <strong style="color:#fff;">QLR × SB</strong>, on met la barre haut. On filme tout, et monsieur sexe va s'en souvenir.</p>
+    <div class="hero-pills">
+      <span class="pill pill-violet">3 jours</span>
+      <span class="pill pill-rose">Feufeu et neige en direct</span>
+      <span class="pill pill-amber">Paintball aux fesses</span>
+      <span class="pill pill-teal">Limousine + bicloos</span>
+      <span class="pill pill-blue">QLR × SB · premier run</span>
+    </div>
+    <div class="stats">
+      <div><div class="stat-num">3</div><div class="stat-label">Jours</div></div>
+      <div><div class="stat-num">6+</div><div class="stat-label">Jeux</div></div>
+      <div><div class="stat-num">1</div><div class="stat-label">Giga tacos</div></div>
+      <div><div class="stat-num">#1</div><div class="stat-label">EVG QLR × SB</div></div>
+    </div>
+  </div>
+</section>
+<section class="day-section" id="vendredi">
+  <div class="section-inner">
+    <div class="day-header reveal">
+      <div class="day-num">01</div>
+      <div><div class="day-name">Vendredi</div><span class="section-label" style="display:block;margin-top:4px;">Le jour où tout dérape</span></div>
+      <div class="day-tag">Nantes · toute la journée</div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-time">09h30<span class="tl-time-sub">Matin</span><span class="tl-dot hot"></span></div>
+        <div class="tl-content"><div class="tl-card hot">
+          <div class="tl-title">Surprise sur un chantier <span class="tl-chip pill pill-rose">Top secret</span></div>
+          <div class="tl-desc">Paul pense aller bosser. Il va déchanter. Tenue de chantier obligatoire, on le cueille en mode commando. <strong>Briefing sécurité (façon) + remise du bracelet d'infamie.</strong></div>
+        </div></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-time">10h30<span class="tl-time-sub">Jeu 1</span><span class="tl-dot"></span></div>
+        <div class="tl-content"><div class="tl-card">
+          <div class="tl-title">Le jeu de Paul <span class="tl-chip pill pill-amber">Paintball fesses</span></div>
+          <div class="tl-desc">Chaque perdant se prend un coup de paintball sur les fesses. C'est comme ça.</div>
+          <div class="tl-rules"><span class="tl-rules-label">Règles</span>Chacun envoie un mot ou une phrase par message au maître du jeu. Le maître énonce la liste. Il faut deviner <strong>qui a dit quoi</strong>. Si tu gagnes, tu rejoues. Si tu perds, la personne que tu visais prend la main. Le perdant final se prend la bille.</div>
+        </div></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-time">11h30<span class="tl-time-sub">Jeu 2</span><span class="tl-dot"></span></div>
+        <div class="tl-content"><div class="tl-card">
+          <div class="tl-title">Olympiades Feufeu All Star <span class="tl-chip pill pill-violet">2 équipes</span></div>
+          <div class="tl-desc">Deux équipes s'affrontent : <strong>tenir debout sur un ballon</strong>, <strong>quiz sur feufeu et sperme</strong> (vie, histoires, culture QLR × SB), et épreuves bonus. L'équipe perdante part en bicloo.</div>
+        </div></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-time">13h00<span class="tl-time-sub">Transfert</span><span class="tl-dot"></span></div>
+        <div class="tl-content"><div class="tl-card party">
+          <div class="tl-title">Limousine pour 8 <span class="tl-chip pill pill-rose">Tour de Nantes</span></div>
+          <div class="tl-desc">Les gagnants en limo, les perdants en <strong>bicloo en escorte</strong> avec le seum. On traverse les lieux de l'histoire QLR × SB × monsieur sexe : <a href="#map">Square Pascal</a> → <a href="#map">Aquatonic</a> → <a href="#map">Jules Verne</a> → <a href="#map">Saint Stan</a> → <a href="#map">Saint Mihiel</a> → <a href="#map">garage d'Adam</a>.</div>
+        </div></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-time">14h00<span class="tl-time-sub">Déjeuner</span><span class="tl-dot meal"></span></div>
+        <div class="tl-content"><div class="tl-card">
+          <div class="tl-title">Mister Snack <span class="tl-chip pill pill-amber">Giga tacos</span></div>
+          <div class="tl-desc">Feufeu <strong>doit</strong> manger un giga tacos. Pas de sortie anticipée. Pas de négociation.</div>
+        </div></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-time">16h00<span class="tl-time-sub">Jeu 3</span><span class="tl-dot"></span></div>
+        <div class="tl-content"><div class="tl-card">
+          <div class="tl-title">Jeu d'été all time <span class="tl-chip pill pill-rose">Cacheton</span></div>
+          <div class="tl-desc">Le perdant prend un cacheton. Format à confirmer sur place entre pétanque, molkky, ou duel à la cible.</div>
+        </div></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-time">18h00<span class="tl-time-sub">Apéro</span><span class="tl-dot"></span></div>
+        <div class="tl-content"><div class="tl-card">
+          <div class="tl-title">Apéro soleil · bords de l'Erdre <span class="tl-chip pill pill-teal">Chill</span></div>
+          <div class="tl-desc">Rosé, pastis, pattes en l'air, vue sur l'eau.</div>
+        </div></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-time">20h30<span class="tl-time-sub">Dîner</span><span class="tl-dot meal"></span></div>
+        <div class="tl-content"><div class="tl-card">
+          <div class="tl-title">Bouillon Nantes <span class="tl-chip pill pill-amber">Classique</span></div>
+          <div class="tl-desc">Réserver <strong>absolument</strong> en avance. Entrée + plat + dessert, on rembourre Paul pour la suite.</div>
+        </div></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-time">22h30<span class="tl-time-sub">Bar</span><span class="tl-dot party"></span></div>
+        <div class="tl-content"><div class="tl-card party">
+          <div class="tl-title">Bar · mise en jambes <span class="tl-chip pill pill-violet">Shots</span></div>
+          <div class="tl-desc">Secteur Graslin / Bouffay. Roulette russe de shots pour monsieur sexe pendant que les autres regardent.</div>
+        </div></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-time">00h30<span class="tl-time-sub">Club</span><span class="tl-dot party"></span></div>
+        <div class="tl-content"><div class="tl-card party">
+          <div class="tl-title">Boîte moyenne du centre <span class="tl-chip pill pill-violet">On force feufeu</span></div>
+          <div class="tl-desc">Secteur Graslin / Bouffay. Paul a pas le choix, il vient.</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="day-section" id="samedi">
+  <div class="section-inner">
+    <div class="day-header reveal">
+      <div class="day-num">02</div>
+      <div><div class="day-name">Samedi</div><span class="section-label" style="display:block;margin-top:4px;">Remontada + départ en campagne</span></div>
+      <div class="day-tag">Nantes → Airbnb</div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-time">10h30<span class="tl-time-sub">Brunch</span><span class="tl-dot meal"></span></div>
+        <div class="tl-content"><div class="tl-card">
+          <div class="tl-title">Petit-déj + barbecue aux bureaux de Jules <span class="tl-chip pill pill-teal">Récup</span></div>
+          <div class="tl-desc">Oeufs, bacon, viennoiseries, saucisses au barbu. Debrief du vendredi + briefing stand up.</div>
+        </div></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-time">14h00<span class="tl-time-sub">Théâtre</span><span class="tl-dot"></span></div>
+        <div class="tl-content"><div class="tl-card">
+          <div class="tl-title">Stand up · Cie du Café-Théâtre <span class="tl-chip pill pill-violet">14h → 17h30</span></div>
+          <div class="tl-desc">Spectacle stand up. <strong>Premier qui rigole monte sur scène</strong> et doit tenir un sketch. Chacun prépare <strong>2-3 vannes en amont</strong>, punchlines, imitations, roast de feufeu et neige.</div>
+          <div class="tl-rules"><span class="tl-rules-label">Préparation obligatoire</span>Prévoir un mini sketch de secours chacun. On rigole → scène. Le public (nous) est dur.</div>
+        </div></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-time">18h30<span class="tl-time-sub">Départ</span><span class="tl-dot"></span></div>
+        <div class="tl-content"><div class="tl-card">
+          <div class="tl-title">Route vers l'Airbnb <span class="tl-chip pill pill-teal">Hors Nantes</span></div>
+          <div class="tl-desc">Covoiturage à organiser. Passage supermarché en chemin.</div>
+        </div></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-time">20h00<span class="tl-time-sub">Soirée</span><span class="tl-dot party"></span></div>
+        <div class="tl-content"><div class="tl-card party">
+          <div class="tl-title">Soirée Airbnb à la cool <span class="tl-chip pill pill-rose">Cameos privés</span></div>
+          <div class="tl-desc">Dîner sur place. <strong>Cameos privés</strong> récoltés en amont : anciens potes, famille, figures de QLR × SB, tous ceux qui avaient un truc à dire à Paul mais qui peuvent pas être là. On projette ça entre la poire et le fromage.</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="day-section" id="dimanche">
+  <div class="section-inner">
+    <div class="day-header reveal">
+      <div class="day-num">03</div>
+      <div><div class="day-name">Dimanche</div><span class="section-label" style="display:block;margin-top:4px;">Récup · pétanque · option dernière</span></div>
+      <div class="day-tag">Airbnb · cool</div>
+    </div>
+    <div class="timeline">
+      <div class="tl-item reveal">
+        <div class="tl-time">11h00<span class="tl-time-sub">Matin</span><span class="tl-dot chill"></span></div>
+        <div class="tl-content"><div class="tl-card">
+          <div class="tl-title">Brunch récup + balade <span class="tl-chip pill pill-teal">Chill</span></div>
+          <div class="tl-desc">Lever tardif. Brunch à rallonge, balade dans les alentours.</div>
+        </div></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-time">15h00<span class="tl-time-sub">Jeu</span><span class="tl-dot"></span></div>
+        <div class="tl-content"><div class="tl-card">
+          <div class="tl-title">Tournoi de pétanque <span class="tl-chip pill pill-amber">Apéro</span></div>
+          <div class="tl-desc">Doublettes tirées au sort. Pastis en main. Perdants font la vaisselle. <strong>Monsieur sexe joue avec un handicap imposé</strong> (main gauche, yeux bandés un tour sur deux).</div>
+        </div></div>
+      </div>
+      <div class="tl-item reveal">
+        <div class="tl-time">21h00<span class="tl-time-sub">Option</span><span class="tl-dot party"></span></div>
+        <div class="tl-content"><div class="tl-card party">
+          <div class="tl-title">Soirée à la bien · pour les chauds <span class="tl-chip pill pill-violet">Optionnel</span></div>
+          <div class="tl-desc">Ceux qui sont encore debout remettent une couche. Feu de camp, bière, musique.</div>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="day-section" id="lundi" style="padding-top:80px;padding-bottom:80px;">
+  <div class="section-inner">
+    <div class="day-header reveal">
+      <div class="day-num">04</div>
+      <div><div class="day-name">Lundi</div><span class="section-label" style="display:block;margin-top:4px;">Comeback to back</span></div>
+      <div class="day-tag">Retour</div>
+    </div>
+    <div class="reveal" style="max-width:640px;color:var(--muted);font-size:17px;line-height:1.7;">
+      Ceux qui veulent restent jusqu'au déjeuner. Ménage collectif à l'Airbnb. Retour sur Nantes. <strong style="color:var(--white);">QLR × SB · EVG #1 · validé.</strong>
+    </div>
+  </div>
+</section>
+<section class="map-section" id="map">
+  <div class="section-inner">
+    <div class="reveal">
+      <span class="section-label">Parcours Nantes</span>
+      <h2>Les lieux <em style="font-style:italic;background:linear-gradient(135deg,#5b6af0,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">mythiques</em>.</h2>
+      <p class="section-sub">La tournée limousine + bicloo passe par les endroits qui ont marqué l'histoire de la team.</p>
+    </div>
+    <div class="reveal">
+      <div id="nantesMap"></div>
+      <div class="map-legend">
+        <div class="legend-item"><span class="legend-dot legend-mythic"></span>Lieux mythiques</div>
+        <div class="legend-item"><span class="legend-dot legend-food"></span>Restauration</div>
+        <div class="legend-item"><span class="legend-dot legend-party"></span>Soirée</div>
+        <div class="legend-item"><span class="legend-dot legend-activity"></span>Activité</div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="vlog-section" id="vlog">
+  <div class="section-inner">
+    <div class="vlog-inner">
+      <div class="reveal">
+        <span class="section-label">Opération vlog</span>
+        <h2 class="vlog-title">On filme tout. Archives <em>QLR × SB</em>.</h2>
+        <p class="vlog-desc">Chaque moment, chaque chute, chaque bicloo qui galère.</p>
+      </div>
+      <div class="reveal vlog-visual">
+        <div class="vlog-visual-bg"></div>
+        <div class="vlog-rec">
+          <div><span class="vlog-rec-dot"></span><span class="vlog-rec-label">REC</span></div>
+          <div class="vlog-rec-sub">Paul · QLR × SB · 2026</div>
+          <div class="vlog-timer">72:00:00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="countdown-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="countdown-label">Compte à rebours</div>
+      <div class="countdown-title">12 juin 2026 · J-<span id="cd-total-days">?</span></div>
+      <div class="countdown-grid">
+        <div class="countdown-unit"><span class="countdown-num" id="cd-days">--</span><span class="countdown-unit-label">Jours</span></div>
+        <div class="countdown-unit"><span class="countdown-num" id="cd-hours">--</span><span class="countdown-unit-label">Heures</span></div>
+        <div class="countdown-unit"><span class="countdown-num" id="cd-minutes">--</span><span class="countdown-unit-label">Minutes</span></div>
+        <div class="countdown-unit"><span class="countdown-num" id="cd-seconds">--</span><span class="countdown-unit-label">Secondes</span></div>
+      </div>
+      <div class="countdown-date">Vendredi 12 juin 2026 · Nantes · QLR × SB</div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="reveal">
+    <div class="footer-tag">Premier run <em>QLR × SB</em>.</div>
+    <div class="footer-sub">Liste d'invités, covoit, budget et cameos à caler entre nous.</div>
+  </div>
+  <div class="footer-credit">EVG QLR × SB · Confidentiel</div>
+</footer>
+<script>
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  },{threshold:0.12,rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+  const sections = ['hero','vendredi','samedi','dimanche','map','vlog'];
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll',()=>{
+    const scrollY = window.pageYOffset;
+    sections.forEach((id)=>{
+      const el = document.getElementById(id);
+      if(el && scrollY >= el.offsetTop - 200 && scrollY < el.offsetTop + el.offsetHeight - 200){
+        navLinks.forEach(l=>l.classList.remove('active'));
+        const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+        if(link) link.classList.add('active');
+      }
+    });
+  });
+  function updateCountdown(){
+    const target = new Date('2026-06-12T09:00:00');
+    const now = new Date();
+    const diff = target - now;
+    if(diff <= 0){
+      ['cd-days','cd-hours','cd-minutes','cd-seconds'].forEach(id=>document.getElementById(id).textContent='0');
+      document.getElementById('cd-total-days').textContent='0';
+      return;
+    }
+    const days = Math.floor(diff/(1000*60*60*24));
+    const hours = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+    const minutes = Math.floor((diff%(1000*60*60))/(1000*60));
+    const seconds = Math.floor((diff%(1000*60))/1000);
+    document.getElementById('cd-days').textContent=String(days).padStart(2,'0');
+    document.getElementById('cd-hours').textContent=String(hours).padStart(2,'0');
+    document.getElementById('cd-minutes').textContent=String(minutes).padStart(2,'0');
+    document.getElementById('cd-seconds').textContent=String(seconds).padStart(2,'0');
+    document.getElementById('cd-total-days').textContent=days;
+  }
+  updateCountdown();
+  setInterval(updateCountdown,1000);
+  const lieux=[
+    {name:'Square Pascal',lat:47.216087,lng:-1.563455,type:'mythic',desc:'Lieu mythique'},
+    {name:'Aquatonic',lat:47.217054,lng:-1.564088,type:'mythic',desc:'Souvenir collectif'},
+    {name:'Lycée Jules Verne',lat:47.217335,lng:-1.561653,type:'mythic',desc:'Les années lycée'},
+    {name:'Saint Stanislas',lat:47.222835,lng:-1.555926,type:'mythic',desc:'École'},
+    {name:'Pont Saint-Mihiel',lat:47.222898,lng:-1.552899,type:'mythic',desc:'Point mythique'},
+    {name:"Garage d'Adam",lat:47.225728,lng:-1.554197,type:'mythic',desc:'Côté Waldeck'},
+    {name:'Mister Snack',lat:47.223480,lng:-1.551446,type:'food',desc:'Giga tacos'},
+    {name:'Bouillon Nantes',lat:47.214880,lng:-1.554387,type:'food',desc:'Dîner vendredi'},
+    {name:'Place Graslin',lat:47.213022,lng:-1.562371,type:'party',desc:'Boîte du centre'},
+    {name:'Cie du Café-Théâtre',lat:47.216588,lng:-1.551372,type:'activity',desc:'Stand up samedi'}
+  ];
+  const colors={mythic:'#a78bfa',food:'#fcd34d',party:'#f472b6',activity:'#5eead4'};
+  function initMap(){
+    if(typeof L==='undefined'){
+      document.getElementById('nantesMap').innerHTML='<div style="padding:40px;text-align:center;color:#888;">Carte indisponible</div>';
+      return;
+    }
+    try{
+      const map=L.map('nantesMap',{zoomControl:true,scrollWheelZoom:false}).setView([47.218,-1.558],14);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{attribution:'&copy; OpenStreetMap &copy; CARTO',maxZoom:19}).addTo(map);
+      lieux.forEach(lieu=>{
+        const icon=L.divIcon({className:'',html:`<div style="width:22px;height:22px;border-radius:50%;background:${colors[lieu.type]};border:3px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,0.25);"></div>`,iconSize:[22,22],iconAnchor:[11,11]});
+        L.marker([lieu.lat,lieu.lng],{icon}).addTo(map).bindPopup(`<b>${lieu.name}</b><br>${lieu.desc}`);
+      });
+      const group=L.featureGroup(lieux.map(l=>L.marker([l.lat,l.lng])));
+      map.fitBounds(group.getBounds().pad(0.12));
+    }catch(err){console.error(err);}
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initMap);}else{initMap();}
+</script>
+</body>
+</html>
