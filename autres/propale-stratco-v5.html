@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OOO × STRATCO — Proposition Commerciale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#080808;--black-2:#111111;--black-3:#1a1a1a;
+  --white:#ffffff;--off-white:#f5f4f0;
+  --muted:#888884;--muted-2:#555552;
+  --accent:#5b6af0;--accent-2:#a78bfa;--green:#3ddc6e;
+  --border-dark:rgba(255,255,255,0.08);--border-med:rgba(255,255,255,0.14);
+  --font-display:"Poppins",sans-serif;--font-body:"DM Sans",sans-serif;
+  --grad:linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--black);color:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(8,8,8,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border-dark)}
+.topbar-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.topbar-logo img{height:28px;width:auto}
+.topbar-center{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted-2)}
+.topbar-client{color:var(--muted);font-weight:500}
+.topbar-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(61,220,110,.1);border:1px solid rgba(61,220,110,.2);border-radius:999px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--green);letter-spacing:.06em;text-transform:uppercase}
+.topbar-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero{min-height:92vh;display:grid;grid-template-columns:1fr 1fr;align-items:end;padding:56px 80px 64px;position:relative;overflow:hidden;border-bottom:1px solid var(--border-dark)}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 55% 70% at 5% 50%,rgba(91,106,240,.13) 0%,transparent 65%),radial-gradient(ellipse 35% 35% at 85% 25%,rgba(167,139,250,.07) 0%,transparent 60%);pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border-dark) 1px,transparent 1px),linear-gradient(90deg,var(--border-dark) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 90% 80% at 10% 50%,black 0%,transparent 75%);pointer-events:none}
+.hero-left{position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding-right:48px}
+.hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.hero-eyebrow::before{content:"";display:block;width:28px;height:1px;background:var(--accent)}
+.hero h1{font-family:var(--font-display);font-size:clamp(40px,5vw,72px);font-weight:600;letter-spacing:-2.5px;line-height:1.0;color:var(--white);margin-bottom:24px}
+.hero h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:17px;color:var(--muted);max-width:440px;line-height:1.7;margin-bottom:40px}
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:7px 14px;font-size:12px;font-weight:500;border:1px solid}
+.pill-blue{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.2);color:#93c5fd}
+.pill-violet{background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.2);color:#c4b5fd}
+.pill-green{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.18);color:#86efac}
+.hero-right{position:relative;display:flex;flex-direction:column;gap:12px;padding-left:48px;border-left:1px solid var(--border-dark)}
+.info-card{background:rgba(255,255,255,.03);border:1px solid var(--border-dark);border-radius:16px;padding:20px 24px}
+.info-card.featured{background:rgba(91,106,240,.08);border-color:rgba(91,106,240,.25)}
+.info-card-label{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);margin-bottom:6px}
+.info-card-value{font-family:var(--font-display);font-size:17px;font-weight:600;letter-spacing:-.3px;color:var(--white)}
+.info-card-value.green{color:var(--green);font-size:28px;letter-spacing:-1px}
+.info-card-value.accent{color:var(--accent)}
+.info-card-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.hero-ref{font-size:11px;color:var(--muted-2);padding:0 4px}
+.section{padding:80px;border-bottom:1px solid var(--border-dark)}
+.section.light{background:var(--off-white);color:var(--black);border-bottom:none}
+.section.dark{background:var(--black-2)}
+.section-label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+.section-title{font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:600;letter-spacing:-1px;line-height:1.05;margin-bottom:20px}
+.section.light .section-title{color:var(--black)}
+.section-intro{font-size:17px;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:52px}
+.section.light .section-intro{color:#666660}
+.audit-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:48px}
+.audit-card{background:rgba(255,255,255,.03);border:1px solid var(--border-dark);border-radius:20px;padding:28px;position:relative;overflow:hidden;transition:border-color .2s}
+.audit-card:hover{border-color:var(--border-med)}
+.audit-card.problem{border-left:2px solid rgba(239,68,68,.4)}
+.audit-card.solution{border-left:2px solid rgba(61,220,110,.4)}
+.audit-card-icon{font-size:22px;margin-bottom:14px}
+.audit-card h3{font-family:var(--font-display);font-size:16px;font-weight:600;letter-spacing:-.3px;color:var(--white);margin-bottom:8px}
+.audit-card p{font-size:14px;color:var(--muted);line-height:1.65}
+.audit-badge{display:inline-flex;align-items:center;font-size:11px;font-weight:600;letter-spacing:.04em;border-radius:999px;padding:3px 10px;margin-bottom:12px}
+.ab-red{background:rgba(239,68,68,.12);color:#fca5a5}
+.ab-green{background:rgba(61,220,110,.12);color:#86efac}
+.stack-section-title{font-family:var(--font-display);font-size:20px;font-weight:600;letter-spacing:-.5px;color:var(--white);margin-bottom:20px;margin-top:48px}
+.stack-visual{background:rgba(255,255,255,.02);border:1px solid var(--border-dark);border-radius:20px;padding:32px}
+.stack-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.stack-row:last-child{margin-bottom:0}
+.stack-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);width:110px;flex-shrink:0}
+.stack-pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:600;border:1px solid}
+.sp-old{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);color:var(--muted);text-decoration:line-through;opacity:.6}
+.sp-arrow{color:var(--muted-2);font-size:14px}
+.sp-n8n{background:rgba(234,88,12,.1);border-color:rgba(234,88,12,.25);color:#fb923c}
+.sp-claude{background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.25);color:#c4b5fd}
+.sp-crm{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.25);color:#93c5fd}
+.sp-outbound{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.2);color:#fcd34d}
+.sp-tracking{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.2);color:#86efac}
+.sp-finance{background:rgba(236,72,153,.08);border-color:rgba(236,72,153,.2);color:#f9a8d4}
+.sp-notion{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);color:var(--muted)}
+.sp-clay{background:rgba(245,158,11,.1);border-color:rgba(245,158,11,.25);color:#fcd34d}
+.roadmap-intro{background:rgba(255,255,255,.02);border:1px solid var(--border-dark);border-radius:16px;padding:24px 28px;margin-bottom:40px;display:flex;align-items:center;gap:16px}
+.roadmap-intro-icon{width:44px;height:44px;border-radius:12px;background:rgba(91,106,240,.12);border:1px solid rgba(91,106,240,.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.roadmap-intro p{font-size:15px;color:var(--muted);line-height:1.65}
+.roadmap-intro strong{color:var(--white);font-weight:600}
+.week-list{display:flex;flex-direction:column;gap:16px}
+.week-item{background:rgba(255,255,255,.025);border:1px solid var(--border-dark);border-radius:20px;overflow:hidden;transition:border-color .2s}
+.week-item:hover{border-color:var(--border-med)}
+.week-item.featured{border-color:rgba(91,106,240,.3);background:rgba(91,106,240,.04)}
+.week-head{display:grid;grid-template-columns:80px 1fr auto;align-items:center;padding:24px 28px;gap:20px;cursor:pointer}
+.week-num-wrap{display:flex;flex-direction:column;align-items:center;gap:4px}
+.week-num{font-family:var(--font-display);font-size:32px;font-weight:600;letter-spacing:-1.5px;color:var(--white);line-height:1}
+.week-num.accent{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.week-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2)}
+.week-meta{display:flex;flex-direction:column;gap:6px}
+.week-title{font-family:var(--font-display);font-size:18px;font-weight:600;letter-spacing:-.4px;color:var(--white)}
+.week-phases{font-size:13px;color:var(--muted)}
+.week-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.week-load{font-size:12px;font-weight:600;color:var(--muted-2);background:rgba(255,255,255,.06);border:1px solid var(--border-dark);border-radius:999px;padding:5px 12px}
+.win-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(61,220,110,.1);border:1px solid rgba(61,220,110,.2);border-radius:999px;padding:5px 12px;font-size:11px;font-weight:600;color:var(--green)}
+.win-dot{width:5px;height:5px;border-radius:50%;background:var(--green)}
+.week-body{padding:0 28px 28px;display:none}
+.week-item.open .week-body{display:block}
+.week-chevron{font-size:18px;color:var(--muted-2);transition:transform .2s;margin-left:8px}
+.week-item.open .week-chevron{transform:rotate(90deg)}
+.week-challenge{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.15);border-radius:12px;padding:16px 20px;margin-bottom:20px;font-size:13px;color:#fcd34d;line-height:1.6}
+.week-challenge strong{color:#fde68a;font-weight:600}
+.chantiers-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.chantier-card{background:rgba(255,255,255,.03);border:1px solid var(--border-dark);border-radius:12px;padding:16px}
+.chantier-tag{display:inline-flex;align-items:center;font-size:11px;font-weight:600;letter-spacing:.04em;border-radius:999px;padding:3px 10px;margin-bottom:8px}
+.ct-n8n{background:rgba(234,88,12,.1);color:#fb923c}
+.ct-claude{background:rgba(139,92,246,.12);color:#c4b5fd}
+.ct-clay{background:rgba(245,158,11,.1);color:#fcd34d}
+.ct-ghl{background:rgba(59,130,246,.1);color:#93c5fd}
+.ct-notion{background:rgba(255,255,255,.06);color:var(--muted)}
+.ct-outbound{background:rgba(34,197,94,.08);color:#86efac}
+.ct-pink{background:rgba(236,72,153,.1);color:#f9a8d4}
+.chantier-card h4{font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px;letter-spacing:-.2px}
+.chantier-card p{font-size:12px;color:var(--muted);line-height:1.55}
+.week-call{display:flex;align-items:center;gap:8px;padding-top:16px;border-top:1px solid var(--border-dark);font-size:13px;color:var(--muted-2)}
+.call-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.sprint-section{background:var(--black);padding:80px;border-bottom:1px solid var(--border-dark);overflow:hidden}
+.maintenance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+.maint-card{background:rgba(255,255,255,.03);border:1px solid var(--border-dark);border-radius:20px;padding:28px;position:relative;overflow:hidden}
+.maint-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);opacity:.6}
+.maint-num{font-family:var(--font-display);font-size:40px;font-weight:600;letter-spacing:-1.5px;color:rgba(255,255,255,.06);margin-bottom:14px}
+.maint-card h3{font-family:var(--font-display);font-size:17px;font-weight:600;letter-spacing:-.3px;color:var(--white);margin-bottom:10px}
+.maint-card p{font-size:14px;color:var(--muted);line-height:1.65}
+.maint-highlight{background:rgba(91,106,240,.06);border:1px solid rgba(91,106,240,.2);border-radius:16px;padding:24px 28px;margin-top:24px;display:flex;gap:16px;align-items:flex-start}
+.maint-highlight-icon{width:40px;height:40px;border-radius:12px;background:rgba(91,106,240,.12);border:1px solid rgba(91,106,240,.2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.maint-highlight p{font-size:15px;color:var(--muted);line-height:1.65}
+.maint-highlight strong{color:var(--white);font-weight:600}
+.claude-hero{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-top:52px}
+.claude-visual{background:rgba(139,92,246,.06);border:1px solid rgba(139,92,246,.2);border-radius:20px;padding:32px;position:relative;overflow:hidden}
+.claude-visual::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 100%,rgba(139,92,246,.12),transparent);pointer-events:none}
+.claude-title{font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-.5px;color:var(--white);margin-bottom:6px}
+.claude-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+.claude-prompt{background:rgba(0,0,0,.4);border:1px solid rgba(139,92,246,.2);border-radius:12px;padding:16px 20px;font-size:13px;color:#d8b4fe;font-family:monospace;margin-bottom:10px;line-height:1.6}
+.claude-prompt::before{content:'> ';color:rgba(167,139,250,.5)}
+.claude-response{background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.15);border-radius:12px;padding:16px 20px;font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:10px}
+.claude-features{display:flex;flex-direction:column;gap:16px}
+.claude-feat{display:flex;gap:14px;align-items:flex-start}
+.claude-feat-icon{width:40px;height:40px;border-radius:12px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.15);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.claude-feat h4{font-size:15px;font-weight:600;color:var(--white);margin-bottom:4px;letter-spacing:-.2px}
+.claude-feat p{font-size:13px;color:var(--muted);line-height:1.55}
+.mcp-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.25);border-radius:999px;padding:4px 12px;font-size:11px;font-weight:600;color:#c4b5fd;margin-top:8px}
+.pricing-wrap{display:grid;grid-template-columns:1fr 360px;gap:32px;margin-top:52px;align-items:start}
+.pricing-table{background:var(--black-2);border:1px solid var(--border-dark);border-radius:20px;overflow:hidden}
+.pricing-table-head{display:grid;grid-template-columns:1fr auto;padding:14px 28px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border-dark);gap:16px}
+.pt-head-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2)}
+.pricing-row{display:grid;grid-template-columns:1fr auto;align-items:center;padding:18px 28px;border-bottom:1px solid var(--border-dark);gap:16px;transition:background .15s}
+.pricing-row:last-child{border-bottom:none}
+.pricing-row:hover{background:rgba(255,255,255,.02)}
+.pricing-row.total-row{background:rgba(91,106,240,.06);border-top:1px solid rgba(91,106,240,.2);border-bottom:none}
+.pr-name{font-size:14px;font-weight:600;color:var(--white);margin-bottom:2px}
+.pr-desc{font-size:12px;color:var(--muted);line-height:1.4}
+.pr-amount{font-family:var(--font-display);font-size:15px;font-weight:600;letter-spacing:-.4px;color:var(--white);white-space:nowrap;text-align:right}
+.pr-amount.is-included{color:var(--green);font-size:13px;font-family:var(--font-body);font-weight:600;letter-spacing:0}
+.total-row .pr-name{font-family:var(--font-display);font-size:17px;letter-spacing:-.4px}
+.total-row .pr-amount{font-size:24px;letter-spacing:-1px;color:var(--accent)}
+.pricing-cta-card{background:rgba(255,255,255,.03);border:1px solid var(--border-dark);border-radius:20px;padding:32px;display:flex;flex-direction:column;position:sticky;top:72px}
+.pcc-amount{font-family:var(--font-display);font-size:48px;font-weight:600;letter-spacing:-2px;color:var(--white);line-height:1;margin-bottom:4px}
+.pcc-freq{font-size:13px;color:var(--muted);margin-bottom:6px}
+.pcc-mention{font-size:12px;color:var(--muted-2);line-height:1.5;padding-bottom:24px;border-bottom:1px solid var(--border-dark);margin-bottom:24px}
+.pcc-features{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+.pcc-features li{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.pcc-check{width:18px;height:18px;border-radius:50%;background:rgba(61,220,110,.12);color:var(--green);font-size:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700}
+.btn-primary{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--white);color:var(--black);border:none;border-radius:999px;padding:15px 28px;font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;isolation:isolate;width:100%}
+.btn-primary::after{content:"";position:absolute;inset:0;border-radius:999px;background:var(--grad);opacity:0;transition:opacity .3s;z-index:-1}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 32px rgba(107,127,255,.35)}
+.btn-primary:hover::after{opacity:1}
+.btn-primary:hover,.btn-primary:hover span{color:#fff}
+.btn-primary span{position:relative;z-index:1}
+.roi-section{background:var(--black-2);padding:80px;border-bottom:1px solid var(--border-dark)}
+.roi-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-top:52px}
+.roi-inputs{display:flex;flex-direction:column;gap:24px}
+.roi-input-group{display:flex;flex-direction:column;gap:8px}
+.roi-input-label{font-size:13px;font-weight:600;color:var(--white);display:flex;justify-content:space-between;align-items:center}
+.roi-input-label span{font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--accent)}
+.roi-slider{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:rgba(255,255,255,.1);outline:none}
+.roi-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--black)}
+.roi-slider::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--black)}
+.roi-results{background:rgba(91,106,240,.06);border:1px solid rgba(91,106,240,.25);border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:24px}
+.roi-metric{display:flex;flex-direction:column;gap:4px}
+.roi-metric-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2)}
+.roi-metric-value{font-family:var(--font-display);font-size:36px;font-weight:600;letter-spacing:-1px;color:var(--white);line-height:1}
+.roi-metric-value.green{color:var(--green)}
+.roi-metric-value.accent{color:var(--accent)}
+.roi-metric-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.roi-divider{height:1px;background:rgba(91,106,240,.2)}
+.roi-disclaimer{font-size:12px;color:var(--muted-2);line-height:1.6;padding-top:4px;border-top:1px solid var(--border-dark)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-top:52px}
+.jules-photo{width:80px;height:80px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,.1);margin-bottom:24px}
+.jules-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.jules-name{font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-.5px;color:var(--white);margin-bottom:4px}
+.jules-role{font-size:13px;color:var(--muted);margin-bottom:24px}
+.about-left p{font-size:16px;color:var(--muted);line-height:1.75;margin-bottom:16px}
+.about-left p:last-child{margin-bottom:0}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border-dark);border:1px solid var(--border-dark);border-radius:20px;overflow:hidden}
+.about-stat{background:var(--black-2);padding:32px 28px;display:flex;flex-direction:column}
+.about-stat-num{font-family:var(--font-display);font-size:40px;font-weight:600;letter-spacing:-1.5px;line-height:1;margin-bottom:8px}
+.about-stat-num.accent{color:var(--accent)}
+.about-stat-num.green{color:var(--green)}
+.about-stat-num.white{color:var(--white)}
+.about-stat-num.violet{color:var(--accent-2)}
+.about-stat-label{font-size:13px;color:var(--muted);line-height:1.45}
+.cta-section{background:var(--black);padding:100px 80px;text-align:center;position:relative;overflow:hidden}
+.cta-section::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 50%,rgba(91,106,240,.15) 0%,transparent 65%);pointer-events:none}
+.cta-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border-dark) 1px,transparent 1px),linear-gradient(90deg,var(--border-dark) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 60% 70% at 50% 50%,black 0%,transparent 80%);pointer-events:none}
+.cta-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid var(--border-dark);border-radius:999px;padding:6px 16px 6px 10px;font-size:12px;color:#b0b0a8;margin-bottom:28px}
+.cta-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite}
+.cta-title{font-family:var(--font-display);font-size:clamp(38px,5vw,60px);font-weight:600;letter-spacing:-2px;line-height:1.0;color:var(--white);margin-bottom:16px}
+.cta-title em{font-style:normal;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cta-sub{font-size:16px;color:var(--muted);line-height:1.65;margin-bottom:48px}
+.btn-cta-wa{display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(37,211,102,.1);color:#4ade80;border:1px solid rgba(37,211,102,.25);border-radius:999px;padding:15px 36px;font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s}
+.btn-cta-wa:hover{background:rgba(37,211,102,.16);border-color:rgba(37,211,102,.4);transform:translateY(-1px)}
+.cta-trust{margin-top:24px;font-size:12px;color:var(--muted-2);display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.cta-trust span{display:flex;align-items:center;gap:5px}
+.footer{padding:28px 80px;border-top:1px solid var(--border-dark);display:flex;align-items:center;justify-content:space-between}
+.footer-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.footer-logo img{height:22px;width:auto;opacity:.85}
+.footer-right{font-size:12px;color:var(--muted-2);display:flex;align-items:center;gap:20px}
+.footer-right a{color:var(--muted-2);text-decoration:none;transition:color .2s}
+.footer-right a:hover{color:var(--muted)}
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+.btn-kickoff{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:none;border-radius:999px;padding:17px 36px;font-family:var(--font-body);font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;transition:transform .2s,box-shadow .2s,opacity .2s;position:relative;overflow:hidden;isolation:isolate;background:linear-gradient(135deg,#ef4444,#dc2626,#b91c1c);color:#fff}
+.btn-kickoff::after{content:"";position:absolute;inset:0;border-radius:999px;background:linear-gradient(135deg,#f97316,#ef4444,#dc2626);opacity:0;transition:opacity .35s;z-index:-1}
+.btn-kickoff:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(220,38,38,.45)}
+.btn-kickoff:hover::after{opacity:1}
+.btn-kickoff span{position:relative;z-index:1}
+.edit-zone{background:rgba(245,158,11,.04);border:1px solid rgba(245,158,11,.18);border-radius:16px;padding:20px 24px;margin-bottom:20px;transition:all .3s}
+.edit-zone.active{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.35)}
+.edit-zone-header{display:flex;align-items:center;gap:14px;cursor:pointer}
+.edit-checkbox-wrap{position:relative;flex-shrink:0}
+.edit-checkbox-wrap input{opacity:0;position:absolute;width:100%;height:100%;cursor:pointer;margin:0}
+.edit-box{width:22px;height:22px;border-radius:6px;border:1.5px solid rgba(245,158,11,.4);background:rgba(245,158,11,.06);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.edit-box.checked{background:rgba(245,158,11,.2);border-color:rgba(245,158,11,.7)}
+.edit-box svg{opacity:0;transition:opacity .15s}
+.edit-box.checked svg{opacity:1}
+.edit-label-text{display:flex;flex-direction:column;gap:2px}
+.edit-label-title{font-size:14px;font-weight:600;color:#fde68a}
+.edit-label-sub{font-size:12px;color:rgba(253,230,138,.5)}
+.edit-comment-area{margin-top:16px;display:none}
+.edit-comment-area.show{display:block}
+.edit-textarea{width:100%;background:rgba(0,0,0,.3);border:1px solid rgba(245,158,11,.2);border-radius:10px;padding:14px 16px;font-family:var(--font-body);font-size:13px;color:var(--white);line-height:1.6;resize:vertical;min-height:90px;outline:none;transition:border-color .2s}
+.edit-textarea::placeholder{color:rgba(255,255,255,.2)}
+.edit-textarea:focus{border-color:rgba(245,158,11,.45)}
+.edit-char-count{font-size:11px;color:var(--muted-2);text-align:right;margin-top:6px}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="topbar-logo" href="#"><img src="https://lh3.googleusercontent.com/d/1t8DOJoFuukd5qkhbgioJyxpZEiIUI0Qc" alt="OOO"></a>
+  <div class="topbar-center">
+    <span>Proposition pour</span>
+    <span style="color:rgba(255,255,255,.14)">&nbsp;/&nbsp;</span>
+    <span class="topbar-client">STRATCO</span>
+  </div>
+  <div class="topbar-badge"><span class="topbar-badge-dot"></span>Confidentiel</div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-left fade-in">
+    <div class="hero-eyebrow">Proposition commerciale</div>
+    <h1>Ton infrastructure IA,<br>semaine<br><em>par semaine.</em></h1>
+    <p class="hero-sub">On ne livre pas un projet. On construit une machine avec toi, pour toi, qui tourne encore quand on n'est plus là.</p>
+    <div class="hero-pills">
+      <span class="pill pill-violet">&#9889; n8n + Claude API</span>
+      <span class="pill pill-blue">&#x1F3AF; 10 sprints, une win/semaine</span>
+      <span class="pill pill-green">&#x2713; Autonomie totale</span>
+    </div>
+  </div>
+  <div class="hero-right fade-in" style="transition-delay:.15s">
+    <div class="hero-ref">REF &middot; OOO-2026-047 &middot; Avril 2026</div>
+    <div class="info-card">
+      <div class="info-card-label">Client</div>
+      <div class="info-card-value">STRATCO</div>
+      <div class="info-card-sub">Massi &middot; Fondateur</div>
+    </div>
+    <div class="info-card featured">
+      <div class="info-card-label">Jours homme sur le projet</div>
+      <div class="info-card-value green">20j</div>
+      <div class="info-card-sub">2j par semaine &middot; 10 sprints &middot; hors S11+</div>
+    </div>
+    <div class="info-card featured" style="background:rgba(167,139,250,.06);border-color:rgba(167,139,250,.25)">
+      <div class="info-card-label">Dur&eacute;e d'accompagnement</div>
+      <div class="info-card-value" style="color:var(--accent-2);font-size:28px;letter-spacing:-1px">10 semaines</div>
+      <div class="info-card-sub">Retainer mensuel renouvelable ensuite</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">D&eacute;marrage estim&eacute;</div>
+      <div class="info-card-value accent">Semaine 18, Mai 2026</div>
+      <div class="info-card-sub">Sous r&eacute;serve de signature</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">Interlocuteur</div>
+      <div class="info-card-value">Jules Fl&eacute;chet</div>
+      <div class="info-card-sub">Fondateur &middot; jules@agenceooo.com</div>
+    </div>
+  </div>
+</section>
+
+<!-- 01 AUDIT -->
+<section class="section dark fade-in">
+  <span class="section-label">01 &mdash; Lecture de ta roadmap</span>
+  <h2 class="section-title">Ce qu'on a vu.<br>Ce qu'on propose &agrave; la place.</h2>
+  <p class="section-intro">Tu as une roadmap ambitieuse et une vision claire. Ce qui manque, c'est l'orchestration. Voil&agrave; ce qu'on a identifi&eacute; et comment on le r&egrave;gle.</p>
+
+  <div class="audit-grid">
+    <div class="audit-card problem">
+      <div class="audit-badge ab-red">Probl&egrave;me identifi&eacute;</div>
+      <div class="audit-card-icon">&#x1F517;</div>
+      <h3>Make comme orchestrateur</h3>
+      <p>Make est bien pour des automatisations simples. Pour une infrastructure de 25 chantiers avec Claude API au centre, c'est un plafond de verre. Maintenance complexe, co&ucirc;ts qui explosent, pas con&ccedil;u pour des agents IA.</p>
+    </div>
+    <div class="audit-card solution">
+      <div class="audit-badge ab-green">Ce qu'on propose</div>
+      <div class="audit-card-icon">&#x26A1;</div>
+      <h3>n8n self-hosted, sans limite</h3>
+      <p>On bascule tout en n8n d&egrave;s le sprint 1. Un seul outil qu'on ma&icirc;trise de bout en bout, h&eacute;berg&eacute; sur ton infra, co&ucirc;t fixe, con&ccedil;u nativement pour les agents Claude.</p>
+    </div>
+    <div class="audit-card problem">
+      <div class="audit-badge ab-red">On a lu ton brief — ajustements</div>
+      <div class="audit-card-icon">&#x1F4CB;</div>
+      <h3>Ce qu'on calibre sur ta machine inbound</h3>
+      <p><strong style="color:rgba(255,255,255,.7)">Reactin remplace HeyReach</strong> — HeyReach est un outil d'outreach, pas de d&eacute;tection. Reactin couvre d&eacute;j&agrave; les signaux LinkedIn dans notre stack, un outil de moins, z&eacute;ro perte de signal. <strong style="color:rgba(255,255,255,.7)">Clay comme table master</strong> — on centralise d&eacute;dup, scoring et enrichissement waterfall dans Clay plut&ocirc;t que de dispatcher &ccedil;a dans n8n. <strong style="color:rgba(255,255,255,.7)">Pas de nouveau dashboard</strong> — le pipe GHL existant est &eacute;tendu avec les custom fields n&eacute;cessaires, z&eacute;ro outil suppl&eacute;mentaire.</p>
+    </div>
+    <div class="audit-card solution">
+      <div class="audit-badge ab-green">Ce qu'on propose</div>
+      <div class="audit-card-icon">&#x1F916;</div>
+      <h3>Machine inbound : d&eacute;tection, scoring, brief</h3>
+      <p>Clay comme cerveau central, Reactin pour les signaux LinkedIn, n8n + Claude pour orchestrer. Chaque signal devient un lead scor&eacute;, prioris&eacute; et brief&eacute; — sans aucun message automatique envoy&eacute;. 100% manuel c&ocirc;t&eacute; contact.</p>
+    </div>
+    <div class="audit-card problem">
+      <div class="audit-badge ab-red">Non pr&eacute;vu dans ta roadmap</div>
+      <div class="audit-card-icon">&#x1F4DE;</div>
+      <h3>Pas de pr&eacute;paration avant les calls</h3>
+      <p>Avant chaque call R1 ou closing, tu n'as pas de contexte consolid&eacute; en 2 minutes. Historique, source, signaux, objections pass&eacute;es : tout &ccedil;a existe, rien n'est agreg&eacute; automatiquement.</p>
+    </div>
+    <div class="audit-card solution">
+      <div class="audit-badge ab-green">Qu'on ajoute</div>
+      <div class="audit-card-icon">&#x1F4CB;</div>
+      <h3>Brief automatique avant chaque call</h3>
+      <p>R1 ou closing book&eacute; dans iClosed : Claude agr&egrave;ge le contexte complet et envoie un brief lisible en 2 minutes sur WhatsApp. Tu arrives pr&eacute;par&eacute; &agrave; chaque fois, sans effort.</p>
+    </div>
+  </div>
+
+  <div class="stack-section-title">La stack technique</div>
+  <div class="stack-visual">
+    <div class="stack-row">
+      <span class="stack-label">Orchestration</span>
+      <span class="stack-pill sp-old">Make</span>
+      <span class="sp-arrow">&rarr;</span>
+      <span class="stack-pill sp-n8n">n8n self-hosted</span>
+    </div>
+    <div class="stack-row">
+      <span class="stack-label">Intelligence</span>
+      <span class="stack-pill sp-claude">Claude API (Sonnet 4)</span>
+      <span class="stack-pill sp-claude">Claude Desktop + MCP</span>
+    </div>
+    <div class="stack-row">
+      <span class="stack-label">CRM &amp; Sales</span>
+      <span class="stack-pill sp-crm">GHL</span>
+      <span class="stack-pill sp-crm">iClosed</span>
+      <span class="stack-pill sp-crm">Hyros</span>
+    </div>
+    <div class="stack-row">
+      <span class="stack-label">Inbound</span>
+      <span class="stack-pill sp-outbound">RB2B</span>
+      <span class="stack-pill sp-outbound">Reactin</span>
+      <span class="stack-pill sp-outbound">Trigify</span>
+      <span class="stack-pill sp-clay">Clay</span>
+    </div>
+    <div class="stack-row">
+      <span class="stack-label">Tracking</span>
+      <span class="stack-pill sp-tracking">Meta CAPI</span>
+      <span class="stack-pill sp-tracking">GA4</span>
+      <span class="stack-pill sp-tracking">Vidalytics</span>
+      <span class="stack-pill sp-tracking">Clarity</span>
+    </div>
+    <div class="stack-row">
+      <span class="stack-label">Reporting</span>
+      <span class="stack-pill sp-notion">Notion</span>
+      <span class="stack-pill sp-notion">WhatsApp Business</span>
+    </div>
+    <div class="stack-row">
+      <span class="stack-label">Finance</span>
+      <span class="stack-pill sp-finance">QuickBooks</span>
+      <span class="stack-pill sp-finance">Wio via Zoho Books</span>
+    </div>
+  </div>
+</section>
+
+<!-- SPRINT TIMELINE -->
+<section class="sprint-section fade-in" id="sprint-method">
+  <span class="section-label" style="display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:18px">Comment &ccedil;a fonctionne</span>
+  <h2 style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:600;letter-spacing:-1px;line-height:1.05;margin-bottom:16px;color:var(--white)">On s'arr&ecirc;te jamais.<br>T&eacute;l&eacute;en continu.</h2>
+  <p style="font-size:17px;color:var(--muted);max-width:520px;line-height:1.7;margin-bottom:0">Pendant qu'une semaine se livre, la suivante est d&eacute;j&agrave; en construction. Voil&agrave; &agrave; quoi ressemble un mois type.</p>
+  <div class="timeline-wrap">
+    <div style="overflow-x:auto;padding-bottom:8px">
+      <div style="min-width:700px">
+        <div style="display:flex;margin-left:110px;margin-bottom:8px">
+          <div style="flex:1;text-align:center;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2)">Sem. 1</div>
+          <div style="flex:1;text-align:center;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2)">Sem. 2</div>
+          <div style="flex:1;text-align:center;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2)">Sem. 3</div>
+          <div style="flex:1;text-align:center;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2)">Sem. 4</div>
+        </div>
+        <div style="display:flex;align-items:center;height:52px;margin-bottom:4px">
+          <div style="width:110px;font-size:11px;font-weight:600;color:var(--muted-2);text-align:right;padding-right:16px;flex-shrink:0">OOO</div>
+          <div style="flex:1;position:relative;height:100%">
+            <div style="position:absolute;left:2%;top:50%;transform:translateY(-50%);width:40%;height:34px;border-radius:8px;background:rgba(91,106,240,.15);border:1px solid rgba(91,106,240,.3);display:flex;align-items:center;padding:0 14px;font-size:12px;font-weight:600;color:#a5b4fc;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:#5b6af0;margin-right:8px;flex-shrink:0"></span>Build sprint 1</div>
+            <div style="position:absolute;left:52%;top:50%;transform:translateY(-50%);width:40%;height:34px;border-radius:8px;background:rgba(91,106,240,.15);border:1px solid rgba(91,106,240,.3);display:flex;align-items:center;padding:0 14px;font-size:12px;font-weight:600;color:#a5b4fc;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:#5b6af0;margin-right:8px;flex-shrink:0"></span>Build sprint 2</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;height:40px;margin-bottom:4px">
+          <div style="width:110px;flex-shrink:0"></div>
+          <div style="flex:1;position:relative;height:100%">
+            <div style="position:absolute;left:49%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px;background:rgba(61,220,110,.1);border:1px solid rgba(61,220,110,.3);border-radius:999px;padding:5px 14px;font-size:11px;font-weight:600;color:var(--green);white-space:nowrap"><span style="width:6px;height:6px;border-radius:50%;background:var(--green)"></span>Livraison S1</div>
+            <div style="position:absolute;left:99%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px;background:rgba(61,220,110,.1);border:1px solid rgba(61,220,110,.3);border-radius:999px;padding:5px 14px;font-size:11px;font-weight:600;color:var(--green);white-space:nowrap"><span style="width:6px;height:6px;border-radius:50%;background:var(--green)"></span>Livraison S2</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;height:52px;margin-bottom:4px">
+          <div style="width:110px;font-size:11px;font-weight:600;color:var(--muted-2);text-align:right;padding-right:16px;flex-shrink:0">STRATCO</div>
+          <div style="flex:1;position:relative;height:100%">
+            <div style="position:absolute;left:51%;top:50%;transform:translateY(-50%);width:38%;height:34px;border-radius:8px;background:rgba(61,220,110,.08);border:1px solid rgba(61,220,110,.2);display:flex;align-items:center;padding:0 14px;font-size:12px;font-weight:600;color:#86efac;white-space:nowrap"><span style="width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:8px;flex-shrink:0"></span>Tests &amp; retours S1</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;height:36px">
+          <div style="width:110px;flex-shrink:0"></div>
+          <div style="flex:1;position:relative;height:100%">
+            <div style="position:absolute;left:0%;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted-2)"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0"></span>Call lancement</div>
+            <div style="position:absolute;left:24.5%;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted-2)"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0"></span>Weekly call</div>
+            <div style="position:absolute;left:49.5%;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted-2)"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0"></span>Weekly call</div>
+            <div style="position:absolute;left:74.5%;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted-2)"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0"></span>Weekly call</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:24px;margin-top:28px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)"><div style="width:12px;height:12px;border-radius:3px;background:rgba(91,106,240,.15);border:1px solid rgba(91,106,240,.3)"></div>OOO build</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)"><div style="width:12px;height:12px;border-radius:3px;background:rgba(61,220,110,.08);border:1px solid rgba(61,220,110,.2)"></div>STRATCO tests</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)"><div style="width:12px;height:12px;border-radius:50%;background:var(--green)"></div>Livraison</div>
+      <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)"><div style="width:12px;height:12px;border-radius:50%;background:var(--accent)"></div>Weekly call</div>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:32px">
+      <div style="display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.04);border:1px solid var(--border-dark);border-radius:999px;padding:10px 22px;font-size:13px;color:var(--muted)">
+        <span style="font-size:16px">&#x267B;</span>
+        Pendant qu'une semaine se livre, la suivante est d&eacute;j&agrave; en build. On s'arr&ecirc;te jamais.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 ROADMAP -->
+<section class="section fade-in" id="roadmap">
+  <span class="section-label">02 &mdash; La roadmap</span>
+  <h2 class="section-title">Une win par semaine.<br>Sans exception.</h2>
+  <p class="section-intro">10 sprints de 7 jours. Chaque semaine se termine par quelque chose qui tourne en production. 2 jours de travail par semaine, un call d'1h pour aligner.</p>
+
+  <div class="roadmap-intro">
+    <div class="roadmap-intro-icon">&#x1F4CB;</div>
+    <p>Chaque sprint inclut <strong>un weekly call d'1h</strong>, les specs, le build, la documentation et la livraison. Entre les calls : async Slack direct. Si &ccedil;a d&eacute;conne, on fixe.</p>
+  </div>
+
+  <div class="week-list">
+
+    <!-- S1 -->
+    <div class="week-item featured open" id="week1">
+      <div class="week-head" onclick="toggleWeek('week1')">
+        <div class="week-num-wrap"><div class="week-num accent">S1</div><div class="week-label">Semaine</div></div>
+        <div class="week-meta">
+          <div class="week-title">Couche transverse + Fondations</div>
+          <div class="week-phases">Phase 0 + Phase 1 — Le socle de toute l'infrastructure</div>
+        </div>
+        <div class="week-right">
+          <div class="week-load">2 jours</div>
+          <div class="win-badge"><span class="win-dot"></span>1&egrave;re fiche GHL auto</div>
+          <span class="week-chevron">›</span>
+        </div>
+      </div>
+      <div class="week-body">
+        <div class="week-challenge"><strong>Choix structurant :</strong> On commence par la couche transverse, le pr&eacute;-filtre GHL r&eacute;utilis&eacute; par tous les chantiers suivants. Sans &ccedil;a, chaque automation risque de contacter des leads d&eacute;j&agrave; en cours.</div>
+        <div class="chantiers-grid">
+          <div class="chantier-card"><div class="chantier-tag ct-n8n">n8n</div><h4>Webhook d'exclusion CRM</h4><p>5 r&egrave;gles : client actif, s&eacute;quence en cours, call &lt;30j, opt-out, conversation sales. R&eacute;utilis&eacute; par tous les chantiers.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-n8n">n8n + Claude</div><h4>Monitoring anomalies tracking</h4><p>Cron 6h sur Meta CAPI, GA4, Hyros. Anomalie d&eacute;tect&eacute;e, Claude diagnostique, alerte WhatsApp imm&eacute;diate.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-claude">Claude</div><h4>Transcripts unifi&eacute;s vers fiche GHL</h4><p>Meet + iClosed, Claude g&eacute;n&egrave;re r&eacute;sum&eacute;, objection principale, niveau de maturit&eacute;, message de relance r&eacute;dig&eacute;.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-ghl">GHL API</div><h4>Push automatique vers GHL</h4><p>Toutes les fiches g&eacute;n&eacute;r&eacute;es sont pouss&eacute;es directement. Z&eacute;ro copier-coller manuel.</p></div>
+        </div>
+        <div class="week-call"><span class="call-dot"></span>Weekly call : QA fiches r&eacute;elles &middot; calibrage seuils d'alerte &middot; validation acc&egrave;s stack</div>
+      </div>
+    </div>
+
+    <!-- S2 -->
+    <div class="week-item" id="week2">
+      <div class="week-head" onclick="toggleWeek('week2')">
+        <div class="week-num-wrap"><div class="week-num">S2</div><div class="week-label">Semaine</div></div>
+        <div class="week-meta">
+          <div class="week-title">Rapport CEO unifi&eacute; + Alertes KPIs</div>
+          <div class="week-phases">Phase 2 + Phase 3 — Dashboard complet op&eacute;rationnel</div>
+        </div>
+        <div class="week-right">
+          <div class="week-load">2 jours</div>
+          <div class="win-badge"><span class="win-dot"></span>1er rapport lundi 6h</div>
+          <span class="week-chevron">›</span>
+        </div>
+      </div>
+      <div class="week-body">
+        <div class="week-challenge"><strong>Choix structurant :</strong> On consolide les 4 rapports dans un seul document CEO. Une page Notion, une notification WhatsApp, quatre blocs int&eacute;gr&eacute;s. Massi ouvre une page et a tout.</div>
+        <div class="chantiers-grid">
+          <div class="chantier-card"><div class="chantier-tag ct-n8n">n8n cron 30min</div><h4>Alertes KPIs temps r&eacute;el</h4><p>CPL, taux booking, pipeline, GA4, Meta. Claude d&eacute;tecte l'anomalie, WhatsApp Massi avec diagnostic et cause probable.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-claude">Claude</div><h4>Blocs commercial &amp; marketing</h4><p>GHL + iClosed + Hyros + Meta + Vidalytics + Clarity + social. Synth&egrave;se narrative + 3 actions cette semaine.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-notion">Notion + WhatsApp</div><h4>Blocs delivery &amp; finance</h4><p>Clients actifs, signaux satisfaction, charge S+1. Finance via QB + Wio (Zoho Books).</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-n8n">n8n cron 1er du mois</div><h4>Bilan mensuel CEO</h4><p>Agr&eacute;gation toutes sources, 3 sc&eacute;narios financiers, recommandations strat&eacute;giques pour le mois suivant.</p></div>
+        </div>
+        <div class="week-call"><span class="call-dot"></span>Weekly call : review rapport r&eacute;el &middot; ajustements prompts &middot; confirmation acc&egrave;s Wio</div>
+      </div>
+    </div>
+
+    <!-- S3 -->
+    <div class="week-item" id="week3">
+      <div class="week-head" onclick="toggleWeek('week3')">
+        <div class="week-num-wrap"><div class="week-num">S3</div><div class="week-label">Semaine</div></div>
+        <div class="week-meta">
+          <div class="week-title">Acquisition &amp; Media</div>
+          <div class="week-phases">Phase 4 — Scoring leads + optimisation Meta automatis&eacute;e</div>
+        </div>
+        <div class="week-right">
+          <div class="week-load">2 jours</div>
+          <div class="win-badge"><span class="win-dot"></span>Chaque lead est scor&eacute;</div>
+          <span class="week-chevron">›</span>
+        </div>
+      </div>
+      <div class="week-body">
+        <div class="chantiers-grid">
+          <div class="chantier-card"><div class="chantier-tag ct-n8n">n8n + Meta API</div><h4>R&egrave;gles auto Meta Ads</h4><p>Si CTR &lt; seuil ou CPL &gt; target, alerte + suggestion couper/scaler. Claude analyse les patterns cr&eacute;atifs sur les derni&egrave;res 48h.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-claude">Claude</div><h4>Scoring leads entrants 1-10</h4><p>Profil + signaux comportementaux, score + tag GHL + priorit&eacute; relance. Automatique sur chaque nouveau lead.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-ghl">Hyros vers GHL</div><h4>Attribution multi-touch unifi&eacute;e</h4><p>Source UTM + canal Hyros, enrichissement fiche GHL. Visibilit&eacute; CAC r&eacute;el par canal d'acquisition.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-notion">Rapport CEO</div><h4>Fatigue cr&eacute;atifs int&eacute;gr&eacute;e</h4><p>Alertes CTR, meilleure source, r&eacute;allocation budget sugg&eacute;r&eacute;e dans le bloc marketing du rapport lundi.</p></div>
+        </div>
+        <div class="week-call"><span class="call-dot"></span>Weekly call : QA scoring &middot; calibrage seuils Meta &middot; revue attribution</div>
+      </div>
+    </div>
+
+    <!-- S4 — NOUVELLE : Machine Inbound Architecture -->
+    <div class="week-item featured" id="week4">
+      <div class="week-head" onclick="toggleWeek('week4')">
+        <div class="week-num-wrap"><div class="week-num accent">S4</div><div class="week-label">Semaine</div></div>
+        <div class="week-meta">
+          <div class="week-title">Machine Inbound — Architecture &amp; D&eacute;tection</div>
+          <div class="week-phases">Clay + Reactin + RB2B + GHL &eacute;tendu — Le cerveau de d&eacute;tection</div>
+        </div>
+        <div class="week-right">
+          <div class="week-load">2 jours</div>
+          <div class="win-badge"><span class="win-dot"></span>1ers leads d&eacute;tect&eacute;s &amp; scor&eacute;s</div>
+          <span class="week-chevron">›</span>
+        </div>
+      </div>
+      <div class="week-body">
+        <div class="week-challenge"><strong>Principe directeur :</strong> Le syst&egrave;me est un cerveau de d&eacute;tection et priorisation. <strong>Aucune action de contact n'est automatis&eacute;e</strong> — tout reste 100% manuel c&ocirc;t&eacute; Massi et Sales. On remplace HeyReach par <strong>Reactin</strong>, qui couvre d&eacute;j&agrave; les signaux LinkedIn comportementaux dans notre stack &mdash; un outil de moins, z&eacute;ro perte de signal.</div>
+        <div class="chantiers-grid">
+          <div class="chantier-card"><div class="chantier-tag ct-clay">Clay</div><h4>Table master + d&eacute;duplication stricte</h4><p>Cl&eacute; primaire linkedin_url, cl&eacute; secondaire email. 3 cas g&eacute;r&eacute;s : nouveau lead, update last_seen_at, upgrade multi-canal avec re-score.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-outbound">RB2B + Reactin</div><h4>D&eacute;tection multi-signaux</h4><p>RB2B d&eacute;anonymise les visiteurs site B2B. Reactin capture les signaux LinkedIn comportementaux (engagements, visites profil). Tout converge dans Clay.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-clay">Clay waterfall</div><h4>Enrichissement contact</h4><p>Tel, WhatsApp, email pro enrichis en waterfall via Apollo → ContactOut → Hunter → Dropcontact. Canal de contact disponible avant tout brief.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-ghl">GHL &eacute;tendu</div><h4>Pipe sales restructur&eacute; en dashboard</h4><p>Custom fields ajout&eacute;s : score final, niveau d'intent, canal recommand&eacute;, anciennet&eacute; en file, signaux Trigify, Hyros actifs. Pas de nouvel outil.</p></div>
+        </div>
+        <div class="week-call"><span class="call-dot"></span>Weekly call : validation table Clay &middot; QA d&eacute;dup &middot; review pipe GHL restructur&eacute;</div>
+      </div>
+    </div>
+
+    <!-- S5 — NOUVELLE : Machine Inbound Scoring & Queues -->
+    <div class="week-item featured" id="week5">
+      <div class="week-head" onclick="toggleWeek('week5')">
+        <div class="week-num-wrap"><div class="week-num accent">S5</div><div class="week-label">Semaine</div></div>
+        <div class="week-meta">
+          <div class="week-title">Machine Inbound — Scoring, Files &amp; Briefs</div>
+          <div class="week-phases">Scoring 4 axes + 2 queues + brief quotidien Massi 6h</div>
+        </div>
+        <div class="week-right">
+          <div class="week-load">2 jours</div>
+          <div class="win-badge"><span class="win-dot"></span>Brief Massi 6h le lendemain</div>
+          <span class="week-chevron">›</span>
+        </div>
+      </div>
+      <div class="week-body">
+        <div class="week-challenge"><strong>Architecture des files :</strong> Deux queues en miroir invers&eacute; — Massi traite les leads les plus r&eacute;cents en premier (la valeur d'un signal d&eacute;cro&icirc;t vite), Sales traite les plus anciens en premier (risque de refroidissement). Bascule auto si &gt; 7 jours sans contact. Score final = intent_score &times; coefficient fra&icirc;cheur (×1.5 sous 24h, jusqu'&agrave; ×0.4 apr&egrave;s 14j).</div>
+        <div class="chantiers-grid">
+          <div class="chantier-card"><div class="chantier-tag ct-claude">Claude + Clay</div><h4>Scoring 4 axes calibr&eacute;</h4><p>Intent page GTM/GHL (+10 &agrave; +60), comportement Hyros (jours actifs, retargeting, anciennet&eacute;), multi-canal Reactin/Trigify (+15 &agrave; +40 bonus double-touch), source UTM (+10 &agrave; +20). Filtre ICP brutal avant tout scoring.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-n8n">n8n cron 6h</div><h4>File LinkedIn Massi (top leads)</h4><p>Job quotidien 6h : s&eacute;lection des leads au score_final le plus &eacute;lev&eacute;. Tri unique score_final DESC. Re-scoring dynamique si nouveau signal pendant l'attente.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-n8n">n8n</div><h4>File Sales + bascule auto</h4><p>Bascule si lead attend &gt; 7j en queue LK ou si file &gt; 100 leads. Sales re&ccedil;oit le lead avec contexte complet. Notif Massi pour transfert si contact LK d&eacute;j&agrave; initi&eacute;.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-claude">Claude</div><h4>Brief quotidien Massi</h4><p>Chaque matin 6h : pr&eacute;nom + URL profil + score + top 3 pages visit&eacute;es + Hyros jours actifs + signaux Trigify + indicateur double-touch. Envoy&eacute; Slack ou WhatsApp.</p></div>
+        </div>
+        <div class="week-call"><span class="call-dot"></span>Weekly call : review 1er brief r&eacute;el &middot; calibrage seuils COLD/WARM/HOT &middot; validation logique bascule</div>
+      </div>
+    </div>
+
+    <!-- S6 (ex S5) -->
+    <div class="week-item" id="week6">
+      <div class="week-head" onclick="toggleWeek('week6')">
+        <div class="week-num-wrap"><div class="week-num">S6</div><div class="week-label">Semaine</div></div>
+        <div class="week-meta">
+          <div class="week-title">Funnel &amp; Conversion</div>
+          <div class="week-phases">Nurturing, relance no-shows, optimisation VSL</div>
+        </div>
+        <div class="week-right">
+          <div class="week-load">2 jours</div>
+          <div class="win-badge"><span class="win-dot"></span>0 no-show sans relance</div>
+          <span class="week-chevron">›</span>
+        </div>
+      </div>
+      <div class="week-body">
+        <div class="chantiers-grid">
+          <div class="chantier-card"><div class="chantier-tag ct-claude">Claude + GHL</div><h4>Nurturing segment&eacute; par score</h4><p>S&eacute;quence GHL adapt&eacute;e selon score + source. Claude personnalise chaque message au profil du lead.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-n8n">iClosed + n8n</div><h4>Relance no-shows automatis&eacute;e</h4><p>Trigger no-show iClosed, d&eacute;lai 2h, Claude r&eacute;dige message contextuelis&eacute;, push GHL. Z&eacute;ro intervention manuelle.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-outbound">Vidalytics</div><h4>Optimisation VSL</h4><p>Drop-off d&eacute;tect&eacute;, alerte + suggestion de r&eacute;-&eacute;dition. Claude analyse les patterns de visionnage par source.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-notion">Rapport CEO</div><h4>% visionnage VSL int&eacute;gr&eacute;</h4><p>Comparatif semaine vs semaine, corr&eacute;lation VSL / taux de booking dans le bloc marketing.</p></div>
+        </div>
+        <div class="week-call"><span class="call-dot"></span>Weekly call : revue taux de relance &middot; A/B messages &middot; ajustements seuils</div>
+      </div>
+    </div>
+
+    <!-- S7 -->
+    <div class="week-item" id="week7">
+      <div class="week-head" onclick="toggleWeek('week7')">
+        <div class="week-num-wrap"><div class="week-num">S7</div><div class="week-label">Semaine</div></div>
+        <div class="week-meta">
+          <div class="week-title">Sales Intelligence + Briefs calls</div>
+          <div class="week-phases">Brief R1 + brief closing + patterns closing</div>
+        </div>
+        <div class="week-right">
+          <div class="week-load">2 jours</div>
+          <div class="win-badge"><span class="win-dot"></span>Brief avant chaque call</div>
+          <span class="week-chevron">›</span>
+        </div>
+      </div>
+      <div class="week-body">
+        <div class="week-challenge"><strong>Ce qu'on ajoute :</strong> Deux briefs automatiques, un pour les R1 et un pour les closings. Chacun est lisible en 2 minutes et atterrit sur WhatsApp avant le call. Tu n'as plus jamais &agrave; te reconcentrer depuis z&eacute;ro.</div>
+        <div class="chantiers-grid">
+          <div class="chantier-card"><div class="chantier-tag ct-claude">Claude</div><h4>Brief R1 automatis&eacute;</h4><p>Call book&eacute; dans iClosed, Claude agr&egrave;ge : historique, source, score, signaux Trigify, transcripts pass&eacute;s. Brief WhatsApp 10 min avant.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-pink">Claude</div><h4>Brief closing automatis&eacute;</h4><p>Statut GHL "closing", Claude consolide : objections d&eacute;j&agrave; lev&eacute;es, engagements pris, prochaine &eacute;tape attendue, levier de d&eacute;cision probable.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-claude">Claude</div><h4>Analyse patterns closing</h4><p>Transcripts deals sign&eacute;s vs perdus, patterns d'objections r&eacute;currentes, recommandations script de vente.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-notion">Rapport CEO</div><h4>Pipeline forecast hebdo</h4><p>Deals chauds, probabilit&eacute; closing Claude, actions relance prioritaires. Int&eacute;gr&eacute; dans le bloc commercial lundi.</p></div>
+        </div>
+        <div class="week-call"><span class="call-dot"></span>Weekly call : revue qualit&eacute; briefs &middot; ajustement prompt &middot; patterns closing</div>
+      </div>
+    </div>
+
+    <!-- S8 -->
+    <div class="week-item" id="week8">
+      <div class="week-head" onclick="toggleWeek('week8')">
+        <div class="week-num-wrap"><div class="week-num">S8</div><div class="week-label">Semaine</div></div>
+        <div class="week-meta">
+          <div class="week-title">Delivery &amp; Ops</div>
+          <div class="week-phases">Alerte inactivit&eacute; + CRA auto + satisfaction</div>
+        </div>
+        <div class="week-right">
+          <div class="week-load">2 jours</div>
+          <div class="win-badge"><span class="win-dot"></span>0 client silencieux</div>
+          <span class="week-chevron">›</span>
+        </div>
+      </div>
+      <div class="week-body">
+        <div class="chantiers-grid">
+          <div class="chantier-card"><div class="chantier-tag ct-n8n">n8n cron</div><h4>Alerte proactive inactivit&eacute; client</h4><p>V&eacute;rification chaque lundi : pas de transcript / WhatsApp / GHL depuis 7j, alerte Chayma avec contexte client.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-claude">Claude</div><h4>CRA automatique post-session</h4><p>Transcript Meet, Claude g&eacute;n&egrave;re CRA structur&eacute;, Notion client + r&eacute;sum&eacute; WhatsApp Massi. Z&eacute;ro r&eacute;daction manuelle.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-claude">Claude</div><h4>Satisfaction signal via transcripts</h4><p>Claude d&eacute;tecte friction / enthousiasme, score satisfaction par client, alerte si d&eacute;gradation d&eacute;tect&eacute;e.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-notion">Rapport CEO</div><h4>Bloc delivery enrichi</h4><p>Clients actifs, micro-r&eacute;sum&eacute; CRA, signaux satisfaction, charge S+1, actions prioritaires Chayma.</p></div>
+        </div>
+        <div class="week-call"><span class="call-dot"></span>Weekly call : revue satisfaction clients &middot; ajustements CRA &middot; bilan M2</div>
+      </div>
+    </div>
+
+    <!-- S9 -->
+    <div class="week-item" id="week9">
+      <div class="week-head" onclick="toggleWeek('week9')">
+        <div class="week-num-wrap"><div class="week-num">S9</div><div class="week-label">Semaine</div></div>
+        <div class="week-meta">
+          <div class="week-title">Chatbot &amp; Qualification IA</div>
+          <div class="week-phases">Agent Claude nourri par la KB STRATCO</div>
+        </div>
+        <div class="week-right">
+          <div class="week-load">2 jours</div>
+          <div class="win-badge"><span class="win-dot"></span>1er lead qualifi&eacute; par l'agent</div>
+          <span class="week-chevron">›</span>
+        </div>
+      </div>
+      <div class="week-body">
+        <div class="week-challenge"><strong>Notre approche :</strong> Un agent Claude nourri par la KB Notion STRATCO. Il conna&icirc;t tes offres, tes objections, tes cas clients. Il qualifie et passe la main &agrave; GHL quand le lead est chaud.</div>
+        <div class="chantiers-grid">
+          <div class="chantier-card"><div class="chantier-tag ct-claude">Claude + Notion KB</div><h4>Agent nourri par ta base de connaissance</h4><p>Notion comme source de v&eacute;rit&eacute;. Offres, objections, pricing, cas clients. Claude r&eacute;pond en contexte STRATCO.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-ghl">iClosed</div><h4>Booking automatique si qualifi&eacute;</h4><p>Claude qualifie, si score &gt; seuil, booking iClosed d&eacute;clench&eacute; automatiquement. Z&eacute;ro friction pour le lead.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-n8n">n8n</div><h4>Pr&eacute;-filtre GHL actif</h4><p>Avant toute interaction, v&eacute;rification exclusion CRM. L'agent ne contacte jamais un lead d&eacute;j&agrave; en cours.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-notion">Notion KB</div><h4>Mise &agrave; jour KB en continu</h4><p>Chaque nouvelle objection d&eacute;tect&eacute;e dans les calls enrichit automatiquement la base de connaissance.</p></div>
+        </div>
+        <div class="week-call"><span class="call-dot"></span>Weekly call : revue conversations agent &middot; ajustements KB &middot; calibrage seuil booking</div>
+      </div>
+    </div>
+
+    <!-- S10 -->
+    <div class="week-item" id="week10">
+      <div class="week-head" onclick="toggleWeek('week10')">
+        <div class="week-num-wrap"><div class="week-num accent">S10</div><div class="week-label">Semaine</div></div>
+        <div class="week-meta">
+          <div class="week-title">Personal Brand &amp; Machine &agrave; contenu</div>
+          <div class="week-phases">1 input Massi, 3 formats automatiques</div>
+        </div>
+        <div class="week-right">
+          <div class="week-load">2 jours</div>
+          <div class="win-badge"><span class="win-dot"></span>Tu publies sans effort</div>
+          <span class="week-chevron">›</span>
+        </div>
+      </div>
+      <div class="week-body">
+        <div class="week-challenge"><strong>Ce qu'on a restructur&eacute; :</strong> Tu parles ou tu &eacute;cris une id&eacute;e, Claude la transforme en post LinkedIn + script YT + caption IG. Un input, trois formats, z&eacute;ro friction.</div>
+        <div class="chantiers-grid">
+          <div class="chantier-card"><div class="chantier-tag ct-claude">Claude</div><h4>1 id&eacute;e, 3 formats</h4><p>Voice note ou note Notion, Claude reformate en post LinkedIn (insight) + script YT (&eacute;ducatif) + caption IG (visuel).</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-claude">Claude</div><h4>Repurposing transcripts calls</h4><p>Meilleurs moments des calls R1, Claude extrait les insights, contenu LinkedIn avec suppression donn&eacute;es client.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-n8n">n8n</div><h4>Distribution automatique</h4><p>Contenu valid&eacute;, n8n programme la publication LinkedIn + YouTube + Instagram selon le calendrier &eacute;ditorial.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-notion">Rapport CEO</div><h4>Performance contenu int&eacute;gr&eacute;e</h4><p>LinkedIn + YT + IG dans le rapport marketing, insights engagement ajout&eacute;s avec feedback sur les meilleurs formats.</p></div>
+        </div>
+        <div class="week-call"><span class="call-dot"></span>Weekly call : review posts g&eacute;n&eacute;r&eacute;s &middot; ajustements voix &middot; bilan M3</div>
+      </div>
+    </div>
+
+    <!-- S11 WORKSHOP -->
+    <div class="week-item" id="week11" style="border-color:rgba(61,220,110,.3);background:rgba(61,220,110,.03)">
+      <div class="week-head" onclick="toggleWeek('week11')">
+        <div class="week-num-wrap"><div class="week-num" style="font-size:26px;letter-spacing:-1px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">S11</div><div class="week-label">Semaine</div></div>
+        <div class="week-meta">
+          <div class="week-title">Workshop &amp; Formation &eacute;quipe</div>
+          <div class="week-phases">Prise en main compl&egrave;te &middot; autonomie totale &middot; offert</div>
+        </div>
+        <div class="week-right">
+          <div class="week-load">1 jour</div>
+          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(61,220,110,.1);border:1px solid rgba(61,220,110,.25);border-radius:999px;padding:5px 12px;font-size:11px;font-weight:600;color:var(--green)">&#x1F381; Offert</div>
+          <span class="week-chevron">›</span>
+        </div>
+      </div>
+      <div class="week-body">
+        <div class="week-challenge"><strong>Cadeau de fin de projet :</strong> Une journ&eacute;e de workshop d&eacute;di&eacute;e &agrave; ton &eacute;quipe. On ne part pas en laissant une boite noire — on forme, on documente en live, et on s'assure que tout le monde sait piloter la machine sans nous.</div>
+        <div class="chantiers-grid">
+          <div class="chantier-card"><div class="chantier-tag ct-claude">Formation</div><h4>Claude Desktop + MCP pour l'&eacute;quipe</h4><p>Chaque membre de l'&eacute;quipe repart avec les commandes cl&eacute;s, les workflows utiles au quotidien et les r&eacute;flexes pour diagnostiquer sans nous appeler.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-n8n">Formation</div><h4>Pilotage n8n en autonomie</h4><p>Lire un log, relancer un flow, modifier un seuil. Pas de code, juste de la compr&eacute;hension. On d&eacute;mystifie l'infra construite ensemble.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-notion">Documentation</div><h4>Revue compl&egrave;te des SOPs</h4><p>Chaque flow document&eacute; pass&eacute; en revue en live. Questions, clarifications, ajouts. La base Notion est v&eacute;rifi&eacute;e et valid&eacute;e par l'&eacute;quipe avant la fin du workshop.</p></div>
+          <div class="chantier-card"><div class="chantier-tag ct-outbound" style="background:rgba(61,220,110,.1);color:var(--green)">Bilan</div><h4>Retro projet + feuille de route S12+</h4><p>Ce qu'on a construit, ce qui tourne, ce qui reste &agrave; optimiser. On repart avec une liste de priorit&eacute;s pour le retainer suivant si Massi veut continuer.</p></div>
+        </div>
+        <div class="week-call"><span class="call-dot"></span>Session pleni&egrave;re &middot; format workshop 6h &middot; toute l'&eacute;quipe STRATCO</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 03 MAINTENANCE -->
+<section class="section dark fade-in">
+  <span class="section-label">03 &mdash; Ce qui se passe quand &ccedil;a casse</span>
+  <h2 class="section-title">On reste.<br>C'est &ccedil;a la diff&eacute;rence.</h2>
+  <p class="section-intro">Un dev livre un projet et dispara&icirc;t. On co-&eacute;volue avec ton infrastructure. Voil&agrave; concr&egrave;tement comment &ccedil;a fonctionne.</p>
+  <div class="maintenance-grid">
+    <div class="maint-card">
+      <div class="maint-num">01</div>
+      <h3>Tout est document&eacute;</h3>
+      <p>Chaque flow n8n est document&eacute; dans Notion. Objectif, sch&eacute;ma, inputs/outputs, cas d'erreurs. N'importe quel d&eacute;veloppeur peut reprendre en moins d'une heure. Tu n'es jamais otage de nous.</p>
+    </div>
+    <div class="maint-card">
+      <div class="maint-num">02</div>
+      <h3>On vous rend autonomes</h3>
+      <p>Via Claude Desktop + MCP n8n, chaque brique construite est contr&ocirc;lable en langage naturel. Diagnostiquer, relancer, modifier un seuil — sans nous appeler. L'infra vous appartient d&egrave;s la livraison, et vous pouvez la faire tourner seuls.</p>
+    </div>
+    <div class="maint-card">
+      <div class="maint-num">03</div>
+      <h3>Et on reste quand m&ecirc;me l&agrave;</h3>
+      <p>Le retainer mensuel inclut le monitoring, les corrections et les adaptations. Si un flow bug un lundi matin, on le sait avant vous et on fixe avant le weekly call. L'autonomie ne veut pas dire abandon.</p>
+    </div>
+  </div>
+  <div class="maint-highlight">
+    <div class="maint-highlight-icon">&#x1F4AC;</div>
+    <p>En pratique : <strong>support WhatsApp direct</strong>. Pas de ticket, pas de JIRA. Un message, une r&eacute;ponse. Le weekly call est l&agrave; pour tout ce qui est non-urgent et doit &ecirc;tre prioris&eacute; ensemble.</p>
+  </div>
+</section>
+
+<!-- 04 CLAUDE -->
+<section class="section fade-in">
+  <span class="section-label">04 &mdash; Ton Claude personnalis&eacute;</span>
+  <h2 class="section-title">Chaque brique construite<br>est aussi dans <em style="font-style:normal;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">ton Claude.</em></h2>
+  <p class="section-intro">Au fur et &agrave; mesure qu'on build, chaque workflow n8n devient accessible en langage naturel via Claude Desktop. Pas besoin de nous appeler.</p>
+  <div class="claude-hero">
+    <div class="claude-visual">
+      <div class="claude-title">Claude Desktop &mdash; STRATCO</div>
+      <div class="claude-sub">Connect&eacute; &agrave; tous tes workflows via MCP n8n</div>
+      <div class="claude-prompt">Montre-moi les leads HOT de ce matin</div>
+      <div class="claude-response">3 leads HOT dans la queue LinkedIn. Top : Marie D., CEO agence 12p, visite page tarifs + 5 jours actifs Hyros + double-touch site &amp; profil LK ce matin. Score 198. Brief complet envoy&eacute; sur WhatsApp.</div>
+      <div class="claude-prompt">Brief pour mon call de 14h avec Marc</div>
+      <div class="claude-response">Marc Dupont, directeur commercial, 45 sal., venu via LinkedIn ad S3. Score 8/10. Objection principale lors du R1 : "trop t&ocirc;t pour nous". A relu la page pricing hier. Lever l'objection timing, montrer le ROI mois 2.</div>
+      <div class="claude-prompt">Lance le rapport CEO de cette semaine</div>
+      <div class="claude-response">Rapport g&eacute;n&eacute;r&eacute;. Notion mis &agrave; jour, WhatsApp envoy&eacute;. CPL en hausse +12% vs S-1, 3 deals chauds &agrave; relancer cette semaine.</div>
+      <div style="margin-top:16px"><span class="mcp-pill">&#x26A1; Via MCP n8n</span></div>
+    </div>
+    <div class="claude-features">
+      <div class="claude-feat">
+        <div class="claude-feat-icon">&#x1F9E0;</div>
+        <div><h4>Ton infra, en langage naturel</h4><p>Chaque flow n8n build&eacute; est contr&ocirc;lable via Claude Desktop. Tu peux d&eacute;clencher, modifier, interroger n'importe quelle brique sans toucher au code.</p></div>
+      </div>
+      <div class="claude-feat">
+        <div class="claude-feat-icon">&#x1F4DA;</div>
+        <div><h4>Nourri par ta KB Notion</h4><p>Claude conna&icirc;t STRATCO. Tes offres, tes objections, ton style de vente, tes clients. Il r&eacute;pond en contexte, pas en g&eacute;n&eacute;rique.</p></div>
+      </div>
+      <div class="claude-feat">
+        <div class="claude-feat-icon">&#x1F527;</div>
+        <div><h4>Ajustements au compte-goutte</h4><p>Pas besoin d'attendre le weekly call pour changer un seuil ou relancer un flow. Tu le fais toi-m&ecirc;me en une phrase.</p></div>
+      </div>
+      <div class="claude-feat">
+        <div class="claude-feat-icon">&#x1F512;</div>
+        <div><h4>Tu es propri&eacute;taire de tout</h4><p>L'infra, les flows, les prompts, la KB, tout t'appartient d&egrave;s la livraison. Si on part, tu gardes tout et tu es autonome.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 05 POURQUOI OOO -->
+<section class="section fade-in">
+  <span class="section-label">05 &mdash; Pourquoi Out of Office</span>
+  <h2 class="section-title">Construit par des op&eacute;rateurs,<br>pour des op&eacute;rateurs.</h2>
+  <div class="about-grid">
+    <div class="about-left">
+      <div class="jules-photo"><img src="https://lh3.googleusercontent.com/d/1xMBU-wjvsQe6q1PJghNFdrD7ATgUQrE1" alt="Jules Fl&eacute;chet"></div>
+      <div class="jules-name">Jules Fl&eacute;chet</div>
+      <div class="jules-role">Fondateur &middot; Out of Office</div>
+      <h2 class="section-title" style="font-size:clamp(24px,2.5vw,36px);margin-bottom:20px">Pas des consultants.<br>Un fondateur d'agence.</h2>
+      <p>Jules Fl&eacute;chet g&egrave;re une agence d'outbound elle-m&ecirc;me transform&eacute;e de A &agrave; Z par OOO. Il sait exactement o&ugrave; &ccedil;a coince parce qu'il l'a v&eacute;cu, r&eacute;solu, et automatis&eacute; sur sa propre bo&icirc;te avant de le faire pour les tiennes.</p>
+      <p>OOO n'est pas une bo&icirc;te qui th&eacute;orise sur l'IA. C'est une &eacute;quipe qui op&egrave;re les m&ecirc;mes syst&egrave;mes qu'elle installe chez toi.</p>
+    </div>
+    <div class="about-stats">
+      <div class="about-stat"><div class="about-stat-num accent">+50</div><div class="about-stat-label">fondateurs accompagn&eacute;s</div></div>
+      <div class="about-stat"><div class="about-stat-num green">7j</div><div class="about-stat-label">un sprint par semaine, une livraison &agrave; la fois</div></div>
+      <div class="about-stat"><div class="about-stat-num white">+500</div><div class="about-stat-label">flows n8n construits</div></div>
+      <div class="about-stat"><div class="about-stat-num violet">+99</div><div class="about-stat-label">gal&egrave;res de fondateurs v&eacute;cues et surmount&eacute;es</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 INVESTISSEMENT -->
+<section class="section dark fade-in">
+  <span class="section-label">06 &mdash; L'investissement</span>
+  <h2 class="section-title">Transparent.<br>Sans surprise.</h2>
+  <p class="section-intro">Un retainer mensuel renouvelable. 10 jours sur 5 semaines, un call hebdo, des livrables chaque semaine, et un partenaire qui reste.</p>
+  <div class="pricing-wrap">
+    <div class="pricing-table">
+      <div class="pricing-table-head">
+        <span class="pt-head-label">Ce qui est inclus</span>
+        <span class="pt-head-label" style="text-align:right">Montant</span>
+      </div>
+      <div class="pricing-row">
+        <div><div class="pr-name">Cadrage initial &amp; audit stack</div><div class="pr-desc">Revue compl&egrave;te de ta roadmap, identification des probl&egrave;mes, proposition de stack optimis&eacute;e.</div></div>
+        <div class="pr-amount is-included">Inclus</div>
+      </div>
+      <div class="pricing-row">
+        <div><div class="pr-name">Build &amp; automations</div><div class="pr-desc">10 sprints. Flows n8n, agents Claude, machine inbound Clay, int&eacute;grations GHL / Reactin / Hyros / Meta. Une win par semaine.</div></div>
+        <div class="pr-amount">2 275&euro;</div>
+      </div>
+      <div class="pricing-row">
+        <div><div class="pr-name">Documentation, formation &amp; SOPs</div><div class="pr-desc">Chaque livraison document&eacute;e dans Notion. Tes &eacute;quipes autonomes d&egrave;s J1.</div></div>
+        <div class="pr-amount">525&euro;</div>
+      </div>
+      <div class="pricing-row">
+        <div><div class="pr-name">Maintenance, ajustements &amp; &eacute;volutions</div><div class="pr-desc">Support WhatsApp direct, corrections incluses, adaptation si ta stack ou ton mod&egrave;le &eacute;volue.</div></div>
+        <div class="pr-amount">700&euro;</div>
+      </div>
+      <div class="pricing-row total-row">
+        <div>
+          <div class="pr-name">Total mensuel</div>
+          <div class="pr-desc">Retainer renouvelable &middot; R&eacute;siliable chaque mois</div>
+          <div style="margin-top:8px;font-size:11px;color:var(--muted-2)">Soit <strong style="color:rgba(255,255,255,.6)">8 750&euro;</strong> pour les 10 semaines <span style="text-decoration:line-through;opacity:.5">10 500&euro;</span></div>
+        </div>
+        <div class="pr-amount">3 500&euro;</div>
+      </div>
+    </div>
+    <div class="pricing-cta-card">
+      <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);margin-bottom:16px">Retainer mensuel</div>
+      <div class="pcc-amount">3 500&euro;</div>
+      <div class="pcc-freq">par mois</div>
+      <div class="pcc-mention">Renouvelable. Pas d'engagement longue dur&eacute;e. Chaque mois est une d&eacute;cision.</div>
+
+      <div style="border:1px solid rgba(61,220,110,.3);background:rgba(61,220,110,.05);border-radius:16px;padding:20px;margin-bottom:24px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <div style="font-size:12px;font-weight:600;color:var(--green);letter-spacing:.05em;text-transform:uppercase">Offre 10 semaines</div>
+          <div style="background:rgba(61,220,110,.15);border:1px solid rgba(61,220,110,.3);border-radius:999px;padding:2px 10px;font-size:11px;font-weight:600;color:var(--green)">&#x2193; 2 000&euro;</div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px">
+          <span style="font-family:var(--font-display);font-size:36px;font-weight:600;letter-spacing:-1.5px;color:var(--green)">8 750&euro;</span>
+          <span style="font-size:13px;color:var(--muted);text-decoration:line-through">10 500&euro;</span>
+        </div>
+        <div style="font-size:12px;color:var(--muted)">Projet complet 10 sprints + workshop offert</div>
+      </div>
+
+      <ul class="pcc-features">
+        <li><span class="pcc-check">&#x2713;</span>D&eacute;marrage Semaine 18, Mai 2026</li>
+        <li><span class="pcc-check">&#x2713;</span>10 sprints &middot; 1 weekly call par sprint</li>
+        <li><span class="pcc-check">&#x2713;</span>Support WhatsApp direct</li>
+        <li><span class="pcc-check">&#x2713;</span>Propri&eacute;t&eacute; totale des livrables</li>
+        <li><span class="pcc-check">&#x2713;</span>Workshop &eacute;quipe offert (S11)</span></li>
+        <li><span class="pcc-check">&#x2713;</span>R&eacute;siliable chaque mois</li>
+      </ul>
+      <a href="#cta" class="btn-primary"><span>Voir les &eacute;tapes suivantes</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ROI CALCULATOR -->
+<section class="roi-section fade-in">
+  <span class="section-label">Calculateur ROI</span>
+  <h2 class="section-title">Ce que &ccedil;a te rapporte.</h2>
+  <p class="section-intro">Ajuste les param&egrave;tres de ton business pour estimer le retour sur investissement d&egrave;s le 2&egrave;me mois.</p>
+  <div class="roi-grid">
+    <div class="roi-inputs">
+      <div class="roi-input-group">
+        <div class="roi-input-label">Leads entrants par mois <span id="leads-val">80</span></div>
+        <input type="range" class="roi-slider" id="leads" min="10" max="500" step="10" value="80" oninput="calcROI()">
+      </div>
+      <div class="roi-input-group">
+        <div class="roi-input-label">Taux de closing actuel <span id="closing-val">15%</span></div>
+        <input type="range" class="roi-slider" id="closing" min="5" max="50" step="1" value="15" oninput="calcROI()">
+      </div>
+      <div class="roi-input-group">
+        <div class="roi-input-label">Valeur moyenne d'un client <span id="ltv-val">3 000€</span></div>
+        <input type="range" class="roi-slider" id="ltv" min="500" max="20000" step="500" value="3000" oninput="calcROI()">
+      </div>
+      <div class="roi-input-group">
+        <div class="roi-input-label">Gain de taux de closing estim&eacute; <span id="gain-val">+3%</span></div>
+        <input type="range" class="roi-slider" id="gain" min="1" max="15" step="1" value="3" oninput="calcROI()">
+        <div style="font-size:11px;color:var(--muted-2);margin-top:6px">Conservateur : briefs calls, scoring, nurturing automatis&eacute;</div>
+      </div>
+      <div class="roi-input-group">
+        <div class="roi-input-label">Temps &eacute;quipe lib&eacute;r&eacute; par mois <span id="hours-val">20h</span></div>
+        <input type="range" class="roi-slider" id="hours" min="5" max="80" step="5" value="20" oninput="calcROI()">
+        <div style="font-size:11px;color:var(--muted-2);margin-top:6px">Rapports, relances, CRA, briefs manuels &eacute;limin&eacute;s</div>
+      </div>
+    </div>
+    <div class="roi-results">
+      <div class="roi-metric">
+        <div class="roi-metric-label">Deals suppl&eacute;mentaires par mois</div>
+        <div class="roi-metric-value white" id="extra-deals">2</div>
+        <div class="roi-metric-sub">Gr&acirc;ce au gain de closing</div>
+      </div>
+      <div class="roi-divider"></div>
+      <div class="roi-metric">
+        <div class="roi-metric-label">CA additionnel mensuel</div>
+        <div class="roi-metric-value green" id="extra-rev">6 000€</div>
+        <div class="roi-metric-sub">Hors valeur du temps lib&eacute;r&eacute;</div>
+      </div>
+      <div class="roi-divider"></div>
+      <div class="roi-metric">
+        <div class="roi-metric-label">ROI sur le retainer</div>
+        <div class="roi-metric-value accent" id="roi-val">x1,7</div>
+        <div class="roi-metric-sub">Retour d&egrave;s le 2&egrave;me mois</div>
+      </div>
+      <div class="roi-divider"></div>
+      <div class="roi-metric">
+        <div class="roi-metric-label">Valeur du temps r&eacute;cup&eacute;r&eacute;</div>
+        <div class="roi-metric-value white" id="time-val">2 000€</div>
+        <div class="roi-metric-sub">Estim&eacute; &agrave; 100&euro;/h fondateur</div>
+      </div>
+      <div class="roi-disclaimer">Estimations conservatrices bas&eacute;es uniquement sur le gain de closing et le temps lib&eacute;r&eacute;. Non inclus : valeur des alertes, de la machine inbound, du contenu automatis&eacute;.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <div class="cta-grid"></div>
+  <div class="fade-in" style="position:relative;max-width:680px;margin:0 auto">
+    <div class="cta-eyebrow" style="display:inline-flex;margin-bottom:28px"><span class="cta-dot"></span>Proposition valable jusqu'au 30 avril 2026</div>
+    <h2 class="cta-title">Pr&ecirc;t &agrave; construire<br>&ccedil;a <em>ensemble</em>&nbsp;?</h2>
+    <p class="cta-sub">Une &eacute;tape pour d&eacute;marrer : confirmer ton intention ci-dessous. D&egrave;s r&eacute;ception, on r&eacute;dige un contrat complet et on te l'envoie pour signature.</p>
+
+    <div style="background:rgba(255,255,255,.03);border:1px solid var(--border-dark);border-radius:20px;padding:36px;margin-bottom:24px;text-align:left">
+
+      <div style="font-size:13px;font-weight:600;color:var(--muted-2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:20px">Confirmation d'int&eacute;r&ecirc;t</div>
+
+      <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:32px">
+        <label id="lbl1" style="display:flex;align-items:flex-start;gap:14px;cursor:pointer;padding:14px 16px;border-radius:12px;border:1px solid var(--border-dark);transition:border-color .2s;background:rgba(255,255,255,.02)" onmouseenter="this.style.borderColor='rgba(255,255,255,.14)'" onmouseleave="updateBorder('lbl1')">
+          <div style="position:relative;flex-shrink:0;margin-top:1px">
+            <input type="checkbox" id="cb1" onchange="updateCheck()" style="opacity:0;position:absolute;width:100%;height:100%;cursor:pointer;margin:0">
+            <div id="box1" style="width:20px;height:20px;border-radius:6px;border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;transition:all .2s">
+              <svg id="chk1" width="12" height="10" viewBox="0 0 12 10" fill="none" style="opacity:0;transition:opacity .15s"><path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px">Je valide le p&eacute;rim&egrave;tre de la roadmap</div>
+            <div style="font-size:12px;color:var(--muted)">10 sprints &middot; 2j/semaine &middot; d&eacute;marrage Semaine 18, Mai 2026</div>
+          </div>
+        </label>
+        <label id="lbl4" style="display:flex;align-items:flex-start;gap:14px;cursor:pointer;padding:14px 16px;border-radius:12px;border:1px solid var(--border-dark);transition:border-color .2s;background:rgba(255,255,255,.02)" onmouseenter="this.style.borderColor='rgba(255,255,255,.14)'" onmouseleave="updateBorder('lbl4')">
+          <div style="position:relative;flex-shrink:0;margin-top:1px">
+            <input type="checkbox" id="cb4" onchange="updateCheck()" style="opacity:0;position:absolute;width:100%;height:100%;cursor:pointer;margin:0">
+            <div id="box4" style="width:20px;height:20px;border-radius:6px;border:1.5px solid rgba(255,255,255,.2);background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;transition:all .2s">
+              <svg id="chk4" width="12" height="10" viewBox="0 0 12 10" fill="none" style="opacity:0;transition:opacity .15s"><path d="M1 5l3.5 3.5L11 1" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px">Je suis disponible pour le call de kick-off</div>
+            <div style="font-size:12px;color:var(--muted)">60 min &middot; pr&eacute;sentation &eacute;quipes, acc&egrave;s stack, roadmap d&eacute;taill&eacute;e</div>
+          </div>
+        </label>
+      </div>
+
+      <!-- CHECKBOX EDITION -->
+      <div class="edit-zone" id="editZone">
+        <div class="edit-zone-header" onclick="toggleEdit()">
+          <div class="edit-checkbox-wrap">
+            <input type="checkbox" id="cbEdit" onchange="toggleEdit()" onclick="event.stopPropagation()">
+            <div class="edit-box" id="editBox">
+              <svg width="12" height="10" viewBox="0 0 12 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="#fde68a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+          <div class="edit-label-text">
+            <div class="edit-label-title">J'ai des ajustements &agrave; proposer</div>
+            <div class="edit-label-sub">P&eacute;rim&egrave;tre, timing, budget, autre — laisse un commentaire</div>
+          </div>
+        </div>
+        <div class="edit-comment-area" id="editCommentArea">
+          <textarea class="edit-textarea" id="editComment" placeholder="Ex : Je voudrais d&eacute;caler le d&eacute;marrage &agrave; juin, ou revoir le sprint S4..." maxlength="800" oninput="updateCharCount()"></textarea>
+          <div class="edit-char-count"><span id="charCount">0</span> / 800</div>
+        </div>
+      </div>
+
+      <!-- SIGNATURE -->
+      <div style="margin-bottom:28px">
+        <div style="font-size:12px;font-weight:600;color:var(--muted-2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px">Ta signature</div>
+        <div style="position:relative;border:1px solid var(--border-dark);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.02)">
+          <canvas id="signCanvas" width="608" height="120" style="display:block;width:100%;cursor:crosshair;touch-action:none"></canvas>
+          <button onclick="clearSign()" style="position:absolute;top:8px;right:10px;background:rgba(255,255,255,.06);border:1px solid var(--border-dark);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--muted);cursor:pointer;font-family:var(--font-body)">Effacer</button>
+          <div id="sign-placeholder" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:13px;color:rgba(255,255,255,.15);pointer-events:none;white-space:nowrap">Signe ici avec ta souris ou ton doigt</div>
+        </div>
+        <div style="font-size:11px;color:var(--muted-2);margin-top:6px">Cette signature initie la demande. Le contrat officiel signable te sera envoy&eacute; par email via DocuSeal.</div>
+      </div>
+
+      <div style="background:rgba(91,106,240,.06);border:1px solid rgba(91,106,240,.2);border-radius:12px;padding:16px 20px;margin-bottom:28px;display:flex;gap:12px;align-items:flex-start">
+        <span style="font-size:18px;flex-shrink:0">&#x1F4C4;</span>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--white);margin-bottom:4px">Contrat complet r&eacute;dig&eacute; &agrave; r&eacute;ception</div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.6">D&egrave;s que tu confirmes ton int&eacute;r&ecirc;t, on r&eacute;dige un contrat de prestation complet (p&eacute;rim&egrave;tre, livrables, conditions, SLAs). Tu le re&ccedil;ois dans les 24h via DocuSeal pour signature officielle.</div>
+        </div>
+      </div>
+
+      <button id="confirm-btn" onclick="submitConfirm()" disabled style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;background:rgba(255,255,255,.15);color:rgba(255,255,255,.4);border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:17px 28px;font-family:var(--font-body);font-size:15px;font-weight:600;cursor:not-allowed;transition:all .3s">
+        <span id="confirm-btn-text">Coche les cases pour confirmer</span>
+      </button>
+    </div>
+
+    <div style="text-align:center;margin-bottom:16px">
+      <div style="font-size:13px;color:var(--muted-2);margin-bottom:12px">Tu veux d'abord en parler ? Pas de probl&egrave;me.</div>
+      <a href="https://cal.com/out-of-office/kick-off-ooo" target="_blank" class="btn-cta-wa" style="display:inline-flex;max-width:340px;background:rgba(37,211,102,.1);color:#4ade80;border:1px solid rgba(37,211,102,.25)">
+        <span style="font-size:16px">&#x1F4DE;</span>
+        <span>Booker le call de kick-off</span>
+      </a>
+    </div>
+
+    <div style="text-align:center">
+      <a href="https://wa.me/971585613772" target="_blank" class="btn-cta-wa" style="display:inline-flex;max-width:320px">
+        <span>&#x1F4AC;</span>
+        <span>Une question ? WhatsApp direct</span>
+      </a>
+    </div>
+
+    <div class="cta-trust" style="margin-top:24px">
+      <span>&#x1F512; Paiement s&eacute;curis&eacute; Stripe</span>
+      <span>&#x1F4C4; Contrat DocuSeal sous 24h</span>
+      <span>&#x2713; R&eacute;siliable chaque mois</span>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <a class="footer-logo" href="https://agenceooo.com"><img src="https://lh3.googleusercontent.com/d/1t8DOJoFuukd5qkhbgioJyxpZEiIUI0Qc" alt="OOO"></a>
+  <div class="footer-right">
+    <a href="https://agenceooo.com">agenceooo.com</a>
+    <a href="mailto:jules@agenceooo.com">jules@agenceooo.com</a>
+    <span>Dubai, UAE &middot; 2026</span>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, {threshold:0.08});
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+function toggleWeek(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+function calcROI() {
+  const leads   = parseInt(document.getElementById('leads').value);
+  const closing = parseInt(document.getElementById('closing').value) / 100;
+  const ltv     = parseInt(document.getElementById('ltv').value);
+  const gain    = parseInt(document.getElementById('gain').value) / 100;
+  const hours   = parseInt(document.getElementById('hours').value);
+  document.getElementById('leads-val').textContent   = leads;
+  document.getElementById('closing-val').textContent = document.getElementById('closing').value + '%';
+  document.getElementById('ltv-val').textContent     = ltv.toLocaleString('fr-FR') + '€';
+  document.getElementById('gain-val').textContent    = '+' + document.getElementById('gain').value + '%';
+  document.getElementById('hours-val').textContent   = hours + 'h';
+  const extraDeals = Math.round(leads * gain);
+  const extraRev   = extraDeals * ltv;
+  const timeVal    = hours * 100;
+  const roiVal     = ((extraRev + timeVal) / 3500).toFixed(1);
+  document.getElementById('extra-deals').textContent = extraDeals;
+  document.getElementById('extra-rev').textContent   = extraRev.toLocaleString('fr-FR') + '€';
+  document.getElementById('roi-val').textContent     = 'x' + roiVal;
+  document.getElementById('time-val').textContent    = timeVal.toLocaleString('fr-FR') + '€';
+}
+calcROI();
+
+function updateBorder(id) {
+  const n  = id.replace('lbl','');
+  const cb = document.getElementById('cb'+n);
+  if(cb) document.getElementById(id).style.borderColor = cb.checked ? 'rgba(91,106,240,.4)' : 'rgba(255,255,255,0.08)';
+}
+function updateCheck() {
+  ['1','4'].forEach(n => {
+    const cb  = document.getElementById('cb'+n);
+    const box = document.getElementById('box'+n);
+    const chk = document.getElementById('chk'+n);
+    const lbl = document.getElementById('lbl'+n);
+    if(!cb || !box || !chk || !lbl) return;
+    if(cb.checked) {
+      box.style.background   = 'var(--accent)';
+      box.style.borderColor  = 'var(--accent)';
+      chk.style.opacity      = '1';
+      lbl.style.borderColor  = 'rgba(91,106,240,.4)';
+    } else {
+      box.style.background   = 'rgba(255,255,255,.04)';
+      box.style.borderColor  = 'rgba(255,255,255,.2)';
+      chk.style.opacity      = '0';
+      lbl.style.borderColor  = 'rgba(255,255,255,0.08)';
+    }
+  });
+  const allChecked = document.getElementById('cb1').checked && document.getElementById('cb4').checked;
+  const btn = document.getElementById('confirm-btn');
+  const txt = document.getElementById('confirm-btn-text');
+  if(allChecked) {
+    btn.disabled = false;
+    btn.style.background   = 'var(--white)';
+    btn.style.color        = 'var(--black)';
+    btn.style.borderColor  = 'transparent';
+    btn.style.cursor       = 'pointer';
+    txt.textContent = "Confirmer mon intérêt — on rédige le contrat";
+  } else {
+    btn.disabled = true;
+    btn.style.background   = 'rgba(255,255,255,.15)';
+    btn.style.color        = 'rgba(255,255,255,.4)';
+    btn.style.borderColor  = 'rgba(255,255,255,.1)';
+    btn.style.cursor       = 'not-allowed';
+    txt.textContent = 'Coche les cases pour confirmer';
+  }
+}
+
+function toggleEdit() {
+  const cb   = document.getElementById('cbEdit');
+  const box  = document.getElementById('editBox');
+  const zone = document.getElementById('editZone');
+  const area = document.getElementById('editCommentArea');
+  if(cb.checked) {
+    box.classList.add('checked');
+    zone.classList.add('active');
+    area.classList.add('show');
+    setTimeout(() => document.getElementById('editComment').focus(), 50);
+  } else {
+    box.classList.remove('checked');
+    zone.classList.remove('active');
+    area.classList.remove('show');
+  }
+}
+
+function updateCharCount() {
+  document.getElementById('charCount').textContent = document.getElementById('editComment').value.length;
+}
+
+const canvas = document.getElementById('signCanvas');
+const ctx    = canvas ? canvas.getContext('2d') : null;
+let drawing  = false;
+let hasSigned = false;
+
+function getPos(e) {
+  const r = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / r.width;
+  const scaleY = canvas.height / r.height;
+  if(e.touches) return { x:(e.touches[0].clientX - r.left)*scaleX, y:(e.touches[0].clientY - r.top)*scaleY };
+  return { x:(e.clientX - r.left)*scaleX, y:(e.clientY - r.top)*scaleY };
+}
+
+if(ctx) {
+  ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+  ctx.lineWidth   = 2;
+  ctx.lineCap     = 'round';
+  ctx.lineJoin    = 'round';
+  canvas.addEventListener('mousedown',  e => { drawing=true; const p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); });
+  canvas.addEventListener('mousemove',  e => { if(!drawing) return; const p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); hidePlaceholder(); });
+  canvas.addEventListener('mouseup',    () => drawing=false);
+  canvas.addEventListener('mouseleave', () => drawing=false);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing=true; const p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); });
+  canvas.addEventListener('touchmove',  e => { e.preventDefault(); if(!drawing) return; const p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); hidePlaceholder(); });
+  canvas.addEventListener('touchend',   () => drawing=false);
+}
+
+function hidePlaceholder() {
+  if(!hasSigned) { hasSigned=true; document.getElementById('sign-placeholder').style.display='none'; }
+}
+function clearSign() {
+  if(ctx) ctx.clearRect(0,0,canvas.width,canvas.height);
+  hasSigned=false;
+  document.getElementById('sign-placeholder').style.display='';
+}
+function submitConfirm() {
+  const btn     = document.getElementById('confirm-btn');
+  const hasEdit = document.getElementById('cbEdit').checked;
+  const comment = document.getElementById('editComment').value.trim();
+  btn.disabled     = true;
+  btn.style.cursor = 'default';
+  btn.style.background = 'var(--accent)';
+  btn.style.color      = '#fff';
+  document.getElementById('confirm-btn-text').textContent = '⏳ Envoi en cours...';
+  const payload = {
+    client: 'STRATCO',
+    roadmap_ok: document.getElementById('cb1').checked,
+    kickoff_ok: document.getElementById('cb4').checked,
+    has_comment: hasEdit,
+    comment: comment || null,
+    timestamp: new Date().toISOString()
+  };
+  fetch('https://n8n.srv1422950.hstgr.cloud/webhook/propale-validee', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(() => {
+    document.getElementById('confirm-btn-text').textContent = hasEdit && comment
+      ? '✓ Reçu avec tes ajustements ! On revient vers toi sous 24h.'
+      : '✓ Reçu ! On te contacte sous 24h avec le contrat.';
+  })
+  .catch(() => {
+    document.getElementById('confirm-btn-text').textContent = hasEdit && comment
+      ? '✓ Reçu avec tes ajustements ! On revient vers toi sous 24h.'
+      : '✓ Reçu ! On te contacte sous 24h avec le contrat.';
+  });
+}
+</script>
+</body>
+</html>
