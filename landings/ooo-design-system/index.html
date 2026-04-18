@@ -1,1 +1,74 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OOO · Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#080808; --black-2:#111111; --black-3:#1a1a1a;
+    --white:#ffffff; --off-white:#f5f4f0;
+    --muted:#888884; --muted-2:#555552;
+    --accent:#5b6af0;
+    --accent-light:rgba(91,106,240,0.15);
+    --border-dark:rgba(255,255,255,0.08);
+    --border-light:rgba(0,0,0,0.08);
+    --font-display:'Poppins',sans-serif;
+    --font-body:'DM Sans',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--font-body);
+    background:var(--black);
+    color:var(--white);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ============ LAYOUT ============ */
+  .ds-nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(8,8,8,0.85);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border-dark);
+    padding:18px 48px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .ds-nav-brand{
+    font-family:var(--font-display);
+    font-weight:600; font-size:18px;
+    letter-spacing:-0.5px;
+  }
+  .ds-nav-brand span{color:var(--accent);}
+  .ds-nav-meta{font-size:13px; color:var(--muted);}
+  .ds-nav-links{display:flex; gap:24px; list-style:none;}
+  .ds-nav-links a{color:var(--muted); text-decoration:none; font-size:14px; transition:color .2s;}
+  .ds-nav-links a:hover{color:var(--white);}
+
+  .ds-wrap{max-width:1280px; margin:0 auto; padding:72px 48px;}
+  .ds-section{padding:96px 0; border-bottom:1px solid var(--border-dark);}
+  .ds-section:last-child{border-bottom:0;}
+  .ds-section-label{
+    display:inline-block; font-size:12px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--accent); margin-bottom:16px; font-weight:500;
+  }
+  .ds-section h2{
+    font-family:var(--font-display); font-weight:600;
+    font-size:clamp(36px,4vw,56px); letter-spacing:-2px;
+    margin-bottom:16px; line-height:1.15;
+    padding-bottom:0.15em;
+    overflow:visible;
+  }
+  .ds-section > .ds-intro{color:var(--muted); font-size:17px; max-width:680px; margin-bottom:48px;}
+
+  /* CSS tronqué - push via API direct */
+</style>
+</head>
+<body>
+<p>Loading...</p>
+</body>
+</html>
