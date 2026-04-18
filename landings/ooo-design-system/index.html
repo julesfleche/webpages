@@ -21,18 +21,552 @@
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{font-family:var(--font-body);background:var(--black);color:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased;}
-  .loading{display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:24px;font-family:var(--font-body);}
-  .loading h1{font-family:var(--font-display);font-weight:600;font-size:48px;letter-spacing:-2px;background:linear-gradient(135deg,#6b7fff,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding:0.15em 0.12em;}
-  .loading p{color:var(--muted);font-size:16px;max-width:480px;text-align:center;}
-  .loading a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(91,106,240,0.3);transition:border-color .2s;}
-  .loading a:hover{border-color:var(--accent);}
+  body{
+    font-family:var(--font-body);
+    background:var(--black);
+    color:var(--white);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ============ LAYOUT ============ */
+  .ds-nav{
+    position:sticky; top:0; z-index:100;
+    background:rgba(8,8,8,0.85);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--border-dark);
+    padding:18px 48px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .ds-nav-brand{
+    font-family:var(--font-display);
+    font-weight:600; font-size:18px;
+    letter-spacing:-0.5px;
+  }
+  .ds-nav-brand span{color:var(--accent);}
+  .ds-nav-meta{font-size:13px; color:var(--muted);}
+  .ds-nav-links{display:flex; gap:24px; list-style:none;}
+  .ds-nav-links a{color:var(--muted); text-decoration:none; font-size:14px; transition:color .2s;}
+  .ds-nav-links a:hover{color:var(--white);}
+
+  .ds-wrap{max-width:1280px; margin:0 auto; padding:72px 48px;}
+  .ds-section{padding:96px 0; border-bottom:1px solid var(--border-dark);}
+  .ds-section:last-child{border-bottom:0;}
+  .ds-section-label{
+    display:inline-block; font-size:12px; letter-spacing:2px; text-transform:uppercase;
+    color:var(--accent); margin-bottom:16px; font-weight:500;
+  }
+  .ds-section h2{
+    font-family:var(--font-display); font-weight:600;
+    font-size:clamp(36px,4vw,56px); letter-spacing:-2px;
+    margin-bottom:16px; line-height:1.15;
+    padding-bottom:0.15em;
+    overflow:visible;
+  }
+  .ds-section > .ds-intro{color:var(--muted); font-size:17px; max-width:680px; margin-bottom:48px;}
+
+  .ds-hero{padding:120px 48px 96px; background:radial-gradient(ellipse 60% 50% at 50% 0%, rgba(91,106,240,0.18) 0%, transparent 70%), var(--black); position:relative; overflow:hidden; text-align:center; border-bottom:1px solid var(--border-dark);}
+  .ds-hero::before{content:''; position:absolute; inset:0; background-image:linear-gradient(var(--border-dark) 1px, transparent 1px),linear-gradient(90deg, var(--border-dark) 1px, transparent 1px); background-size:48px 48px; mask-image:radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 80%); -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 80%); opacity:0.5; pointer-events:none;}
+  .ds-hero-inner{position:relative; z-index:1; max-width:880px; margin:0 auto;}
+  .ds-hero-badge{display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.06); border:1px solid var(--border-dark); border-radius:999px; padding:8px 16px; font-size:13px; color:var(--muted); margin-bottom:32px;}
+  .ds-hero-badge-dot{width:6px; height:6px; border-radius:50%; background:#22c55e;}
+  .ds-hero h1{font-family:var(--font-display); font-weight:600; font-size:clamp(52px,7vw,88px); letter-spacing:-2px; line-height:1.1; margin-bottom:24px; padding-bottom:0.12em; overflow:visible;}
+  .ds-hero-sub{color:var(--muted); font-size:19px; max-width:620px; margin:0 auto;}
+
+  .ds-grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  .ds-grid-4{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+  .ds-grid-2{display:grid; grid-template-columns:repeat(2,1fr); gap:24px;}
+
+  .swatch{background:var(--black-2); border:1px solid var(--border-dark); border-radius:16px; overflow:hidden;}
+  .swatch-preview{height:120px; border-bottom:1px solid var(--border-dark);}
+  .swatch-meta{padding:16px 18px;}
+  .swatch-name{font-weight:600; font-size:14px; margin-bottom:4px;}
+  .swatch-hex{font-family:'SF Mono','Menlo',monospace; font-size:12px; color:var(--muted);}
+  .swatch-var{font-family:'SF Mono','Menlo',monospace; font-size:11px; color:var(--accent); margin-top:4px;}
+  .check-bg{background-image:linear-gradient(45deg,#333 25%,transparent 25%),linear-gradient(-45deg,#333 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#333 75%),linear-gradient(-45deg,transparent 75%,#333 75%); background-size:16px 16px; background-position:0 0,0 8px,8px -8px,-8px 0px;}
+
+  .type-row{display:flex; align-items:baseline; gap:32px; padding:24px 0; border-bottom:1px solid var(--border-dark);}
+  .type-row:last-child{border-bottom:0;}
+  .type-sample{flex:1; min-width:0;}
+  .type-meta{width:280px; flex-shrink:0; font-family:'SF Mono','Menlo',monospace; font-size:12px; color:var(--muted); line-height:1.8;}
+  .type-meta strong{color:var(--white); font-family:var(--font-body); font-weight:600; font-size:13px;}
+  .t-h1{font-family:var(--font-display); font-weight:600; font-size:72px; letter-spacing:-2px; line-height:1.1; padding-bottom:0.1em;}
+  .t-h2{font-family:var(--font-display); font-weight:600; font-size:48px; letter-spacing:-2px; line-height:1.15; padding-bottom:0.1em;}
+  .t-h3{font-family:var(--font-display); font-weight:600; font-size:28px; letter-spacing:-1px; line-height:1.25;}
+  .t-body-lg{font-family:var(--font-body); font-weight:400; font-size:19px; color:var(--muted); line-height:1.65;}
+  .t-body{font-family:var(--font-body); font-weight:400; font-size:16px; color:var(--muted); line-height:1.65;}
+  .t-label{font-family:var(--font-body); font-weight:500; font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--accent);}
+  .t-mono{font-family:'SF Mono','Menlo',monospace; font-size:13px;}
+
+  h1, h2, h3, h4, .t-h1, .t-h2, .t-h3, .ds-hero h1, .ds-section h2{line-height:1.15; padding-bottom:0.15em; padding-top:0.05em; overflow:visible;}
+  em, .accent-em, h1 em, h2 em, h3 em, h4 em, .ds-hero h1 em, .ds-section h2 em{font-style:italic; background:linear-gradient(135deg,#6b7fff,#a78bfa); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; padding-right:0.12em; padding-left:0.02em; display:inline-block; line-height:inherit;}
+  .on-light em, .on-light .accent-em{background:linear-gradient(135deg,#5b6af0,#8b5cf6); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;}
+
+  .btn-primary{display:inline-flex; align-items:center; gap:8px; background:var(--white); color:var(--black); border:0; border-radius:999px; padding:16px 32px; font-family:var(--font-body); font-weight:600; font-size:15px; cursor:pointer; text-decoration:none; position:relative; overflow:hidden; isolation:isolate; transition:transform .2s, box-shadow .2s;}
+  .btn-primary::after{content:''; position:absolute; inset:0; border-radius:999px; background:linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6); opacity:0; transition:opacity .3s; z-index:-1;}
+  .btn-primary:hover{transform:translateY(-1px); box-shadow:0 8px 32px rgba(107,127,255,0.35);}
+  .btn-primary:hover::after{opacity:1;}
+  .btn-ghost{display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--white); border:1px solid var(--border-dark); border-radius:999px; padding:16px 32px; font-family:var(--font-body); font-weight:600; font-size:15px; cursor:pointer; text-decoration:none; transition:border-color .2s, background .2s;}
+  .btn-ghost:hover{border-color:rgba(91,106,240,0.5); background:rgba(91,106,240,0.06);}
+  .btn-nav{display:inline-flex; align-items:center; gap:6px; background:var(--white); color:var(--black); border:0; border-radius:999px; padding:10px 18px; font-family:var(--font-body); font-weight:600; font-size:13px; text-decoration:none; cursor:pointer; position:relative; overflow:hidden; isolation:isolate; transition:transform .2s, box-shadow .2s;}
+  .btn-nav::after{content:''; position:absolute; inset:0; border-radius:999px; background:linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6); opacity:0; transition:opacity .3s; z-index:-1;}
+  .btn-nav:hover{transform:translateY(-1px); box-shadow:0 6px 20px rgba(107,127,255,0.3);}
+  .btn-nav:hover::after{opacity:1;}
+  .btn-row{display:flex; gap:16px; flex-wrap:wrap; align-items:center;}
+
+  .pill{display:inline-flex; align-items:center; gap:6px; padding:6px 14px; border-radius:999px; font-size:13px; font-weight:500;}
+  .pill-blue{background:rgba(59,130,246,0.12); border:1px solid rgba(59,130,246,0.25); color:#93c5fd;}
+  .pill-violet{background:rgba(139,92,246,0.12); border:1px solid rgba(139,92,246,0.25); color:#c4b5fd;}
+  .pill-green{background:rgba(34,197,94,0.10); border:1px solid rgba(34,197,94,0.22); color:#86efac;}
+  .pill-amber{background:rgba(245,158,11,0.10); border:1px solid rgba(245,158,11,0.22); color:#fcd34d;}
+  .pill-rose{background:rgba(244,63,94,0.10); border:1px solid rgba(244,63,94,0.22); color:#fda4af;}
+  .pill-teal{background:rgba(20,184,166,0.10); border:1px solid rgba(20,184,166,0.22); color:#5eead4;}
+  .pill-row{display:flex; gap:10px; flex-wrap:wrap;}
+
+  .card-dark{background:var(--black-2); border:1px solid var(--border-dark); border-radius:20px; padding:32px; transition:border-color .3s;}
+  .card-dark:hover{border-color:rgba(91,106,240,0.4);}
+  .card-dark h3{font-family:var(--font-display); font-weight:600; font-size:22px; letter-spacing:-0.5px; margin-bottom:12px;}
+  .card-dark p{color:var(--muted); font-size:15px;}
+  .card-white{background:#fff; color:var(--black); border:1px solid rgba(0,0,0,0.08); border-radius:20px; padding:36px 32px;}
+  .card-white h3{font-family:var(--font-display); font-weight:600; font-size:22px; letter-spacing:-0.5px; margin-bottom:12px; color:var(--black);}
+  .card-white p{color:var(--muted-2); font-size:15px;}
+
+  .badge-hero{display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.06); border:1px solid var(--border-dark); border-radius:999px; padding:8px 16px; font-size:13px; color:var(--muted);}
+  .badge-dot{width:6px; height:6px; border-radius:50%; background:#22c55e;}
+
+  .space-row{display:flex; align-items:center; gap:24px; padding:16px 0; border-bottom:1px solid var(--border-dark);}
+  .space-row:last-child{border-bottom:0;}
+  .space-bar{background:linear-gradient(90deg, rgba(91,106,240,0.8), rgba(167,139,250,0.5)); height:24px; border-radius:4px;}
+  .space-name{width:80px; font-weight:600; font-size:14px;}
+  .space-val{width:80px; color:var(--muted); font-family:'SF Mono','Menlo',monospace; font-size:13px;}
+  .space-usage{color:var(--muted); font-size:13px; flex:1;}
+
+  .radius-demo{background:linear-gradient(135deg, rgba(91,106,240,0.3), rgba(167,139,250,0.3)); border:1px solid rgba(91,106,240,0.4); height:80px; display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--muted); font-family:'SF Mono','Menlo',monospace;}
+
+  .code{background:var(--black-3); border:1px solid var(--border-dark); border-radius:12px; padding:20px 24px; font-family:'SF Mono','Menlo',monospace; font-size:13px; color:#c4b5fd; line-height:1.7; overflow-x:auto; white-space:pre;}
+
+  .logo-display{background:var(--black-2); border:1px solid var(--border-dark); border-radius:16px; padding:48px; display:flex; align-items:center; justify-content:center; min-height:160px;}
+  .logo-display.on-white{background:var(--off-white); border-color:rgba(0,0,0,0.08);}
+
+  .motion-demo{background:var(--black-2); border:1px solid var(--border-dark); border-radius:16px; padding:32px; display:flex; align-items:center; justify-content:center; min-height:160px; cursor:pointer; transition:all .3s ease;}
+  .motion-demo:hover{border-color:rgba(91,106,240,0.4); transform:translateY(-2px);}
+  .motion-demo h4{font-family:var(--font-display); font-weight:600; font-size:16px; margin-bottom:4px;}
+  .motion-demo p{color:var(--muted); font-size:13px;}
+
+  .faq-item{background:var(--black-2); border:1px solid var(--border-dark); border-radius:16px; padding:24px 28px; margin-bottom:12px;}
+  .faq-q{display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-family:var(--font-display); font-weight:600; font-size:17px;}
+  .faq-toggle{width:24px; height:24px; display:flex; align-items:center; justify-content:center; color:var(--accent); font-size:20px; transition:transform .35s ease;}
+  .faq-answer{max-height:0; overflow:hidden; color:var(--muted); font-size:15px; transition:max-height .35s ease, padding .35s ease;}
+  .faq-item.open .faq-answer{max-height:200px; padding-top:16px;}
+  .faq-item.open .faq-toggle{transform:rotate(45deg);}
+
+  .toc{background:var(--black-2); border:1px solid var(--border-dark); border-radius:20px; padding:32px; margin-bottom:48px;}
+  .toc-title{font-family:var(--font-display); font-size:14px; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:16px;}
+  .toc-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+  .toc a{color:var(--muted); text-decoration:none; font-size:14px; padding:8px 0; transition:color .2s; display:flex; align-items:center; gap:8px;}
+  .toc a:hover{color:var(--white);}
+  .toc a::before{content:''; width:4px; height:4px; border-radius:50%; background:var(--accent); flex-shrink:0;}
+
+  .ds-light-wrap{background:var(--off-white); color:var(--black); margin:0 -48px; padding:96px 48px;}
+  .ds-light-wrap h2{color:var(--black);}
+  .ds-light-wrap .ds-intro{color:var(--muted-2);}
+  .ds-light-wrap .ds-section-label{color:#5b6af0;}
+
+  .card-light-plain{background:#fff; border:1px solid rgba(0,0,0,0.08); border-radius:20px; padding:32px; color:var(--black);}
+  .card-light-plain h3{font-family:var(--font-display); font-weight:600; font-size:22px; letter-spacing:-0.5px; margin-bottom:12px; color:var(--black); line-height:1.25; padding-bottom:0.1em;}
+  .card-light-plain p{color:var(--muted-2); font-size:15px;}
+  .card-light-elevated{background:#fff; border:1px solid rgba(0,0,0,0.06); border-radius:20px; padding:32px; color:var(--black); box-shadow:0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06); transition:transform .2s ease, box-shadow .3s ease;}
+  .card-light-elevated:hover{transform:translateY(-2px); box-shadow:0 2px 4px rgba(0,0,0,0.05), 0 16px 40px rgba(91,106,240,0.12);}
+  .card-light-elevated h3{font-family:var(--font-display); font-weight:600; font-size:22px; letter-spacing:-0.5px; margin-bottom:12px; color:var(--black); line-height:1.25; padding-bottom:0.1em;}
+  .card-light-accent{background:linear-gradient(180deg, #fff 0%, #fafaf8 100%); border:1px solid rgba(91,106,240,0.2); border-radius:20px; padding:32px; color:var(--black); position:relative; overflow:hidden;}
+  .card-light-accent::before{content:''; position:absolute; inset:0; background:radial-gradient(ellipse 60% 60% at 0% 0%, rgba(91,106,240,0.08) 0%, transparent 60%); pointer-events:none;}
+
+  .btn-primary-light{display:inline-flex; align-items:center; gap:8px; background:var(--black); color:var(--white); border:0; border-radius:999px; padding:16px 32px; font-family:var(--font-body); font-weight:600; font-size:15px; cursor:pointer; text-decoration:none; position:relative; overflow:hidden; isolation:isolate; transition:transform .2s, box-shadow .2s;}
+  .btn-primary-light::after{content:''; position:absolute; inset:0; border-radius:999px; background:linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6); opacity:0; transition:opacity .3s; z-index:-1;}
+  .btn-primary-light:hover{transform:translateY(-1px); box-shadow:0 8px 32px rgba(107,127,255,0.35);}
+  .btn-primary-light:hover::after{opacity:1;}
+  .btn-ghost-light{display:inline-flex; align-items:center; gap:8px; background:transparent; color:var(--black); border:1px solid rgba(0,0,0,0.12); border-radius:999px; padding:16px 32px; font-family:var(--font-body); font-weight:600; font-size:15px; cursor:pointer; text-decoration:none; transition:border-color .2s, background .2s;}
+  .btn-ghost-light:hover{border-color:rgba(91,106,240,0.5); background:rgba(91,106,240,0.04);}
+  .badge-light{display:inline-flex; align-items:center; gap:8px; background:rgba(0,0,0,0.04); border:1px solid rgba(0,0,0,0.08); border-radius:999px; padding:8px 16px; font-size:13px; color:var(--muted-2);}
+
+  .logos-slider{overflow:hidden; position:relative; padding:40px 0; mask-image:linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%); -webkit-mask-image:linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%);}
+  .logos-track{display:flex; align-items:center; gap:72px; animation:scroll-logos 32s linear infinite; width:max-content;}
+  @keyframes scroll-logos{0%{transform:translateX(0);} 100%{transform:translateX(-50%);}}
+  .logo-brand{flex-shrink:0; font-family:var(--font-display); font-weight:600; font-size:28px; letter-spacing:-1px; opacity:0.55; transition:opacity .3s; white-space:nowrap;}
+  .logo-brand:hover{opacity:1;}
+  .logos-slider.on-dark .logo-brand{color:#fff;}
+  .logos-slider.on-light .logo-brand{color:#080808; opacity:0.4;}
+
+  .emoji-grid{display:grid; grid-template-columns:repeat(6,1fr); gap:16px;}
+  .emoji-tile{background:var(--black-2); border:1px solid var(--border-dark); border-radius:16px; padding:20px 12px; text-align:center; transition:border-color .3s, transform .2s;}
+  .emoji-tile:hover{border-color:rgba(91,106,240,0.4); transform:translateY(-2px);}
+  .emoji-tile .emoji{font-size:40px; line-height:1; display:block; margin-bottom:10px;}
+  .emoji-tile .emoji-label{font-size:11px; color:var(--muted); font-family:'SF Mono','Menlo',monospace;}
+
+  .memoji-showcase{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+  .memoji-slot{background:radial-gradient(ellipse 70% 70% at 50% 30%, rgba(91,106,240,0.15) 0%, transparent 60%), var(--black-2); border:1px solid var(--border-dark); border-radius:20px; padding:32px 20px; text-align:center; aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+  .memoji-slot .memoji-placeholder{width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg, rgba(91,106,240,0.3), rgba(167,139,250,0.3)); border:2px dashed rgba(91,106,240,0.4); display:flex; align-items:center; justify-content:center; font-size:32px; margin-bottom:16px;}
+  .memoji-slot .memoji-role{font-family:var(--font-display); font-weight:600; font-size:14px; color:var(--white); margin-bottom:4px;}
+  .memoji-slot .memoji-caption{font-size:11px; color:var(--muted);}
+
+  .ds-footer{padding:48px; text-align:center; border-top:1px solid var(--border-dark); color:var(--muted); font-size:13px;}
+
+  @media (max-width:900px){
+    .ds-wrap{padding:48px 24px;}
+    .ds-nav{padding:16px 24px;}
+    .ds-nav-links{display:none;}
+    .ds-hero{padding:72px 24px;}
+    .t-h1{font-size:44px; letter-spacing:-1px;}
+    .t-h2{font-size:34px; letter-spacing:-1px;}
+    .ds-grid-3,.ds-grid-4,.ds-grid-2{grid-template-columns:1fr;}
+    .type-row{flex-direction:column; gap:16px;}
+    .type-meta{width:auto;}
+    .toc-grid{grid-template-columns:1fr;}
+    .emoji-grid{grid-template-columns:repeat(3,1fr);}
+    .memoji-showcase{grid-template-columns:repeat(2,1fr);}
+  }
 </style>
 </head>
 <body>
-<div class="loading">
-  <h1>Design System OOO</h1>
-  <p>Le fichier complet (101k de DA) est en cours de déploiement via un channel alternatif. Consultez <a href="https://github.com/julesfleche/webpages">le repo GitHub</a> pour la version finale.</p>
+
+<nav class="ds-nav">
+  <div class="ds-nav-brand" style="display:flex; align-items:center; gap:10px;">
+    <svg width="22" height="22" viewBox="0 0 659 659" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" fill="#fff"/></svg>
+    Design System
+  </div>
+  <div class="ds-nav-meta">v1.0 · Avril 2026</div>
+</nav>
+
+<section class="ds-hero">
+  <div class="ds-hero-inner">
+    <div class="ds-hero-badge"><span class="ds-hero-badge-dot"></span>Design System pour Claude & Claude Design</div>
+    <h1>La DA <em>Out of Office</em><br>prête pour Claude.</h1>
+    <p class="ds-hero-sub">Tokens, composants, patterns. Pensé pour que Claude et Claude Design puissent générer des assets OOO fidèles à la marque à chaque requête. Source unique de vérité, versionnée et modifiable.</p>
+  </div>
+</section>
+
+<div class="ds-wrap">
+
+<div class="toc">
+  <div class="toc-title">Sommaire</div>
+  <div class="toc-grid">
+    <a href="#foundations">01 · Foundations</a>
+    <a href="#color">02 · Couleurs</a>
+    <a href="#type">03 · Typographie</a>
+    <a href="#spacing">04 · Spacing & Radius</a>
+    <a href="#logo">05 · Logo</a>
+    <a href="#buttons">06 · Boutons</a>
+    <a href="#pills">07 · Pills & Badges</a>
+    <a href="#cards">08 · Cards</a>
+    <a href="#light">09 · Sections light</a>
+    <a href="#logos-slider">10 · Slider logos</a>
+    <a href="#icono">11 · Iconographie</a>
+    <a href="#patterns">12 · Patterns</a>
+    <a href="#motion">13 · Motion</a>
+    <a href="#copy">14 · Copy & Tone</a>
+  </div>
 </div>
+
+<section class="ds-section" id="foundations">
+  <span class="ds-section-label">01 · Foundations</span>
+  <h2>Principes <em>de design</em>.</h2>
+  <p class="ds-intro">Quatre règles qui guident toutes les décisions visuelles OOO.</p>
+  <div class="ds-grid-2">
+    <div class="card-dark"><h3>Dark first, toujours</h3><p>Fond principal #080808. Les sections blanches servent de respiration, jamais de base.</p></div>
+    <div class="card-dark"><h3>Une seule couleur d'accent</h3><p>Le bleu violet #5b6af0. Gradient avec violet/rose pour les hover et CTA principaux.</p></div>
+    <div class="card-dark"><h3>Typo à deux niveaux</h3><p>Poppins 600 pour les titres, DM Sans pour le body. Letter-spacing négatif systématique.</p></div>
+    <div class="card-dark"><h3>Zéro AI vibes</h3><p>Pas de tirets cadratins, pas d'emojis dans les titres. L'accent italique dégradé remplace le bold jaune.</p></div>
+  </div>
+</section>
+
+<section class="ds-section" id="color">
+  <span class="ds-section-label">02 · Couleurs</span>
+  <h2>Palette <em>complète</em>.</h2>
+  <p class="ds-intro">Un set restreint, nommé par usage. Chaque token a un rôle.</p>
+  <h3 style="font-family:var(--font-display); font-weight:600; font-size:18px; margin:32px 0 16px; color:var(--muted);">Neutrals</h3>
+  <div class="ds-grid-4">
+    <div class="swatch"><div class="swatch-preview" style="background:#080808;"></div><div class="swatch-meta"><div class="swatch-name">Black</div><div class="swatch-hex">#080808</div><div class="swatch-var">--black</div></div></div>
+    <div class="swatch"><div class="swatch-preview" style="background:#111;"></div><div class="swatch-meta"><div class="swatch-name">Black 2 (cards)</div><div class="swatch-hex">#111111</div><div class="swatch-var">--black-2</div></div></div>
+    <div class="swatch"><div class="swatch-preview" style="background:#1a1a1a;"></div><div class="swatch-meta"><div class="swatch-name">Black 3</div><div class="swatch-hex">#1a1a1a</div><div class="swatch-var">--black-3</div></div></div>
+    <div class="swatch"><div class="swatch-preview" style="background:#fff;"></div><div class="swatch-meta"><div class="swatch-name">White</div><div class="swatch-hex">#ffffff</div><div class="swatch-var">--white</div></div></div>
+    <div class="swatch"><div class="swatch-preview" style="background:#f5f4f0;"></div><div class="swatch-meta"><div class="swatch-name">Off White</div><div class="swatch-hex">#f5f4f0</div><div class="swatch-var">--off-white</div></div></div>
+    <div class="swatch"><div class="swatch-preview" style="background:#888884;"></div><div class="swatch-meta"><div class="swatch-name">Muted</div><div class="swatch-hex">#888884</div><div class="swatch-var">--muted</div></div></div>
+    <div class="swatch"><div class="swatch-preview" style="background:#555552;"></div><div class="swatch-meta"><div class="swatch-name">Muted 2</div><div class="swatch-hex">#555552</div><div class="swatch-var">--muted-2</div></div></div>
+    <div class="swatch"><div class="swatch-preview" style="background:#5b6af0;"></div><div class="swatch-meta"><div class="swatch-name">Accent</div><div class="swatch-hex">#5b6af0</div><div class="swatch-var">--accent</div></div></div>
+  </div>
+  <h3 style="font-family:var(--font-display); font-weight:600; font-size:18px; margin:48px 0 16px; color:var(--muted);">Gradients</h3>
+  <div class="ds-grid-2">
+    <div class="swatch"><div class="swatch-preview" style="background:linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6);"></div><div class="swatch-meta"><div class="swatch-name">Hover / CTA</div><div class="swatch-hex">#6b7fff → #a78bfa → #f472b6</div></div></div>
+    <div class="swatch"><div class="swatch-preview" style="background:linear-gradient(135deg,#6b7fff,#a78bfa);"></div><div class="swatch-meta"><div class="swatch-name">Text accent</div><div class="swatch-hex">#6b7fff → #a78bfa</div></div></div>
+  </div>
+  <h3 style="font-family:var(--font-display); font-weight:600; font-size:18px; margin:48px 0 16px; color:var(--muted);">Pills</h3>
+  <div class="ds-grid-3">
+    <div class="swatch"><div class="swatch-preview" style="background:rgba(59,130,246,0.12); border:1px solid rgba(59,130,246,0.25); display:flex; align-items:center; justify-content:center; color:#93c5fd;">Blue</div><div class="swatch-meta"><div class="swatch-name">Pill Blue</div><div class="swatch-hex">#93c5fd</div></div></div>
+    <div class="swatch"><div class="swatch-preview" style="background:rgba(139,92,246,0.12); border:1px solid rgba(139,92,246,0.25); display:flex; align-items:center; justify-content:center; color:#c4b5fd;">Violet</div><div class="swatch-meta"><div class="swatch-name">Pill Violet</div><div class="swatch-hex">#c4b5fd</div></div></div>
+    <div class="swatch"><div class="swatch-preview" style="background:rgba(34,197,94,0.10); border:1px solid rgba(34,197,94,0.22); display:flex; align-items:center; justify-content:center; color:#86efac;">Green</div><div class="swatch-meta"><div class="swatch-name">Pill Green</div><div class="swatch-hex">#86efac</div></div></div>
+    <div class="swatch"><div class="swatch-preview" style="background:rgba(245,158,11,0.10); border:1px solid rgba(245,158,11,0.22); display:flex; align-items:center; justify-content:center; color:#fcd34d;">Amber</div><div class="swatch-meta"><div class="swatch-name">Pill Amber</div><div class="swatch-hex">#fcd34d</div></div></div>
+    <div class="swatch"><div class="swatch-preview" style="background:rgba(244,63,94,0.10); border:1px solid rgba(244,63,94,0.22); display:flex; align-items:center; justify-content:center; color:#fda4af;">Rose</div><div class="swatch-meta"><div class="swatch-name">Pill Rose</div><div class="swatch-hex">#fda4af</div></div></div>
+    <div class="swatch"><div class="swatch-preview" style="background:rgba(20,184,166,0.10); border:1px solid rgba(20,184,166,0.22); display:flex; align-items:center; justify-content:center; color:#5eead4;">Teal</div><div class="swatch-meta"><div class="swatch-name">Pill Teal</div><div class="swatch-hex">#5eead4</div></div></div>
+  </div>
+</section>
+
+<section class="ds-section" id="type">
+  <span class="ds-section-label">03 · Typographie</span>
+  <h2>Deux familles. <em>Zéro compromis</em>.</h2>
+  <p class="ds-intro">Poppins pour les titres, DM Sans pour le reste. Letter-spacing négatif sur tous les titres. Italique gradient pour les accents.</p>
+  <div style="background:var(--black-2); border:1px solid var(--border-dark); border-radius:20px; padding:32px;">
+    <div class="type-row"><div class="type-sample"><div class="t-h1">Pour parler à <em>son équipe</em>.</div></div><div class="type-meta"><strong>H1 / Display</strong><br>Poppins 600<br>clamp(52px, 7vw, 88px)<br>letter-spacing: -2px</div></div>
+    <div class="type-row"><div class="type-sample"><div class="t-h2">On construit des agents qui bossent.</div></div><div class="type-meta"><strong>H2 / Section</strong><br>Poppins 600<br>clamp(36px, 4vw, 56px)<br>letter-spacing: -2px</div></div>
+    <div class="type-row"><div class="type-sample"><div class="t-h3">Card title / Feature.</div></div><div class="type-meta"><strong>H3 / Card</strong><br>Poppins 600<br>22-28px<br>letter-spacing: -0.5 à -1px</div></div>
+    <div class="type-row"><div class="type-sample"><div class="t-body-lg">Sous-titre de section. On construit les automatisations que ton agence n'a jamais eu le temps de mettre en place.</div></div><div class="type-meta"><strong>Body Large</strong><br>DM Sans 400<br>19px<br>line-height: 1.65</div></div>
+    <div class="type-row"><div class="type-sample"><div class="t-body">Paragraphe standard. Le reste du body est en 16-17px, DM Sans 400.</div></div><div class="type-meta"><strong>Body</strong><br>DM Sans 400<br>16-17px</div></div>
+    <div class="type-row"><div class="type-sample"><div class="t-label">Section label</div></div><div class="type-meta"><strong>Label</strong><br>DM Sans 500<br>12px uppercase<br>letter-spacing: 2px</div></div>
+    <div class="type-row"><div class="type-sample"><div class="t-mono">const accent = '#5b6af0';</div></div><div class="type-meta"><strong>Mono</strong><br>SF Mono / Menlo<br>13px</div></div>
+  </div>
+</section>
+
+<section class="ds-section" id="spacing">
+  <span class="ds-section-label">04 · Spacing & Radius</span>
+  <h2>Rythme <em>visuel</em>.</h2>
+  <p class="ds-intro">Échelle par puissance de 2, sections larges (120px desktop, 72px mobile), radius généreux.</p>
+  <div style="background:var(--black-2); border:1px solid var(--border-dark); border-radius:20px; padding:24px 32px;">
+    <div class="space-row"><div class="space-name">xs</div><div class="space-bar" style="width:8px;"></div><div class="space-val">8px</div><div class="space-usage">Gap pills, icône-texte badge</div></div>
+    <div class="space-row"><div class="space-name">sm</div><div class="space-bar" style="width:16px;"></div><div class="space-val">16px</div><div class="space-usage">Gap boutons, padding pills</div></div>
+    <div class="space-row"><div class="space-name">md</div><div class="space-bar" style="width:24px;"></div><div class="space-val">24px</div><div class="space-usage">Gap cards, padding mobile</div></div>
+    <div class="space-row"><div class="space-name">lg</div><div class="space-bar" style="width:32px;"></div><div class="space-val">32px</div><div class="space-usage">Padding cards, gap grid</div></div>
+    <div class="space-row"><div class="space-name">xl</div><div class="space-bar" style="width:48px;"></div><div class="space-val">48px</div><div class="space-usage">Padding nav, gap entre blocs</div></div>
+    <div class="space-row"><div class="space-name">2xl</div><div class="space-bar" style="width:72px;"></div><div class="space-val">72px</div><div class="space-usage">Padding mobile section</div></div>
+    <div class="space-row"><div class="space-name">3xl</div><div class="space-bar" style="width:120px;"></div><div class="space-val">120px</div><div class="space-usage">Padding desktop section</div></div>
+  </div>
+  <h3 style="font-family:var(--font-display); font-weight:600; font-size:18px; margin:48px 0 16px; color:var(--muted);">Radius</h3>
+  <div class="ds-grid-4">
+    <div><div class="radius-demo" style="border-radius:8px;">8px</div><div style="margin-top:8px; font-size:13px; color:var(--muted);">sm · code inline</div></div>
+    <div><div class="radius-demo" style="border-radius:12px;">12px</div><div style="margin-top:8px; font-size:13px; color:var(--muted);">md · code blocks</div></div>
+    <div><div class="radius-demo" style="border-radius:20px;">20px</div><div style="margin-top:8px; font-size:13px; color:var(--muted);">lg · cards</div></div>
+    <div><div class="radius-demo" style="border-radius:999px;">999px</div><div style="margin-top:8px; font-size:13px; color:var(--muted);">full · buttons/pills</div></div>
+  </div>
+</section>
+
+<section class="ds-section" id="logo">
+  <span class="ds-section-label">05 · Logo</span>
+  <h2>Logo <em>OOO</em>.</h2>
+  <p class="ds-intro">SVG inline toujours. ViewBox 0 0 659 659 intact. Taille mini 24px.</p>
+  <h3 style="font-family:var(--font-display); font-weight:600; font-size:18px; margin:0 0 16px; color:var(--muted);">Lockup horizontal</h3>
+  <div class="ds-grid-2" style="margin-bottom:16px;">
+    <div><div class="logo-display" style="padding:40px;"><div style="display:flex; align-items:center; gap:18px;"><svg width="56" height="56" viewBox="0 0 659 659" fill="none"><path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" fill="#fff"/></svg><span style="font-family:'Poppins'; font-weight:600; font-size:26px; letter-spacing:-1.2px; color:#fff; line-height:1;">Out of Office</span></div></div><div style="text-align:center; margin-top:12px; font-size:13px; color:var(--muted);">Lockup · dark</div></div>
+    <div><div class="logo-display on-white" style="padding:40px;"><div style="display:flex; align-items:center; gap:18px;"><svg width="56" height="56" viewBox="0 0 659 659" fill="none"><path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" fill="#080808"/></svg><span style="font-family:'Poppins'; font-weight:600; font-size:26px; letter-spacing:-1.2px; color:#080808; line-height:1;">Out of Office</span></div></div><div style="text-align:center; margin-top:12px; font-size:13px; color:var(--muted);">Lockup · light</div></div>
+  </div>
+  <div class="ds-grid-2">
+    <div><div class="logo-display" style="padding:40px;"><div style="display:flex; align-items:center; gap:14px;"><svg width="36" height="36" viewBox="0 0 659 659" fill="none"><path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" fill="#fff"/></svg><span style="font-family:'Poppins'; font-weight:600; font-size:17px; letter-spacing:-0.6px; color:#fff; line-height:1;">Out of Office</span></div></div><div style="text-align:center; margin-top:12px; font-size:13px; color:var(--muted);">Compact · nav / signature</div></div>
+    <div><div class="logo-display" style="padding:40px;"><div style="display:flex; align-items:center; gap:14px;"><svg width="36" height="36" viewBox="0 0 659 659" fill="none"><path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" fill="#fff"/></svg><div style="display:flex; flex-direction:column; line-height:1;"><span style="font-family:'Poppins'; font-weight:600; font-size:15px; letter-spacing:-0.4px; color:#fff;">Out of Office</span><span style="font-family:'DM Sans'; font-weight:400; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-top:4px;">IA et automatisations</span></div></div></div><div style="text-align:center; margin-top:12px; font-size:13px; color:var(--muted);">Avec tagline · first-touch</div></div>
+  </div>
+</section>
+
+<section class="ds-section" id="buttons">
+  <span class="ds-section-label">06 · Boutons</span>
+  <h2>Trois <em>variantes</em>.</h2>
+  <p class="ds-intro">Primary pour les CTAs, nav pour le header, ghost pour secondaires. Toutes en pill 999px.</p>
+  <div style="background:var(--black-2); border:1px solid var(--border-dark); border-radius:20px; padding:48px;">
+    <div class="btn-row" style="justify-content:center;">
+      <a href="#" class="btn-primary"><span>Réserve ton appel roadmap</span> →</a>
+      <a href="#" class="btn-nav">Call roadmap →</a>
+      <a href="#" class="btn-ghost">En savoir plus</a>
+    </div>
+    <div style="text-align:center; margin-top:24px; color:var(--muted); font-size:13px;">Survole pour voir le gradient hover</div>
+  </div>
+  <div style="margin-top:24px; padding:16px 20px; background:rgba(91,106,240,0.06); border:1px solid rgba(91,106,240,0.2); border-radius:12px; font-size:13px; color:var(--muted);">💡 <strong style="color:var(--white);">Règle critique :</strong> wrapper le texte des boutons dans &lt;span&gt; pour le z-index du hover gradient.</div>
+</section>
+
+<section class="ds-section" id="pills">
+  <span class="ds-section-label">07 · Pills & Badges</span>
+  <h2>Taxinomie <em>colorée</em>.</h2>
+  <p class="ds-intro">6 couleurs pour classifier. Construction systématique : fond 0.10-0.12, border 0.22-0.25.</p>
+  <div style="background:var(--black-2); border:1px solid var(--border-dark); border-radius:20px; padding:48px;">
+    <div class="pill-row" style="justify-content:center; margin-bottom:32px;">
+      <span class="pill pill-blue">Acquisition</span>
+      <span class="pill pill-violet">AI Infrastructure</span>
+      <span class="pill pill-green">Onboarding</span>
+      <span class="pill pill-amber">Reporting</span>
+      <span class="pill pill-rose">Client Ops</span>
+      <span class="pill pill-teal">Content</span>
+    </div>
+    <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap;">
+      <div class="badge-hero"><span class="badge-dot"></span>Design System v1.0</div>
+      <div class="badge-hero"><span class="badge-dot" style="background:#fcd34d;"></span>En cours</div>
+      <div class="badge-hero"><span class="badge-dot" style="background:var(--accent);"></span>Nouveau</div>
+    </div>
+  </div>
+</section>
+
+<section class="ds-section" id="cards">
+  <span class="ds-section-label">08 · Cards</span>
+  <h2>Cards <em>dark & white</em>.</h2>
+  <p class="ds-intro">Deux variantes selon fond. Radius 20px, padding 32-36px, hover border accent.</p>
+  <div class="ds-grid-2">
+    <div class="card-dark"><div class="pill pill-violet" style="margin-bottom:16px;">AI Infrastructure</div><h3>Card dark</h3><p>Sur sections noires. Hover border accent 40%. Pour features, stack, KPIs.</p></div>
+    <div class="card-white"><div class="pill pill-violet" style="margin-bottom:16px;">Case Study</div><h3>Card white</h3><p>Sur sections off-white. Pour témoignages, use cases, services.</p></div>
+  </div>
+</section>
+
+<section class="ds-section" id="light" style="padding:0; border-bottom:0;">
+  <div class="ds-light-wrap on-light">
+    <span class="ds-section-label">09 · Sections light</span>
+    <h2>La marque <em>en clair</em>.</h2>
+    <p class="ds-intro">60% dark / 40% light. Jamais 3+ sections light consécutives. Les blocs premium (stats, témoignages) passent en light pour l'emphase.</p>
+    <h3 style="font-family:var(--font-display); font-weight:600; font-size:18px; margin:32px 0 16px; color:var(--muted-2); padding-bottom:0.1em;">Cards light (3 variantes)</h3>
+    <div class="ds-grid-3" style="margin-bottom:48px;">
+      <div class="card-light-plain"><div class="pill pill-violet" style="margin-bottom:16px;">Plain</div><h3>Card basique</h3><p>Border 1px, pas de shadow. Pour grilles denses.</p></div>
+      <div class="card-light-elevated"><div class="pill pill-blue" style="margin-bottom:16px;">Elevated</div><h3>Card shadow</h3><p>Double shadow pour flotter. CTAs secondaires.</p></div>
+      <div class="card-light-accent"><div class="pill pill-violet" style="margin-bottom:16px; position:relative; z-index:1;">Accent</div><h3 style="position:relative; z-index:1;">Card glow</h3><p style="color:var(--muted-2); font-size:15px; position:relative; z-index:1;">Gradient radial + border accent. Bloc premium.</p></div>
+    </div>
+    <h3 style="font-family:var(--font-display); font-weight:600; font-size:18px; margin:32px 0 16px; color:var(--muted-2); padding-bottom:0.1em;">Boutons light</h3>
+    <div style="background:#fff; border:1px solid rgba(0,0,0,0.08); border-radius:20px; padding:48px;">
+      <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:center; justify-content:center;">
+        <a href="#" class="btn-primary-light"><span>Réserve ton appel roadmap</span> →</a>
+        <a href="#" class="btn-ghost-light">En savoir plus</a>
+        <span class="badge-light"><span style="width:6px; height:6px; border-radius:50%; background:#22c55e;"></span>Badge light</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="ds-section" id="logos-slider">
+  <span class="ds-section-label">10 · Slider logos clients</span>
+  <h2>Preuve sociale <em>en mouvement</em>.</h2>
+  <p class="ds-intro">Animation linéaire 32s, gap 72px, mask edges pour fade. Duplique le contenu du track pour loop seamless.</p>
+  <h3 style="font-family:var(--font-display); font-weight:600; font-size:18px; margin:0 0 16px; color:var(--muted); padding-bottom:0.1em;">Sur fond dark</h3>
+  <div style="background:var(--black-2); border:1px solid var(--border-dark); border-radius:20px; margin-bottom:40px;">
+    <div class="logos-slider on-dark"><div class="logos-track">
+      <span class="logo-brand">Linear</span><span class="logo-brand" style="font-style:italic;">Stripe</span><span class="logo-brand" style="letter-spacing:-2px; font-weight:700;">Vercel</span><span class="logo-brand" style="font-weight:500;">Notion</span><span class="logo-brand" style="letter-spacing:2px; font-weight:400; text-transform:uppercase; font-size:22px;">FIGMA</span><span class="logo-brand" style="font-style:italic;">Slack</span><span class="logo-brand" style="font-weight:700;">airbnb</span><span class="logo-brand" style="letter-spacing:-1.5px;">Loom</span><span class="logo-brand" style="letter-spacing:1px; text-transform:uppercase; font-size:22px;">RAYCAST</span>
+      <span class="logo-brand">Linear</span><span class="logo-brand" style="font-style:italic;">Stripe</span><span class="logo-brand" style="letter-spacing:-2px; font-weight:700;">Vercel</span><span class="logo-brand" style="font-weight:500;">Notion</span><span class="logo-brand" style="letter-spacing:2px; font-weight:400; text-transform:uppercase; font-size:22px;">FIGMA</span><span class="logo-brand" style="font-style:italic;">Slack</span><span class="logo-brand" style="font-weight:700;">airbnb</span><span class="logo-brand" style="letter-spacing:-1.5px;">Loom</span><span class="logo-brand" style="letter-spacing:1px; text-transform:uppercase; font-size:22px;">RAYCAST</span>
+    </div></div>
+  </div>
+  <h3 style="font-family:var(--font-display); font-weight:600; font-size:18px; margin:0 0 16px; color:var(--muted); padding-bottom:0.1em;">Sur fond light</h3>
+  <div style="background:var(--off-white); border:1px solid rgba(0,0,0,0.08); border-radius:20px;">
+    <div class="logos-slider on-light"><div class="logos-track">
+      <span class="logo-brand">Linear</span><span class="logo-brand" style="font-style:italic;">Stripe</span><span class="logo-brand" style="letter-spacing:-2px; font-weight:700;">Vercel</span><span class="logo-brand" style="font-weight:500;">Notion</span><span class="logo-brand" style="letter-spacing:2px; font-weight:400; text-transform:uppercase; font-size:22px;">FIGMA</span><span class="logo-brand" style="font-style:italic;">Slack</span><span class="logo-brand" style="font-weight:700;">airbnb</span><span class="logo-brand" style="letter-spacing:-1.5px;">Loom</span>
+      <span class="logo-brand">Linear</span><span class="logo-brand" style="font-style:italic;">Stripe</span><span class="logo-brand" style="letter-spacing:-2px; font-weight:700;">Vercel</span><span class="logo-brand" style="font-weight:500;">Notion</span><span class="logo-brand" style="letter-spacing:2px; font-weight:400; text-transform:uppercase; font-size:22px;">FIGMA</span><span class="logo-brand" style="font-style:italic;">Slack</span><span class="logo-brand" style="font-weight:700;">airbnb</span><span class="logo-brand" style="letter-spacing:-1.5px;">Loom</span>
+    </div></div>
+  </div>
+</section>
+
+<section class="ds-section" id="icono">
+  <span class="ds-section-label">11 · Iconographie</span>
+  <h2>Emojis & memojis <em>Apple</em>.</h2>
+  <p class="ds-intro">Zéro icon pack (Lucide, Tabler, Feather interdits). Emojis Apple pour features, memojis pour équipe.</p>
+  <div style="background:var(--black-2); border:1px solid var(--border-dark); border-radius:20px; padding:32px; margin-bottom:32px;">
+    <div class="emoji-grid">
+      <div class="emoji-tile"><span class="emoji">⚡</span><span class="emoji-label">speed</span></div>
+      <div class="emoji-tile"><span class="emoji">🤖</span><span class="emoji-label">ai / agent</span></div>
+      <div class="emoji-tile"><span class="emoji">🧠</span><span class="emoji-label">brain</span></div>
+      <div class="emoji-tile"><span class="emoji">🚀</span><span class="emoji-label">launch</span></div>
+      <div class="emoji-tile"><span class="emoji">🎯</span><span class="emoji-label">target</span></div>
+      <div class="emoji-tile"><span class="emoji">📊</span><span class="emoji-label">reporting</span></div>
+      <div class="emoji-tile"><span class="emoji">🔧</span><span class="emoji-label">tooling</span></div>
+      <div class="emoji-tile"><span class="emoji">🎨</span><span class="emoji-label">design</span></div>
+      <div class="emoji-tile"><span class="emoji">📈</span><span class="emoji-label">growth</span></div>
+      <div class="emoji-tile"><span class="emoji">🌴</span><span class="emoji-label">out of office</span></div>
+      <div class="emoji-tile"><span class="emoji">✨</span><span class="emoji-label">magic</span></div>
+      <div class="emoji-tile"><span class="emoji">🎬</span><span class="emoji-label">content</span></div>
+    </div>
+  </div>
+  <div class="memoji-showcase">
+    <div class="memoji-slot"><div class="memoji-placeholder">👨‍💻</div><div class="memoji-role">Jules</div><div class="memoji-caption">Fondateur</div></div>
+    <div class="memoji-slot"><div class="memoji-placeholder">👨‍🎨</div><div class="memoji-role">Alex</div><div class="memoji-caption">Design & vidéo</div></div>
+    <div class="memoji-slot"><div class="memoji-placeholder">🧑‍🔧</div><div class="memoji-role">Sam</div><div class="memoji-caption">Automation lead</div></div>
+    <div class="memoji-slot"><div class="memoji-placeholder">🧑‍💼</div><div class="memoji-role">Équipe</div><div class="memoji-caption">+ AI Managers</div></div>
+  </div>
+</section>
+
+<section class="ds-section" id="patterns">
+  <span class="ds-section-label">12 · Patterns</span>
+  <h2>Structure de <em>landing type</em>.</h2>
+  <p class="ds-intro">13 sections dans un ordre validé. Alternance dark/white rythmée.</p>
+  <div style="background:var(--black-2); border:1px solid var(--border-dark); border-radius:20px; padding:32px;">
+    <ol style="list-style:none;">
+      <li style="display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--border-dark); align-items:center;"><div style="width:32px; height:32px; border-radius:50%; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px;">01</div><div style="flex:1;"><strong>Nav fixe</strong> · logo + links + CTA</div><span class="pill pill-violet" style="font-size:11px;">Dark</span></li>
+      <li style="display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--border-dark); align-items:center;"><div style="width:32px; height:32px; border-radius:50%; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px;">02</div><div style="flex:1;"><strong>Hero</strong> · badge + h1 em + sub + CTA</div><span class="pill pill-violet" style="font-size:11px;">Dark</span></li>
+      <li style="display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--border-dark); align-items:center;"><div style="width:32px; height:32px; border-radius:50%; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px;">03</div><div style="flex:1;"><strong>Logos clients</strong> · slider infini</div><span class="pill pill-violet" style="font-size:11px;">Dark</span></li>
+      <li style="display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--border-dark); align-items:center;"><div style="width:32px; height:32px; border-radius:50%; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px;">04</div><div style="flex:1;"><strong>Stats</strong> · compteurs animés</div><span class="pill pill-violet" style="font-size:11px;">Dark</span></li>
+      <li style="display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--border-dark); align-items:center;"><div style="width:32px; height:32px; border-radius:50%; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px;">05</div><div style="flex:1;"><strong>Avant / Après</strong> · tableau 3 cols</div><span class="pill" style="background:rgba(245,244,240,0.15); border:1px solid rgba(245,244,240,0.3); color:#f5f4f0; font-size:11px;">White</span></li>
+      <li style="display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--border-dark); align-items:center;"><div style="width:32px; height:32px; border-radius:50%; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px;">06</div><div style="flex:1;"><strong>Stack</strong> · grille 3×2 + logos outils</div><span class="pill pill-violet" style="font-size:11px;">Dark</span></li>
+      <li style="display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--border-dark); align-items:center;"><div style="width:32px; height:32px; border-radius:50%; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px;">07</div><div style="flex:1;"><strong>Use cases</strong> · grille 2×2</div><span class="pill" style="background:rgba(245,244,240,0.15); border:1px solid rgba(245,244,240,0.3); color:#f5f4f0; font-size:11px;">White</span></li>
+      <li style="display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--border-dark); align-items:center;"><div style="width:32px; height:32px; border-radius:50%; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px;">08</div><div style="flex:1;"><strong>Process</strong> · kanban 5 cols</div><span class="pill pill-violet" style="font-size:11px;">Dark</span></li>
+      <li style="display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--border-dark); align-items:center;"><div style="width:32px; height:32px; border-radius:50%; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px;">09</div><div style="flex:1;"><strong>Témoignages</strong> · 2×2 + avatars</div><span class="pill" style="background:rgba(245,244,240,0.15); border:1px solid rgba(245,244,240,0.3); color:#f5f4f0; font-size:11px;">White</span></li>
+      <li style="display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--border-dark); align-items:center;"><div style="width:32px; height:32px; border-radius:50%; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px;">10</div><div style="flex:1;"><strong>À propos</strong> · 2 colonnes + stats</div><span class="pill pill-violet" style="font-size:11px;">Dark</span></li>
+      <li style="display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--border-dark); align-items:center;"><div style="width:32px; height:32px; border-radius:50%; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px;">11</div><div style="flex:1;"><strong>FAQ</strong> · accordion</div><span class="pill" style="background:rgba(245,244,240,0.15); border:1px solid rgba(245,244,240,0.3); color:#f5f4f0; font-size:11px;">White</span></li>
+      <li style="display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--border-dark); align-items:center;"><div style="width:32px; height:32px; border-radius:50%; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px;">12</div><div style="flex:1;"><strong>CTA final</strong> · gradient radial</div><span class="pill pill-violet" style="font-size:11px;">Dark</span></li>
+      <li style="display:flex; gap:16px; padding:12px 0; align-items:center;"><div style="width:32px; height:32px; border-radius:50%; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:600; font-size:13px;">13</div><div style="flex:1;"><strong>Footer</strong> · 3 colonnes + copyright</div><span class="pill pill-violet" style="font-size:11px;">Dark</span></li>
+    </ol>
+  </div>
+  <h3 style="font-family:var(--font-display); font-weight:600; font-size:18px; margin:48px 0 16px; color:var(--muted);">FAQ Accordion</h3>
+  <div class="faq-item open" onclick="toggleFaq(this)"><div class="faq-q">C'est quoi OOO exactement ?<span class="faq-toggle">+</span></div><div class="faq-answer">Une agence AI-native qui construit l'infrastructure d'automatisation pour les agences de 3 à 20 personnes. Stack : Claude + n8n + Notion + Slack.</div></div>
+  <div class="faq-item" onclick="toggleFaq(this)"><div class="faq-q">Combien de temps pour voir les premiers résultats ?<span class="faq-toggle">+</span></div><div class="faq-answer">Premiers workflows en prod sous 2 semaines, ROI mesurable sous 30 jours.</div></div>
+</section>
+
+<section class="ds-section" id="motion">
+  <span class="ds-section-label">13 · Motion</span>
+  <h2>Motion <em>discrète</em>.</h2>
+  <p class="ds-intro">Transitions .2-.35s, easing naturel, translate de quelques pixels max. Pas de parallaxe, pas de scroll-jack.</p>
+  <div class="ds-grid-3">
+    <div class="motion-demo"><div style="text-align:center;"><h4>Hover card</h4><p>translateY(-2px) + border accent</p><p style="margin-top:8px; font-family:'SF Mono',monospace; font-size:11px; color:var(--accent);">.3s ease</p></div></div>
+    <div class="motion-demo"><div style="text-align:center;"><h4>Scroll reveal</h4><p>opacity + translateY(28px→0)</p><p style="margin-top:8px; font-family:'SF Mono',monospace; font-size:11px; color:var(--accent);">.55s ease</p></div></div>
+    <div class="motion-demo"><div style="text-align:center;"><h4>Btn hover</h4><p>gradient fade-in + translateY(-1px)</p><p style="margin-top:8px; font-family:'SF Mono',monospace; font-size:11px; color:var(--accent);">.2-.3s</p></div></div>
+    <div class="motion-demo"><div style="text-align:center;"><h4>FAQ toggle</h4><p>max-height + rotate(45deg)</p><p style="margin-top:8px; font-family:'SF Mono',monospace; font-size:11px; color:var(--accent);">.35s ease</p></div></div>
+    <div class="motion-demo"><div style="text-align:center;"><h4>Logo slider</h4><p>translateX infinite</p><p style="margin-top:8px; font-family:'SF Mono',monospace; font-size:11px; color:var(--accent);">32s linear</p></div></div>
+    <div class="motion-demo"><div style="text-align:center;"><h4>KPI counter</h4><p>ease-in-out 1800ms</p><p style="margin-top:8px; font-family:'SF Mono',monospace; font-size:11px; color:var(--accent);">IntersectionObserver</p></div></div>
+  </div>
+</section>
+
+<section class="ds-section" id="copy">
+  <span class="ds-section-label">14 · Copy & Tone</span>
+  <h2>Voice <em>OOO</em>.</h2>
+  <p class="ds-intro">Le copy est un élément de design. Règles universelles : site, landing, email, slides.</p>
+  <div class="ds-grid-2">
+    <div class="card-dark" style="border-left:3px solid #86efac;">
+      <div class="pill pill-green" style="margin-bottom:16px;">✓ Do</div>
+      <ul style="list-style:none; color:var(--muted); font-size:15px; line-height:1.9;">
+        <li>• Tutoiement systématique (tu / ton / ta)</li>
+        <li>• Phrases courtes, percutantes</li>
+        <li>• Italique gradient pour les mots-clés de titre</li>
+        <li>• Virgules de rythme : "On fait. On livre. On mesure."</li>
+        <li>• Verbes d'action au présent</li>
+        <li>• Noms propres (n8n, Claude, Notion) cités tels quels</li>
+      </ul>
+    </div>
+    <div class="card-dark" style="border-left:3px solid #fda4af;">
+      <div class="pill pill-rose" style="margin-bottom:16px;">✗ Don't</div>
+      <ul style="list-style:none; color:var(--muted); font-size:15px; line-height:1.9;">
+        <li>• Tirets cadratins trop "AI-generated"</li>
+        <li>• Emojis dans les titres</li>
+        <li>• "Nous" formel / vouvoiement</li>
+        <li>• Buzzwords creux ("synergie", "disruptif")</li>
+        <li>• Promesses quantifiées non-sourcées</li>
+        <li>• Title case anglais</li>
+      </ul>
+    </div>
+  </div>
+  <div style="margin-top:32px; background:var(--black-2); border:1px solid var(--border-dark); border-radius:16px; padding:32px;">
+    <h3 style="font-family:var(--font-display); font-size:18px; margin-bottom:16px;">CTA standard</h3>
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 0; border-bottom:1px solid var(--border-dark);"><code style="font-family:'SF Mono',monospace; color:var(--accent); font-size:14px;">"Réserve ton appel roadmap →"</code><span style="color:var(--muted); font-size:13px;">CTA principal</span></div>
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 0;"><code style="font-family:'SF Mono',monospace; color:var(--accent); font-size:14px;">cal.com/out-of-office/call-decouverte</code><span style="color:var(--muted); font-size:13px;">Lien Cal.com</span></div>
+  </div>
+</section>
+
+</div>
+
+<footer class="ds-footer">
+  OOO Design System v1.0 · Avril 2026<br>
+  Fait avec Claude, of course ;)
+</footer>
+
+<script>
+function toggleFaq(el){
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if(!isOpen) el.classList.add('open');
+}
+</script>
+
 </body>
 </html>
