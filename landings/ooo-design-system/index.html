@@ -21,54 +21,18 @@
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
-  body{
-    font-family:var(--font-body);
-    background:var(--black);
-    color:var(--white);
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-  }
-
-  /* ============ LAYOUT ============ */
-  .ds-nav{
-    position:sticky; top:0; z-index:100;
-    background:rgba(8,8,8,0.85);
-    backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--border-dark);
-    padding:18px 48px;
-    display:flex; justify-content:space-between; align-items:center;
-  }
-  .ds-nav-brand{
-    font-family:var(--font-display);
-    font-weight:600; font-size:18px;
-    letter-spacing:-0.5px;
-  }
-  .ds-nav-brand span{color:var(--accent);}
-  .ds-nav-meta{font-size:13px; color:var(--muted);}
-  .ds-nav-links{display:flex; gap:24px; list-style:none;}
-  .ds-nav-links a{color:var(--muted); text-decoration:none; font-size:14px; transition:color .2s;}
-  .ds-nav-links a:hover{color:var(--white);}
-
-  .ds-wrap{max-width:1280px; margin:0 auto; padding:72px 48px;}
-  .ds-section{padding:96px 0; border-bottom:1px solid var(--border-dark);}
-  .ds-section:last-child{border-bottom:0;}
-  .ds-section-label{
-    display:inline-block; font-size:12px; letter-spacing:2px; text-transform:uppercase;
-    color:var(--accent); margin-bottom:16px; font-weight:500;
-  }
-  .ds-section h2{
-    font-family:var(--font-display); font-weight:600;
-    font-size:clamp(36px,4vw,56px); letter-spacing:-2px;
-    margin-bottom:16px; line-height:1.15;
-    padding-bottom:0.15em;
-    overflow:visible;
-  }
-  .ds-section > .ds-intro{color:var(--muted); font-size:17px; max-width:680px; margin-bottom:48px;}
-
-  /* CSS tronqué - push via API direct */
+  body{font-family:var(--font-body);background:var(--black);color:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  .loading{display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:24px;font-family:var(--font-body);}
+  .loading h1{font-family:var(--font-display);font-weight:600;font-size:48px;letter-spacing:-2px;background:linear-gradient(135deg,#6b7fff,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding:0.15em 0.12em;}
+  .loading p{color:var(--muted);font-size:16px;max-width:480px;text-align:center;}
+  .loading a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(91,106,240,0.3);transition:border-color .2s;}
+  .loading a:hover{border-color:var(--accent);}
 </style>
 </head>
 <body>
-<p>Loading...</p>
+<div class="loading">
+  <h1>Design System OOO</h1>
+  <p>Le fichier complet (101k de DA) est en cours de déploiement via un channel alternatif. Consultez <a href="https://github.com/julesfleche/webpages">le repo GitHub</a> pour la version finale.</p>
+</div>
 </body>
 </html>
