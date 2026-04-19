@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clockify OOO</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/globe.gl@2.27.2/dist/globe.gl.min.js"></script>
+<script>window.GlobeLib = typeof Globe !== 'undefined' ? Globe : null;</script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; overflow: hidden; }
+body { font-family: 'DM Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { border-radius: 99px; }
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes slideUp { from{transform:translateY(10px);opacity:0} to{transform:translateY(0);opacity:1} }
+@keyframes slideIn { from{transform:translateX(120%);opacity:0} to{transform:translateX(0);opacity:1} }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect, useRef, useMemo } = React;
+const HOUR_H = 64, SNAP = 15;
+
+// ─── Theme ────────────────────────────────────────────────────
+const THEMES = {
+  dark: {
+    bg: '#080808', sidebar: '#0d0d0d', surface: '#111111', surface2: '#1a1a1a',
+    border: 'rgba(255,255,255,0.07)', border2: 'rgba(255,255,255,0.04)',
+    text: '#ffffff', textMuted: '#666', textFaint: '#333',
+    inputBg: '#1a1a1a', inputBorder: 'rgba(255,255,255,0.1)', inputColor: '#fff',
+    scrollThumb: 'rgba(255,255,255,0.1)',
+    btnGhostBg: 'transparent', btnGhostBorder: 'rgba(255,255,255,0.1)', btnGhostColor: '#666',
+    btnGhostHoverBg: 'rgba(255,255,255,0.05)', btnGhostHoverColor: '#ddd',
+    gridLine: 'rgba(255,255,255,0.04)', gridLineDash: 'rgba(255,255,255,0.025)',
+    todayBorder: 'rgba(91,106,240,0.3)', todayBg: 'rgba(91,106,240,0.02)',
+    dragPreviewBg: 'rgba(91,106,240,0.15)', dragPreviewBorder: 'rgba(91,106,240,0.5)',
+    modalBg: '#111', modalOverlay: 'rgba(0,0,0,0.7)',
+    toastBg: '#111', toastBorder: 'rgba(34,197,94,0.3)', toastColor: '#86efac',
+    statCardBg: '#111', statCardBorder: 'rgba(255,255,255,0.06)',
+    pillBg: 'rgba(255,255,255,0.05)',
+  },
+  light: {
+    bg: '#f5f4f0', sidebar: '#ffffff', surface: '#ffffff', surface2: '#fafaf8',
+    border: 'rgba(0,0,0,0.07)', border2: 'rgba(0,0,0,0.05)',
+    text: '#080808', textMuted: '#888', textFaint: '#bbb',
+    inputBg: '#fff', inputBorder: 'rgba(0,0,0,0.1)', inputColor: '#080808',
+    scrollThumb: 'rgba(0,0,0,0.1)',
+    btnGhostBg: '#fff', btnGhostBorder: 'rgba(0,0,0,0.1)', btnGhostColor: '#666',
+    btnGhostHoverBg: '#f5f4f0', btnGhostHoverColor: '#080808',
+    gridLine: 'rgba(0,0,0,0.05)', gridLineDash: 'rgba(0,0,0,0.025)',
+    todayBorder: 'rgba(91,106,240,0.2)', todayBg: 'rgba(91,106,240,0.025)',
+    dragPreviewBg: 'rgba(91,106,240,0.08)', dragPreviewBorder: 'rgba(91,106,240,0.4)',
+    modalBg: '#fff', modalOverlay: 'rgba(0,0,0,0.25)',
+    toastBg: '#fff', toastBorder: 'rgba(34,197,94,0.3)', toastColor: '#16a34a',
+    statCardBg: '#f5f4f0', statCardBorder: 'rgba(0,0,0,0.06)',
+    pillBg: 'rgba(0,0,0,0.04)',
+  }
+};
+
+const CLIENT_COLORS = {
+  indigo:  { bg:(d)=>d?'rgba(79,114,245,0.2)':'rgba(79,114,245,0.1)',   bd:(d)=>d?'rgba(79,114,245,0.45)':'rgba(79,114,245,0.28)',  fg:'#4f72f5', text:(d)=>d?'#a5b4fc':'#3730a3' },
+  rose:    { bg:(d)=>d?'rgba(244,63,94,0.2)':'rgba(244,63,94,0.1)',     bd:(d)=>d?'rgba(244,63,94,0.45)':'rgba(244,63,94,0.28)',    fg:'#f43f5e', text:(d)=>d?'#fda4af':'#9f1239' },
+  emerald: { bg:(d)=>d?'rgba(5,150,105,0.2)':'rgba(5,150,105,0.1)',     bd:(d)=>d?'rgba(5,150,105,0.45)':'rgba(5,150,105,0.28)',   fg:'#059669', text:(d)=>d?'#6ee7b7':'#064e3b' },
+  amber:   { bg:(d)=>d?'rgba(217,119,6,0.2)':'rgba(217,119,6,0.1)',     bd:(d)=>d?'rgba(217,119,6,0.45)':'rgba(217,119,6,0.28)',   fg:'#d97706', text:(d)=>d?'#fde68a':'#78350f' },
+  purple:  { bg:(d)=>d?'rgba(124,58,237,0.2)':'rgba(124,58,237,0.1)',   bd:(d)=>d?'rgba(124,58,237,0.45)':'rgba(124,58,237,0.28)', fg:'#7c3aed', text:(d)=>d?'#ddd6fe':'#4c1d95' },
+  cyan:    { bg:(d)=>d?'rgba(6,182,212,0.2)':'rgba(6,182,212,0.1)',     bd:(d)=>d?'rgba(6,182,212,0.45)':'rgba(6,182,212,0.28)',   fg:'#06b6d4', text:(d)=>d?'#a5f3fc':'#164e63' },
+};
+// legacy aliases
+CLIENT_COLORS.blue   = CLIENT_COLORS.indigo;
+CLIENT_COLORS.violet = CLIENT_COLORS.purple;
+CLIENT_COLORS.green  = CLIENT_COLORS.emerald;
+CLIENT_COLORS.teal   = CLIENT_COLORS.cyan;
+CLIENT_COLORS.sky    = CLIENT_COLORS.cyan;
+
+const TEAM = [
+  { id:'u1', name:'Jules',  initials:'JU', emoji:'🧑\u200d🎨', color:'#5b6af0', tz:'Europe/Paris',  lat:48.85, lng:2.35,  pwd:'julesooo26'  },
+  { id:'u2', name:'Elias',  initials:'EL', emoji:'🧑\u200d💻', color:'#a78bfa', tz:'Europe/Paris',  lat:48.85, lng:2.35,  pwd:'eliasooo26'  },
+  { id:'u3', name:'Rayen',  initials:'RA', emoji:'🧑\u200d🚀', color:'#f472b6', tz:'Africa/Tunis',  lat:36.82, lng:10.17, pwd:'rayenooo26'  },
+];
+
+const TASK_TYPES = ['Call', 'Dev', 'RH', 'Sales', 'Contenu', 'Documentation'];
+const TASK_META = {
+  'Call':          { emoji:'📞', color:'#4f72f5' },
+  'Dev':           { emoji:'💻', color:'#7c3aed' },
+  'RH':            { emoji:'👥', color:'#059669' },
+  'Sales':         { emoji:'💰', color:'#d97706' },
+  'Contenu':       { emoji:'✏️',  color:'#f43f5e' },
+  'Documentation': { emoji:'📄', color:'#06b6d4' },
+};
+
+const DEFAULT_RATES = { c1:120, c2:90, c3:75, c4:150, c5:0 }; // €/h
+
+const getCC = (color) => CLIENT_COLORS[color] || CLIENT_COLORS.indigo;
+// Load persisted team members (merges custom with base)
+const loadTeam = () => {
+  try {
+    const saved = JSON.parse(localStorage.getItem('ooo_team') || 'null');
+    return saved || TEAM;
+  } catch { return TEAM; }
+};
+
+const DEFAULT_CLIENTS = [
+  { id:'c1', name:'Agence Lumière',  color:'indigo'  },
+  { id:'c2', name:'Startup Zéon',    color:'rose'    },
+  { id:'c3', name:'Fondation Trace', color:'emerald' },
+  { id:'c4', name:'Studio Brume',    color:'amber'   },
+  { id:'c5', name:'OOO Interne',     color:'purple'  },
+];
+
+// ─── Utils ────────────────────────────────────────────────────
+const getWeekStart = (off=0) => {
+  const n=new Date(), d=n.getDay(), m=new Date(n);
+  m.setDate(n.getDate()+(d===0?-6:1-d)+off*7); m.setHours(0,0,0,0); return m;
+};
+const addDays = (d,n) => { const x=new Date(d); x.setDate(x.getDate()+n); return x; };
+const fmtMin = m => `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+const parseT = s => { const [h,m]=s.split(':').map(Number); return h*60+(m||0); };
+const durLabel = m => { const h=Math.floor(m/60),r=m%60; return !h?`${r}min`:!r?`${h}h`:`${h}h${String(r).padStart(2,'0')}`; };
+const snapMin = m => Math.round(m/SNAP)*SNAP;
+const dateKey = d => d.toISOString().slice(0,10);
+const fmtRange = (s,we) => {
+  const e=addDays(s,we?6:4), o={day:'numeric',month:'short'};
+  return `${s.toLocaleDateString('fr-FR',o)} — ${e.toLocaleDateString('fr-FR',o)}`;
+};
+
+function seedTeamBlocks() {
+  const m=getWeekStart(), k=d=>d.toISOString().slice(0,10), a=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x;};
+  return [
+    {id:'s1',userId:'u2',date:k(m),       startMin:9*60,  endMin:11*60, clientId:'c1',description:'Brief créatif'},
+    {id:'s2',userId:'u2',date:k(a(m,1)),  startMin:14*60, endMin:17*60, clientId:'c3',description:'Atelier terrain'},
+    {id:'s3',userId:'u2',date:k(a(m,2)),  startMin:10*60, endMin:12*60, clientId:'c2',description:'Dev sprint'},
+    {id:'s4',userId:'u2',date:k(a(m,3)),  startMin:9*60,  endMin:10*60+30,clientId:'c5',description:'Réunion équipe'},
+    {id:'s5',userId:'u3',date:k(m),       startMin:10*60, endMin:12*60, clientId:'c2',description:'Maquettes UI'},
+    {id:'s6',userId:'u3',date:k(a(m,1)),  startMin:9*60,  endMin:11*60, clientId:'c4',description:'Direction artistique'},
+    {id:'s7',userId:'u3',date:k(a(m,3)),  startMin:15*60, endMin:18*60, clientId:'c1',description:'Shooting produit'},
+    {id:'s8',userId:'u3',date:k(a(m,4)),  startMin:10*60, endMin:13*60, clientId:'c3',description:'Révisions'},
+    {id:'s9', userId:'u4',date:k(m),      startMin:8*60+30,endMin:10*60,clientId:'c5',description:'Planif hebdo'},
+    {id:'s10',userId:'u4',date:k(a(m,2)), startMin:13*60, endMin:16*60, clientId:'c4',description:'Stratégie contenu'},
+    {id:'s11',userId:'u4',date:k(a(m,4)), startMin:9*60,  endMin:11*60, clientId:'c1',description:'Rapport mensuel'},
+  ];
+}
+
+// ─── Shared styled atoms ──────────────────────────────────────
+const Avatar = ({ member, size=36 }) => (
+  <div style={{ width:size, height:size, borderRadius:'50%', background:member.color+'22', border:`1.5px solid ${member.color}44`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:size*0.52, flexShrink:0, lineHeight:1 }}>
+    {member.emoji}
+  </div>
+);
+
+// ─── Login ────────────────────────────────────────────────────
+function Login({ onLogin, team }) {
+  const [step, setStep] = useState('pick');
+  const [sel, setSel] = useState(null);
+  const [pass, setPass] = useState('');
+  const [err, setErr] = useState('');
+  const T = THEMES.light;
+
+  const submit = e => {
+    e.preventDefault();
+    if (pass === 'ooo2026') onLogin(sel);
+    else { setErr('Mot de passe incorrect'); setTimeout(()=>setErr(''),3000); }
+  };
+
+  return (
+    <div style={{ display:'flex', alignItems:'center', justifyContent:'center', height:'100%', background:T.bg }}>
+      <div style={{ width:400, background:T.surface, border:`1px solid ${T.border}`, borderRadius:24, padding:'44px 40px', boxShadow:'0 4px 32px rgba(0,0,0,0.07)', animation:'slideUp 0.3s ease' }}>
+        <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:36 }}>
+          <img src="assets/logo-mark.svg" style={{ height:24 }} />
+          <span style={{ fontFamily:'Poppins,sans-serif', fontWeight:700, fontSize:16, color:T.text, letterSpacing:'-0.5px' }}>
+            Clockify <em style={{ background:'linear-gradient(135deg,#5b6af0,#8b5cf6)', WebkitBackgroundClip:'text', WebkitTextFillColor:'transparent', fontStyle:'italic' }}>OOO</em>
+          </span>
+        </div>
+        {step === 'pick' ? (
+          <>
+            <p style={{ fontSize:14, color:T.textMuted, marginBottom:20 }}>Qui es-tu ?</p>
+            <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+              {team.map(u => (
+                <button key={u.id} onClick={()=>{setSel(u);setStep('pass');}} style={{ display:'flex', alignItems:'center', gap:14, padding:'12px 16px', background:T.surface2, border:`1px solid ${T.border}`, borderRadius:14, cursor:'pointer', fontFamily:'DM Sans,sans-serif', transition:'all 0.15s' }}
+                  onMouseEnter={e=>{e.currentTarget.style.borderColor='rgba(91,106,240,0.4)';e.currentTarget.style.background='rgba(91,106,240,0.04)';}}
+                  onMouseLeave={e=>{e.currentTarget.style.borderColor=T.border;e.currentTarget.style.background=T.surface2;}}>
+                  <Avatar member={u} size={38} />
+                  <span style={{ fontSize:15, fontWeight:500, color:T.text, flex:1, textAlign:'left' }}>{u.name}</span>
+                  <span style={{ color:T.textFaint, fontSize:18 }}>›</span>
+                </button>
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:28 }}>
+              <Avatar member={sel} size={44} />
+              <div>
+                <div style={{ fontSize:15, fontWeight:600, color:T.text }}>{sel.name}</div>
+                <button onClick={()=>{setStep('pick');setPass('');}} style={{ background:'none', border:'none', color:T.textMuted, fontSize:12, cursor:'pointer', fontFamily:'DM Sans,sans-serif', padding:0 }}>← Changer</button>
+              </div>
+            </div>
+            <form onSubmit={submit}>
+              <input autoFocus type="password" placeholder="Mot de passe de l'équipe" value={pass} onChange={e=>setPass(e.target.value)}
+                style={{ width:'100%', background:T.inputBg, border:`1px solid ${err?'#e11d48':T.inputBorder}`, color:T.inputColor, borderRadius:10, padding:'11px 14px', fontSize:14, fontFamily:'DM Sans,sans-serif', outline:'none', marginBottom:err?8:18, transition:'border-color 0.2s' }} />
+              {err && <p style={{ fontSize:13, color:'#e11d48', marginBottom:14 }}>{err}</p>}
+              <button type="submit" style={{ width:'100%', background:'#5b6af0', color:'#fff', border:'none', borderRadius:999, padding:'13px', fontSize:15, fontWeight:600, fontFamily:'DM Sans,sans-serif', cursor:'pointer' }}>Accéder →</button>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Time Block ───────────────────────────────────────────────
+function Block({ block, client, startHour, onClick, isTeam, member, dark }) {
+  const cc = client ? (getCC(client.color)) : CLIENT_COLORS.blue;
+  const top = ((block.startMin - startHour*60)/60)*HOUR_H;
+  const height = Math.max(((block.endMin-block.startMin)/60)*HOUR_H-2, 16);
+  const dur = block.endMin-block.startMin;
+  const fg = isTeam ? member.color : cc.text(dark);
+  const bg = isTeam ? member.color+'15' : cc.bg(dark);
+  const bd = isTeam ? member.color+'44' : cc.bd(dark);
+
+  return (
+    <div onClick={e=>{e.stopPropagation(); onClick&&onClick(block);}}
+      style={{ position:'absolute', left:3, right:3, top, height, background:bg,
+        border:`1px solid ${bd}`, borderLeft:`2.5px solid ${isTeam?member.color:fg}`,
+        borderRadius:7, padding:'3px 6px', cursor:isTeam?'default':'pointer',
+        zIndex:isTeam?1:2, overflow:'hidden', transition:isTeam?'none':'transform 0.15s,box-shadow 0.15s', userSelect:'none' }}
+      onMouseEnter={e=>{if(!isTeam){e.currentTarget.style.transform='translateY(-1px)';e.currentTarget.style.boxShadow=`0 4px 14px ${bd}`;}}}
+      onMouseLeave={e=>{if(!isTeam){e.currentTarget.style.transform='';e.currentTarget.style.boxShadow='';}}}
+    >
+      {height>=18 && <div style={{ fontSize:10, fontWeight:600, color:fg, lineHeight:1.3, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>
+        {isTeam ? `${member.emoji} ${client?.name||'—'}` : (client?.name||'—')}
+      </div>}
+      {height>=30 && block.taskType && (() => {
+        const tm = TASK_META[block.taskType];
+        return <div style={{ display:'inline-flex', alignItems:'center', gap:3, marginTop:2, background:`${tm?.color||fg}22`, border:`1px solid ${tm?.color||fg}44`, borderRadius:99, padding:'1px 5px' }}>
+          <span style={{ fontSize:9 }}>{tm?.emoji}</span>
+          <span style={{ fontSize:9, fontWeight:600, color:tm?.color||fg, letterSpacing:'0.3px' }}>{block.taskType}</span>
+        </div>;
+      })()}
+      {height>=48 && block.note && <div style={{ fontSize:10, color:`${fg}77`, lineHeight:1.3, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', marginTop:1 }}>{block.note}</div>}
+      {height>=46 && !isTeam && <div style={{ fontSize:10, color:`${fg}66`, marginTop:1 }}>{durLabel(dur)}</div>}
+    </div>
+  );
+}
+
+// ─── Calendar ─────────────────────────────────────────────────
+function Calendar({ user, blocks, teamBlocks, clients, weekOffset, setWeekOffset, showWeekends, setShowWeekends, startHour, endHour, visibleTeam, dark, teamProp }) {
+  // ── Block move/resize drag ──
+  useEffect(()=>{
+    if(!blockDrag) return;
+    const move=(e)=>{
+      const st=scrollRef.current?.scrollTop||0;
+      const rect=scrollRef.current?.getBoundingClientRect();
+      if(!rect) return;
+      const y=e.clientY-rect.top+st;
+      const rawMin=(y/HOUR_H)*60+startHour*60;
+      const snapped=Math.min(Math.max(snapMin(rawMin),startHour*60),endHour*60);
+      if(blockDrag.type==='resize'){
+        setBlockDrag(p=>({...p,curEndMin:Math.max(snapped,p.origStartMin+SNAP)}));
+      } else {
+        const dur=blockDrag.origEndMin-blockDrag.origStartMin;
+        const dy=y-blockDrag.startY;
+        const dMin=(dy/HOUR_H)*60;
+        const newStart=Math.min(Math.max(snapMin(blockDrag.origStartMin+dMin),startHour*60),endHour*60-dur);
+        // Determine day from X
+        const gbRect=scrollRef.current?.getBoundingClientRect();
+        if(gbRect){
+          const x=e.clientX-gbRect.left-52; // 52px = hour label width
+          const colW=(gbRect.width-52)/days.length;
+          const di=Math.min(Math.max(Math.floor(x/colW),0),days.length-1);
+          setBlockDrag(p=>({...p,curStartMin:newStart,curEndMin:newStart+dur,curDateKey:dateKey(days[di])}));
+        } else {
+          setBlockDrag(p=>({...p,curStartMin:newStart,curEndMin:newStart+dur}));
+        }
+      }
+    };
+    const up=()=>{
+      if(blockDrag){
+        const orig=blocks.find(b=>b.id===blockDrag.blockId);
+        if(orig){
+          const updated={...orig,date:blockDrag.curDateKey||blockDrag.origDateKey,startMin:blockDrag.curStartMin,endMin:blockDrag.curEndMin};
+          window.dispatchEvent(new CustomEvent('ooo-save',{detail:updated}));
+        }
+      }
+      setBlockDrag(null);
+    };
+    window.addEventListener('mousemove',move);
+    window.addEventListener('mouseup',up);
+    return()=>{window.removeEventListener('mousemove',move);window.removeEventListener('mouseup',up);};
+  },[blockDrag,startHour,endHour,days,blocks]);
+
+  const handleMoveStart=(block,e)=>{
+    e.preventDefault();
+    const st=scrollRef.current?.scrollTop||0;
+    const rect=scrollRef.current?.getBoundingClientRect();
+    const y=e.clientY-(rect?.top||0)+st;
+    setBlockDrag({type:'move',blockId:block.id,startY:y,origStartMin:block.startMin,origEndMin:block.endMin,origDateKey:block.date,curStartMin:block.startMin,curEndMin:block.endMin,curDateKey:block.date});
+  };
+  const handleResizeStart=(block,e)=>{
+    e.preventDefault();
+    setBlockDrag({type:'resize',blockId:block.id,origStartMin:block.startMin,origEndMin:block.endMin,origDateKey:block.date,curStartMin:block.startMin,curEndMin:block.endMin,curDateKey:block.date});
+  };
+
+
+  const T = THEMES[dark?'dark':'light'];
+  const [modal, setModal] = useState(null);
+  const [drag, setDrag] = useState(null);      // creation drag
+  const [blockDrag, setBlockDrag] = useState(null); // move/resize drag
+  const scrollRef = useRef(null);
+  const gridBodyRef = useRef(null);
+
+  // Listen for chrono stop → open modal
+  useEffect(()=>{
+    const handler=e=>setModal(e.detail);
+    window.addEventListener('ooo-open-modal',handler);
+    return()=>window.removeEventListener('ooo-open-modal',handler);
+  },[]);
+  const weekStart = getWeekStart(weekOffset);
+  const days = Array.from({length:showWeekends?7:5},(_,i)=>addDays(weekStart,i));
+  const hours = Array.from({length:endHour-startHour},(_,i)=>startHour+i);
+  const teammates = TEAM.filter(m=>m.id!==user.id);
+
+  useEffect(()=>{
+    if(!drag) return;
+    const move = e => {
+      const st=scrollRef.current?.scrollTop||0, rect=scrollRef.current?.getBoundingClientRect();
+      if(!rect) return;
+      const y=e.clientY-rect.top+st, raw=(y/HOUR_H)*60+startHour*60;
+      const snapped=Math.min(Math.max(snapMin(raw),startHour*60),endHour*60);
+      setDrag(p=>({...p,endMin:Math.max(snapped,p.startMin+SNAP)}));
+    };
+    const up = () => {
+      if(drag&&drag.endMin-drag.startMin>=SNAP) setModal({date:drag.dateKey,startMin:drag.startMin,endMin:drag.endMin,clientId:'',description:''});
+      setDrag(null);
+    };
+    window.addEventListener('mousemove',move); window.addEventListener('mouseup',up);
+    return ()=>{ window.removeEventListener('mousemove',move); window.removeEventListener('mouseup',up); };
+  },[drag,startHour,endHour]);
+
+  const onMouseDown = (date,e) => {
+    if(e.button!==0) return; e.preventDefault();
+    const st=scrollRef.current?.scrollTop||0, rect=scrollRef.current?.getBoundingClientRect();
+    const y=e.clientY-rect.top+st, raw=(y/HOUR_H)*60+startHour*60;
+    const snapped=Math.min(Math.max(snapMin(raw),startHour*60),endHour*60);
+    setDrag({dateKey:dateKey(date),startMin:snapped,endMin:snapped+60});
+  };
+
+  return (
+    <div style={{ flex:1, display:'flex', flexDirection:'column', overflow:'hidden', background:T.surface, userSelect:(drag||blockDrag)?'none':'auto' }}>
+      {/* Toolbar */}
+      <div style={{ display:'flex', alignItems:'center', gap:10, padding:'11px 18px', borderBottom:`1px solid ${T.border}`, background:T.surface, flexShrink:0 }}>
+        <GhostBtn T={T} onClick={()=>setWeekOffset(0)} style={{ fontSize:12, padding:'6px 12px' }}>Aujourd'hui</GhostBtn>
+        <GhostBtn T={T} onClick={()=>setWeekOffset(w=>w-1)} style={{ padding:'6px 11px', fontSize:15 }}>‹</GhostBtn>
+        <GhostBtn T={T} onClick={()=>setWeekOffset(w=>w+1)} style={{ padding:'6px 11px', fontSize:15 }}>›</GhostBtn>
+        <span style={{ fontFamily:'Poppins,sans-serif', fontWeight:600, fontSize:14, color:T.text, letterSpacing:'-0.3px' }}>{fmtRange(weekStart,showWeekends)}</span>
+        <div style={{ flex:1 }} />
+        {/* Weekend toggle */}
+        <label style={{ display:'flex', alignItems:'center', gap:6, cursor:'pointer', fontSize:13, color:T.textMuted }}>
+          <input type="checkbox" checked={showWeekends} onChange={e=>setShowWeekends(e.target.checked)} style={{ accentColor:'#5b6af0', width:'auto' }} />
+          Week-end
+        </label>
+
+        {/* Team legend */}
+        <div style={{ display:'flex', gap:6 }}>
+          {teammates.filter(m=>visibleTeam.includes(m.id)).map(m=>(
+            <div key={m.id} style={{ display:'flex', alignItems:'center', gap:5, background:`${m.color}14`, border:`1px solid ${m.color}33`, borderRadius:999, padding:'4px 10px' }}>
+              <span style={{ fontSize:13 }}>{m.emoji}</span>
+              <span style={{ fontSize:12, color:m.color, fontWeight:500 }}>{m.name.split(' ')[0]}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div ref={scrollRef} style={{ flex:1, overflowY:'auto', overflowX:'hidden' }}>
+        {/* Day headers */}
+        <div style={{ position:'sticky', top:0, zIndex:10, background:T.surface, display:'flex', paddingLeft:52, borderBottom:`1px solid ${T.border}` }}>
+          {days.map((d,i) => {
+            const today = dateKey(new Date())===dateKey(d);
+            const visibleUsers = [user, ...(teamProp||TEAM).filter(m=>m.id!==user.id&&visibleTeam.includes(m.id))].filter(m=>visibleTeam.includes(m.id));
+            return (
+              <div key={i} style={{ flex:1, borderLeft:`1px solid ${T.border2}`, display:'flex', flexDirection:'column' }}>
+                {/* Day label */}
+                <div style={{ textAlign:'center', padding:'8px 4px 4px' }}>
+                  <div style={{ fontSize:10, color:today?'#4f72f5':T.textFaint, textTransform:'uppercase', letterSpacing:'1px', marginBottom:2 }}>
+                    {d.toLocaleDateString('fr-FR',{weekday:'short'})}
+                  </div>
+                  <div style={{ fontFamily:'Poppins,sans-serif', fontWeight:700, fontSize:16, width:30, height:30, borderRadius:'50%', display:'inline-flex', alignItems:'center', justifyContent:'center', background:today?'#4f72f5':'transparent', color:today?'#fff':T.textMuted }}>
+                    {d.getDate()}
+                  </div>
+                </div>
+                {/* Sub-column labels */}
+                {visibleUsers.length > 1 && (
+                  <div style={{ display:'flex', borderTop:`1px solid ${T.border2}` }}>
+                    {visibleUsers.map((m,si)=>(
+                      <div key={m.id} style={{ flex:1, textAlign:'center', padding:'3px 2px', borderLeft:si>0?`1px solid ${m.color}33`:'none', background:si>0?`${m.color}08`:'transparent' }}>
+                        <span style={{ fontSize:10, color:m.color, fontWeight:700 }}>{m.initials}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Grid */}
+        {(() => {
+          // Build ordered list of visible users: mine first, then teammates
+          const visibleUsers = [user, ...(teamProp||TEAM).filter(m=>m.id!==user.id&&visibleTeam.includes(m.id))].filter(m=>visibleTeam.includes(m.id));
+          return (
+            <div style={{ display:'flex', minHeight:(endHour-startHour)*HOUR_H }}>
+              <div style={{ width:52, flexShrink:0 }}>
+                {hours.map(h=>(
+                  <div key={h} style={{ height:HOUR_H, display:'flex', alignItems:'flex-start', justifyContent:'flex-end', paddingRight:8, paddingTop:4, borderTop:`1px solid ${T.border2}` }}>
+                    <span style={{ fontSize:11, color:dark?'rgba(255,255,255,0.6)':'rgba(0,0,0,0.4)' }}>{h}h</span>
+                  </div>
+                ))}
+              </div>
+              <div ref={gridBodyRef} style={{ display:'contents' }}>
+              {days.map((d,i)=>{
+                const dk=dateKey(d), today=dateKey(new Date())===dk;
+                return (
+                  <div key={i} style={{ flex:1, borderLeft:`1px solid ${today?T.todayBorder:T.border2}`, background:today?T.todayBg:'transparent', display:'flex', position:'relative' }}>
+                    {/* Hour lines (behind sub-cols) */}
+                    <div style={{ position:'absolute', inset:0, pointerEvents:'none', zIndex:0 }}>
+                      {hours.map(h=>(
+                        <div key={h} style={{ height:HOUR_H, borderTop:`1px solid ${T.border2}`, position:'relative' }}>
+                          <div style={{ position:'absolute', top:'50%', left:0, right:0, borderTop:`1px dashed ${T.gridLineDash}` }} />
+                        </div>
+                      ))}
+                    </div>
+                    {/* Sub-column per visible user */}
+                    {visibleUsers.map((member,si)=>{
+                      const isMe = member.id === user.id;
+                      const userBlocks = (isMe ? blocks : teamBlocks).filter(b=>b.date===dk&&b.userId===member.id);
+                      return (
+                        <div key={member.id} style={{ flex:1, position:'relative', zIndex:1,
+                          borderLeft: si>0 ? `1px solid ${member.color}33` : 'none',
+                          background: si>0 ? `${member.color}05` : 'transparent',
+                          cursor:'crosshair' }}
+                          onMouseDown={isMe ? e=>onMouseDown(d,e) : undefined}>
+                          {/* User label if >1 col */}
+                          {visibleUsers.length > 1 && (
+                            <div style={{ position:'absolute', top:2, left:2, fontSize:9, color:member.color, fontWeight:700, opacity:0.7, zIndex:2, pointerEvents:'none' }}>
+                              {member.initials}
+                            </div>
+                          )}
+                          {userBlocks.map(b=>{
+                            const c=clients.find(x=>x.id===b.clientId);
+                            const isBDragging=blockDrag?.blockId===b.id;
+                  return <Block key={b.id} block={b} client={c} startHour={startHour}
+                              onClick={isMe ? setModal : undefined}
+                              isTeam={!isMe} member={!isMe?member:undefined} dark={dark}
+                              onMoveStart={isMe?handleMoveStart:undefined}
+                              onResizeStart={isMe?handleResizeStart:undefined}
+                              isDragging={isBDragging} />;
+                })}
+                {/* Ghost block in target column */}
+                {blockDrag && blockDrag.curDateKey===dk && isMe && (()=>{
+                  const orig=blocks.find(b=>b.id===blockDrag.blockId);
+                  const ghostClient=orig?clients.find(c=>c.id===orig.clientId):null;
+                  const ghostBlock={...orig,startMin:blockDrag.curStartMin,endMin:blockDrag.curEndMin};
+                  const cc=ghostClient?getCC(ghostClient.color):getCC('indigo');
+                  const top=((blockDrag.curStartMin-startHour*60)/60)*HOUR_H;
+                  const height=Math.max(((blockDrag.curEndMin-blockDrag.curStartMin)/60)*HOUR_H-2,16);
+                  return <div key="ghost" style={{ position:'absolute',left:3,right:3,top,height,
+                    background:cc.fg+'22',border:`2px dashed ${cc.fg}`,borderRadius:7,
+                    pointerEvents:'none',zIndex:4,boxShadow:`0 4px 16px ${cc.fg}33` }} />;
+                })()}
+                          })}
+                          {/* Drag preview only on my column */}
+                          {isMe && drag?.dateKey===dk && (()=>{
+                            const top=((drag.startMin-startHour*60)/60)*HOUR_H;
+                            const h=Math.max(((drag.endMin-drag.startMin)/60)*HOUR_H-2,8);
+                            return <div style={{ position:'absolute', left:1, right:1, top, height:h, background:T.dragPreviewBg, border:`1.5px dashed ${T.dragPreviewBorder}`, borderRadius:7, pointerEvents:'none', zIndex:3 }} />;
+                          })()}
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              })}
+              </div>{/* gridBodyRef */}
+            </div>
+          );
+        })()}
+      </div>
+
+      {/* Ghost block during drag — shown in target column */}
+      {modal && <EntryModal data={modal} clients={clients} dark={dark}
+        onSave={entry=>{
+          const w={...entry,userId:user.id};
+          // bubble up via custom event
+          window.dispatchEvent(new CustomEvent('ooo-save',{detail:w}));
+          setModal(null);
+        }}
+        onDelete={id=>{ window.dispatchEvent(new CustomEvent('ooo-delete',{detail:id})); setModal(null); }}
+        onClose={()=>setModal(null)} />}
+    </div>
+  );
+}
+
+// ─── Globe 3D ────────────────────────────────────────────────
+const CITY_PRESETS = {
+  'Paris':      { tz:'Europe/Paris',      lat:48.85,  lng:2.35   },
+  'Londres':    { tz:'Europe/London',     lat:51.51,  lng:-0.12  },
+  'New York':   { tz:'America/New_York',  lat:40.71,  lng:-74.01 },
+  'Los Angeles':{ tz:'America/Los_Angeles',lat:34.05, lng:-118.24},
+  'Tokyo':      { tz:'Asia/Tokyo',        lat:35.68,  lng:139.69 },
+  'Dubaï':      { tz:'Asia/Dubai',        lat:25.20,  lng:55.27  },
+  'Sydney':     { tz:'Australia/Sydney',  lat:-33.87, lng:151.21 },
+  'Montréal':   { tz:'America/Montreal',  lat:45.50,  lng:-73.57 },
+  'Berlin':     { tz:'Europe/Berlin',     lat:52.52,  lng:13.40  },
+  'Barcelone':  { tz:'Europe/Madrid',     lat:41.38,  lng:2.17   },
+  'Singapour':  { tz:'Asia/Singapore',    lat:1.35,   lng:103.82 },
+  'São Paulo':  { tz:'America/Sao_Paulo', lat:-23.55, lng:-46.63 },
+};
+
+// ── Timezone Search ──────────────────────────────────────────
+function TzSearch({ current, onSelect, onClose }) {
+  const [q, setQ] = React.useState('');
+  const allTz = React.useMemo(()=>{
+    try { return Intl.supportedValuesOf('timeZone'); }
+    catch { return Object.values(CITY_PRESETS).map(c=>c.tz); }
+  },[]);
+  const filtered = q.length<2 ? [] : allTz.filter(tz=>tz.toLowerCase().includes(q.toLowerCase())).slice(0,12);
+  return (
+    <div style={{ position:'relative', zIndex:20 }}>
+      <input autoFocus value={q} onChange={e=>setQ(e.target.value)} onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget)) onClose();}}
+        placeholder="Rechercher une ville…"
+        style={{ fontSize:11,background:'rgba(255,255,255,0.15)',border:'1px solid rgba(255,255,255,0.3)',color:'#fff',borderRadius:7,padding:'4px 8px',fontFamily:'DM Sans,sans-serif',outline:'none',width:'100%' }} />
+      {filtered.length>0&&(
+        <div style={{ position:'absolute',top:'100%',left:0,right:0,background:'#111',border:'1px solid rgba(255,255,255,0.15)',borderRadius:8,overflow:'hidden',zIndex:100,maxHeight:160,overflowY:'auto',marginTop:2 }}>
+          {filtered.map(tz=>(
+            <div key={tz} onMouseDown={()=>onSelect(tz)} style={{ padding:'6px 10px',fontSize:11,color:tz===current?'#a5b4fc':'#ccc',cursor:'pointer',background:tz===current?'rgba(79,114,245,0.15)':'transparent' }}
+              onMouseEnter={e=>e.currentTarget.style.background='rgba(255,255,255,0.08)'}
+              onMouseLeave={e=>e.currentTarget.style.background=tz===current?'rgba(79,114,245,0.15)':'transparent'}>
+              {tz.replace(/_/g,' ')}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── GlobePanel: uses globe.gl for WebGL 3D Earth ─────────────
+function GlobePanel({ members, locations, onLocationChange, dark }) {
+  const containerRef = React.useRef(null);
+  const globeRef = React.useRef(null);
+  const rafRef = React.useRef(null);
+  const [times, setTimes] = React.useState({});
+  const [editing, setEditing] = React.useState(null);
+  const [ready, setReady] = React.useState(false);
+
+  const getMemberLoc = (m) => locations[m.id] || { lat:m.lat, lng:m.lng, tz:m.tz };
+  const getPoints = () => members.map(m => { const l=getMemberLoc(m); return { lat:l.lat, lng:l.lng, id:m.id, emoji:m.emoji, color:m.color, name:m.name }; });
+
+  React.useEffect(() => {
+    const tick = () => {
+      const t={};
+      members.forEach(m => {
+        const loc=getMemberLoc(m);
+        try { t[m.id]=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',timeZone:loc.tz}); }
+        catch { t[m.id]='--:--'; }
+      });
+      setTimes(t);
+    };
+    tick(); const id=setInterval(tick,1000); return ()=>clearInterval(id);
+  },[locations]);
+
+  React.useEffect(() => {
+    if (!containerRef.current || !window.GlobeLib) return;
+    const G = window.GlobeLib;
+
+    // Use real Earth texture
+    const globeTexUrl='https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg';
+    const globe = G()(containerRef.current)
+      .width(containerRef.current.offsetWidth||500)
+      .height(420)
+      .globeImageUrl(globeTexUrl)
+      .atmosphereColor('rgba(100,160,255,0.85)')
+      .atmosphereAltitude(0.22)
+      .backgroundColor('rgba(0,0,0,0)');
+
+    // Auto-rotate via controls
+    globe.controls().autoRotate = true;
+    globe.controls().autoRotateSpeed = 0.6;
+    globe.controls().enableZoom = false;
+
+    // Member emoji pins
+    globe
+      .htmlElementsData(getPoints())
+      .htmlElement(d => {
+        const el=document.createElement('div');
+        el.style.cssText='font-size:28px;cursor:default;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.7));transform:translateY(-14px);';
+        el.title=d.name;
+        el.textContent=d.emoji;
+        return el;
+      })
+      .htmlAltitude(0.01);
+    globeRef.current = globe;
+    setReady(true);
+    return () => { /* globe.gl handles its own teardown */ };
+  },[dark]);
+
+  // Update points when locations change
+  React.useEffect(() => {
+    if (globeRef.current) {
+      globeRef.current.htmlElementsData(getPoints());
+    }
+  },[locations]);
+
+  const T=THEMES[dark?'dark':'light'];
+  return (
+    <div>
+      <div ref={containerRef} dangerouslySetInnerHTML={{__html:''}} style={{ width:'100%', height:420, borderRadius:16, overflow:'hidden', background:'radial-gradient(ellipse at 50% 50%,#0a1628,#030810)' }} />
+      {/* Member cards */}
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, marginTop:14 }}>
+        {members.map(m=>{
+          const loc=getMemberLoc(m);
+          const cityName=Object.entries(CITY_PRESETS).find(([,v])=>v.tz===loc.tz)?.[0]||loc.tz.split('/').pop().replace('_',' ');
+          return (
+            <div key={m.id} style={{ display:'flex', alignItems:'center', gap:10, padding:'10px 14px', background:`linear-gradient(135deg,${m.color}15,${m.color}08)`, border:`1px solid ${m.color}30`, borderRadius:12 }}>
+              <span style={{ fontSize:24, lineHeight:1 }}>{m.emoji}</span>
+              <div style={{ flex:1, minWidth:0 }}>
+                <div style={{ fontSize:13, fontWeight:600, color:'#fff', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', textShadow:'0 1px 4px rgba(0,0,0,0.5)' }}>{m.name}</div>
+                {editing===m.id?(
+                  <TzSearch current={loc.tz} onSelect={tz=>{onLocationChange(m.id,{tz,lat:loc.lat,lng:loc.lng});setEditing(null);}} onClose={()=>setEditing(null)} />
+                ):(
+                  <button onClick={()=>setEditing(m.id)} style={{ fontSize:11,color:'rgba(255,255,255,0.75)',background:'none',border:'none',cursor:'pointer',fontFamily:'DM Sans,sans-serif',padding:0 }}>
+                    {cityName} ✎
+                  </button>
+                )}
+              </div>
+              <div style={{ fontFamily:'Poppins,sans-serif',fontWeight:700,fontSize:18,color:T.text,letterSpacing:'-0.5px',flexShrink:0 }}>{times[m.id]||'--:--'}</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ── DonutChart ─────────────────────────────────────────────────
+function DonutChart({ segments, size=140, thick=24 }) {
+  const total=segments.reduce((s,d)=>s+d.value,0)||1;
+  const r=(size-thick)/2, circ=2*Math.PI*r;
+  let cum=0;
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform:'rotate(-90deg)', flexShrink:0 }}>
+      {segments.map((seg,i)=>{
+        const arc=(seg.value/total)*circ;
+        const el=<circle key={i} cx={size/2} cy={size/2} r={r} fill="none"
+          stroke={seg.color} strokeWidth={thick} strokeLinecap="butt"
+          strokeDasharray={`${Math.max(arc-1.5,0)} ${circ}`} strokeDashoffset={-cum} />;
+        cum+=arc;
+        return el;
+      })}
+    </svg>
+  );
+}
+
+// ── Horizontal comparison bar ──────────────────────────────────
+function CompBar({ value, max, color, label, sub, dark }) {
+  const T=THEMES[dark?'dark':'light'];
+  const pct = max>0 ? Math.min((value/max)*100, 100) : 0;
+  return (
+    <div style={{ marginBottom:4 }}>
+      <div style={{ display:'flex', justifyContent:'space-between', marginBottom:5 }}>
+        <span style={{ fontSize:12, color:T.text, fontWeight:500 }}>{label}</span>
+        <span style={{ fontSize:12, color:color, fontWeight:700 }}>{sub}</span>
+      </div>
+      <div style={{ height:8, background:dark?'rgba(255,255,255,0.06)':'rgba(0,0,0,0.06)', borderRadius:99, overflow:'hidden' }}>
+        <div style={{ height:'100%', width:`${pct}%`, background:`linear-gradient(90deg,${color},${color}aa)`, borderRadius:99, transition:'width 0.6s ease' }} />
+      </div>
+    </div>
+  );
+}
+
+// ── Mini heatmap (team × days) ────────────────────────────────
+function TeamHeatmap({ allBlocks, weekDays, dark }) {
+  const T=THEMES[dark?'dark':'light'];
+  const maxMin=Math.max(...TEAM.flatMap(m=>weekDays.map(d=>allBlocks.filter(b=>b.userId===m.id&&b.date===dateKey(d)).reduce((s,b)=>s+b.endMin-b.startMin,0))),1);
+  const dayL=['L','M','M','J','V'];
+  return (
+    <div>
+      {/* header */}
+      <div style={{ display:'grid', gridTemplateColumns:'80px repeat(5,1fr)', gap:4, marginBottom:6 }}>
+        <div/>
+        {weekDays.slice(0,5).map((d,i)=><div key={i} style={{ textAlign:'center',fontSize:10,color:T.textFaint,fontWeight:600 }}>{dayL[i]}<br/>{d.getDate()}</div>)}
+      </div>
+      {TEAM.map(m=>(
+        <div key={m.id} style={{ display:'grid', gridTemplateColumns:'80px repeat(5,1fr)', gap:4, marginBottom:4 }}>
+          <div style={{ display:'flex',alignItems:'center',gap:6,fontSize:12,color:T.text }}><span>{m.emoji}</span>{m.name.split(' ')[0]}</div>
+          {weekDays.slice(0,5).map((d,i)=>{
+            const min=allBlocks.filter(b=>b.userId===m.id&&b.date===dateKey(d)).reduce((s,b)=>s+b.endMin-b.startMin,0);
+            const intensity=min/maxMin;
+            return (
+              <div key={i} title={`${m.name} – ${durLabel(min)}`} style={{ height:28, borderRadius:6, background:min>0?`${m.color}${Math.round(intensity*0.8*255).toString(16).padStart(2,'0')}`:dark?'rgba(255,255,255,0.04)':'rgba(0,0,0,0.04)', display:'flex',alignItems:'center',justifyContent:'center' }}>
+                {min>0&&<span style={{ fontSize:9,fontWeight:700,color:intensity>0.5?'#fff':m.color }}>{durLabel(min)}</span>}
+              </div>
+            );
+          })}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ── Radar chart (task type balance) ───────────────────────────
+function RadarChart({ data, size=160, dark, memberColor='#4f72f5' }) {
+  const T=THEMES[dark?'dark':'light'];
+  const N=data.length;
+  if(!N) return null;
+  const cx=size/2, cy=size/2, r=size/2-24;
+  const maxVal=Math.max(...data.map(d=>d.value),1);
+  const angle=(i)=>(i/N)*2*Math.PI-Math.PI/2;
+  const pt=(i,radius)=>({x:cx+radius*Math.cos(angle(i)),y:cy+radius*Math.sin(angle(i))});
+  const gridLevels=[0.25,0.5,0.75,1];
+  const polyPts=data.map((d,i)=>pt(i,(d.value/maxVal)*r));
+  const polyStr=polyPts.map(p=>`${p.x},${p.y}`).join(' ');
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      {/* Grid */}
+      {gridLevels.map((lvl,li)=>(
+        <polygon key={li} points={data.map((_,i)=>{ const p=pt(i,r*lvl); return `${p.x},${p.y}`; }).join(' ')}
+          fill="none" stroke={dark?'rgba(255,255,255,0.06)':'rgba(0,0,0,0.06)'} strokeWidth={1} />
+      ))}
+      {/* Axes */}
+      {data.map((_,i)=>{ const p=pt(i,r); return <line key={i} x1={cx} y1={cy} x2={p.x} y2={p.y} stroke={dark?'rgba(255,255,255,0.08)':'rgba(0,0,0,0.08)'} strokeWidth={1}/> })}
+      {/* Data */}
+      <polygon points={polyStr} fill={`${memberColor}30`} stroke={memberColor} strokeWidth={2} strokeLinejoin="round"/>
+      {polyPts.map((p,i)=><circle key={i} cx={p.x} cy={p.y} r={3} fill={memberColor}/>)}
+      {/* Labels */}
+      {data.map((d,i)=>{ const p=pt(i,r+14); return <text key={i} x={p.x} y={p.y} textAnchor="middle" dominantBaseline="middle" fontSize={9} fill={T.textMuted} fontFamily="DM Sans,sans-serif">{d.label}</text> })}
+    </svg>
+  );
+}
+
+// ─── Dashboard ────────────────────────────────────────────────
+function Dashboard({ blocks, teamBlocks, clients, dark, rates, onRateChange, locations, onLocationChange }) {
+  const T = THEMES[dark?'dark':'light'];
+  const allBlocks = [...blocks, ...teamBlocks];
+  const [weekOff, setWeekOff] = React.useState(0);
+
+  const weekStart = getWeekStart(weekOff);
+  const weekDays = Array.from({length:7},(_,i)=>addDays(weekStart,i));
+  const weekDayKeys = weekDays.map(dateKey);
+  const weekAll = allBlocks.filter(b=>weekDayKeys.includes(b.date));
+  const totalTeam = weekAll.reduce((s,b)=>s+b.endMin-b.startMin,0);
+  const today = new Date();
+  const isCurrentWeek = weekOff === 0;
+
+  // Client data
+  const clientData = clients.map(c=>{
+    const min=weekAll.filter(b=>b.clientId===c.id).reduce((s,b)=>s+b.endMin-b.startMin,0);
+    const cc=getCC(c.color);
+    return { ...c, min, cc };
+  }).filter(c=>c.min>0).sort((a,b)=>b.min-a.min);
+  const totalClientMin = clientData.reduce((s,c)=>s+c.min,0)||1;
+
+  // Monthly data
+  let mws=getWeekStart(0);
+  const mStart=new Date(today.getFullYear(),today.getMonth(),1);
+  while(addDays(mws,-7)>=mStart) mws=addDays(mws,-7);
+  const monthWeeks=[];
+  for(let i=0;i<6;i++){
+    const keys=Array.from({length:7},(_,j)=>dateKey(addDays(mws,j)));
+    if(new Date(mws)<=today) monthWeeks.push({start:new Date(mws),keys});
+    mws=addDays(mws,7); if(new Date(mws)>today) break;
+  }
+  const curWeekIdx = monthWeeks.findIndex(w=>dateKey(w.start)===dateKey(getWeekStart(0)));
+  const maxMonthMin=Math.max(...TEAM.flatMap(m=>monthWeeks.map(w=>allBlocks.filter(b=>b.userId===m.id&&w.keys.includes(b.date)).reduce((s,b)=>s+b.endMin-b.startMin,0))),60);
+
+  // Radar data per person
+  const personRadar = TEAM.map(m=>({
+    member:m,
+    data:TASK_TYPES.map(t=>({ label:TASK_META[t]?.emoji||t.slice(0,3), value:weekAll.filter(b=>b.userId===m.id&&b.taskType===t).reduce((s,b)=>s+b.endMin-b.startMin,0) }))
+  }));
+
+  // Daily hours per person
+  const velocityData = TEAM.map(m=>({
+    member:m,
+    pts: weekDays.map(d=>allBlocks.filter(b=>b.userId===m.id&&b.date===dateKey(d)).reduce((s,b)=>s+b.endMin-b.startMin,0))
+  }));
+  const maxVelocity=Math.max(...velocityData.flatMap(v=>v.pts),60);
+
+  const maxHourActivity=Math.max(...Array.from({length:24},(_,h)=>
+    weekAll.filter(b=>b.startMin<(h+1)*60&&b.endMin>h*60).reduce((s,b)=>s+Math.min(b.endMin,(h+1)*60)-Math.max(b.startMin,h*60),0)
+  ),1);
+
+  const card=(grad)=>({ background:grad, borderRadius:20, padding:'24px 28px', border:`1px solid ${T.border}`, position:'relative', overflow:'hidden' });
+  const dg=dark;
+
+  return (
+    <div style={{ flex:1, overflowY:'auto', padding:'24px 28px', background:T.bg }}>
+
+      {/* ── Week nav ── */}
+      <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:20 }}>
+        <div style={{ flex:1 }}>
+          <div style={{ fontSize:11,color:T.textFaint,textTransform:'uppercase',letterSpacing:'2px',marginBottom:4 }}>
+            {isCurrentWeek?'Cette semaine':`Semaine du ${weekStart.toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}`}
+          </div>
+          <div style={{ fontFamily:'Poppins,sans-serif',fontWeight:700,fontSize:26,color:T.text,letterSpacing:'-1px' }}>{durLabel(totalTeam)}</div>
+        </div>
+        <button onClick={()=>setWeekOff(w=>w-1)} style={{ background:T.surface,border:`1px solid ${T.border}`,borderRadius:10,padding:'8px 14px',color:T.textMuted,cursor:'pointer',fontFamily:'DM Sans,sans-serif',fontSize:13 }}>‹ Préc.</button>
+        {weekOff!==0&&<button onClick={()=>setWeekOff(0)} style={{ background:'#4f72f5',border:'none',borderRadius:10,padding:'8px 14px',color:'#fff',cursor:'pointer',fontFamily:'DM Sans,sans-serif',fontSize:13,fontWeight:600 }}>Auj.</button>}
+        {weekOff<0&&<button onClick={()=>setWeekOff(w=>Math.min(w+1,0))} style={{ background:T.surface,border:`1px solid ${T.border}`,borderRadius:10,padding:'8px 14px',color:T.textMuted,cursor:'pointer',fontFamily:'DM Sans,sans-serif',fontSize:13 }}>Suiv. ›</button>}
+      </div>
+
+      {/* ── Row 1: Globe + Monthly ── */}
+      <div style={{ display:'grid', gridTemplateColumns:'3fr 2fr', gap:20, marginBottom:20 }}>
+
+        {/* Globe */}
+        <div style={card(dg?'linear-gradient(145deg,#060d1f,#0f1b3d)':'linear-gradient(145deg,#080f2a,#0a1433)')}>
+          <div style={{ fontSize:11,color:'rgba(165,180,252,0.7)',textTransform:'uppercase',letterSpacing:'2px',marginBottom:16 }}>Équipe — Live</div>
+          <GlobePanel members={TEAM} dark={dark} locations={locations} onLocationChange={onLocationChange} />
+        </div>
+
+        {/* Monthly - centred on current week */}
+        <div style={card(dg?'linear-gradient(145deg,#0d1117,#12161e)':'linear-gradient(145deg,#fff,#f5f8ff)')}>
+          <div style={{ fontSize:11,color:T.textFaint,textTransform:'uppercase',letterSpacing:'2px',marginBottom:18 }}>
+            {today.toLocaleDateString('fr-FR',{month:'long',year:'numeric'})}
+          </div>
+          <div style={{ display:'flex',flexDirection:'column',gap:18 }}>
+            {TEAM.map(m=>{
+              const wMins=monthWeeks.map(w=>allBlocks.filter(b=>b.userId===m.id&&w.keys.includes(b.date)).reduce((s,b)=>s+b.endMin-b.startMin,0));
+              const total=wMins.reduce((s,x)=>s+x,0);
+              return (
+                <div key={m.id}>
+                  <div style={{ display:'flex',alignItems:'center',gap:8,marginBottom:7 }}>
+                    <span style={{ fontSize:18 }}>{m.emoji}</span>
+                    <span style={{ fontSize:13,fontWeight:600,color:T.text,flex:1 }}>{m.name}</span>
+                    <span style={{ fontFamily:'Poppins,sans-serif',fontWeight:700,fontSize:15,color:T.text }}>{durLabel(total)}</span>
+                  </div>
+                  <div style={{ display:'flex',gap:3 }}>
+                    {monthWeeks.map((w,i)=>{
+                      const wMin=wMins[i],pct=maxMonthMin>0?(wMin/maxMonthMin)*100:0;
+                      const isCur=i===curWeekIdx;
+                      return (
+                        <div key={i} style={{ flex:isCur?2:1, transition:'flex 0.3s' }}>
+                          <div style={{ height:isCur?10:6,background:dg?'rgba(255,255,255,0.05)':'rgba(0,0,0,0.06)',borderRadius:99,overflow:'hidden',marginBottom:3,transition:'height 0.3s' }}>
+                            <div style={{ height:'100%',width:`${pct}%`,background:`linear-gradient(90deg,${m.color},${m.color}99)`,borderRadius:99 }} />
+                          </div>
+                          <div style={{ fontSize:isCur?10:8,color:isCur?T.text:T.textFaint,fontWeight:isCur?700:400,textAlign:'center' }}>
+                            {isCur?'●':(`S${i+1}`)}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Row 2: Client distribution full width ── */}
+      <div style={{ ...card(dg?'linear-gradient(145deg,#0d1117,#161b22)':'linear-gradient(145deg,#fff,#f8faff)'), marginBottom:20 }}>
+        <div style={{ fontSize:11,color:T.textFaint,textTransform:'uppercase',letterSpacing:'2px',marginBottom:14 }}>Répartition clients</div>
+        {/* Stacked proportion bar */}
+        <div style={{ display:'flex',height:12,borderRadius:99,overflow:'hidden',marginBottom:18,gap:2 }}>
+          {clientData.map((c,i)=>(
+            <div key={c.id} title={`${c.name}: ${durLabel(c.min)}`}
+              style={{ width:`${(c.min/totalClientMin)*100}%`, background:c.cc.fg, minWidth:6,
+                borderRadius:i===0?'99px 0 0 99px':i===clientData.length-1?'0 99px 99px 0':'0' }} />
+          ))}
+        </div>
+        {/* Per-client bars */}
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(200px,1fr))', gap:12 }}>
+          {clientData.map(c=>{
+            const pct=Math.round((c.min/totalClientMin)*100);
+            const contributors=TEAM.filter(m=>weekAll.some(b=>b.userId===m.id&&b.clientId===c.id));
+            return (
+              <div key={c.id} style={{ padding:'12px 14px',background:c.cc.bg(dark),border:`1px solid ${c.cc.bd(dark)}`,borderRadius:14 }}>
+                <div style={{ display:'flex',alignItems:'center',gap:7,marginBottom:8 }}>
+                  <div style={{ width:9,height:9,borderRadius:'50%',background:c.cc.fg }} />
+                  <span style={{ fontSize:13,fontWeight:600,color:c.cc.text(dark),flex:1 }}>{c.name}</span>
+                  <span style={{ fontSize:12,fontWeight:700,color:c.cc.text(dark) }}>{durLabel(c.min)}</span>
+                </div>
+                <div style={{ height:5,background:dg?'rgba(255,255,255,0.08)':'rgba(0,0,0,0.07)',borderRadius:99,overflow:'hidden',marginBottom:6 }}>
+                  <div style={{ height:'100%',width:`${pct}%`,background:`linear-gradient(90deg,${c.cc.fg},${c.cc.fg}aa)`,borderRadius:99 }} />
+                </div>
+                <div style={{ display:'flex',justifyContent:'space-between',alignItems:'center' }}>
+                  <div style={{ display:'flex',gap:3 }}>{contributors.map(m=><span key={m.id} style={{ fontSize:14 }}>{m.emoji}</span>)}</div>
+                  <span style={{ fontSize:11,color:c.cc.text(dark),opacity:0.7 }}>{pct}%</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── Row 3: Heatmap + Velocity + Day pattern ── */}
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:20, marginBottom:20 }}>
+
+        {/* Heatmap */}
+        <div style={card(dg?'linear-gradient(145deg,#0d1117,#12161e)':'linear-gradient(145deg,#fff,#f5f8ff)')}>
+          <div style={{ fontSize:11,color:T.textFaint,textTransform:'uppercase',letterSpacing:'2px',marginBottom:14 }}>Heatmap</div>
+          <TeamHeatmap allBlocks={allBlocks} weekDays={weekDays} dark={dark} />
+        </div>
+
+        {/* Velocity: cumulative hours per day */}
+        <div style={card(dg?'linear-gradient(145deg,#0d1117,#12161e)':'linear-gradient(145deg,#fff,#f5f8ff)')}>
+          <div style={{ fontSize:11,color:T.textFaint,textTransform:'uppercase',letterSpacing:'2px',marginBottom:14 }}>Heures / jour / personne</div>
+          <svg width="100%" height={134} viewBox="0 0 300 134" preserveAspectRatio="none" style={{ overflow:'visible' }}>
+            {/* Y-axis grid + labels */}
+            {[0,0.25,0.5,0.75,1].map((lvl,i)=>{
+              const y=10+(1-lvl)*100;
+              const label=lvl===0?'0':durLabel(Math.round(maxVelocity*lvl));
+              return (
+                <g key={i}>
+                  <line x1={36} y1={y} x2={295} y2={y} stroke={T.textFaint} strokeWidth={0.5} strokeOpacity={0.25} strokeDasharray={i===0?'none':'3,3'} />
+                  <text x={34} y={y+3} textAnchor="end" fontSize={8} fill={T.textFaint} fontFamily="DM Sans,sans-serif">{label}</text>
+                </g>
+              );
+            })}
+            {velocityData.map(({member,pts})=>{
+              const px=(i)=>(i/6)*255+40;
+              const py=(v)=>10+(1-v/maxVelocity)*100;
+              const pathD=pts.map((v,i)=>`${i===0?'M':'L'}${px(i)},${py(v)}`).join(' ');
+              const areaD=pathD+` L${px(6)},110 L${px(0)},110 Z`;
+              return (
+                <g key={member.id}>
+                  <path d={areaD} fill={`${member.color}15`} />
+                  <path d={pathD} fill="none" stroke={member.color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+                  {pts.map((v,i)=>v>0&&<circle key={i} cx={px(i)} cy={py(v)} r={3} fill={member.color}/>)}
+                </g>
+              );
+            })}
+            {/* Day labels */}
+            {['L','M','M','J','V','S','D'].map((l,i)=>(
+              <text key={i} x={(i/6)*255+40} y={122} textAnchor="middle" fontSize={9} fill={T.textFaint} fontFamily="DM Sans,sans-serif">{l}</text>
+            ))}
+            {/* Axis line */}
+            <line x1={36} y1={10} x2={36} y2={110} stroke={T.textFaint} strokeWidth={0.5} strokeOpacity={0.4} />
+          </svg>
+          <div style={{ display:'flex',flexWrap:'wrap',gap:6,marginTop:6 }}>
+            {TEAM.map(m=><span key={m.id} style={{ fontSize:10,color:m.color,fontWeight:600,display:'flex',alignItems:'center',gap:4 }}><span style={{ width:12,height:2,background:m.color,display:'inline-block',borderRadius:99 }}/>{m.name.split(' ')[0]}</span>)}
+          </div>
+        </div>
+
+        {/* Day pattern */}
+        <div style={card(dg?'linear-gradient(145deg,#0d1117,#12161e)':'linear-gradient(145deg,#fff,#f5f8ff)')}>
+          <div style={{ fontSize:11,color:T.textFaint,textTransform:'uppercase',letterSpacing:'2px',marginBottom:14 }}>Activité par heure</div>
+          <div style={{ display:'flex',alignItems:'flex-end',gap:2,height:80 }}>
+            {Array.from({length:24},(_,h)=>{
+              // Segments per person for this hour
+              const segs=TEAM.map(m=>({
+                color:m.color,
+                min:weekAll.filter(b=>b.userId===m.id&&b.startMin<(h+1)*60&&b.endMin>h*60).reduce((s,b)=>s+Math.min(b.endMin,(h+1)*60)-Math.max(b.startMin,h*60),0)
+              })).filter(s=>s.min>0);
+              const totalMin=segs.reduce((s,seg)=>s+seg.min,0);
+              const pct=totalMin/(maxHourActivity*60)||0;
+              const barH=Math.max(pct*100,segs.length>0?3:0);
+              return (
+                <div key={h} title={`${h}h`} style={{ flex:1, height:`${barH}%`, display:'flex',flexDirection:'column-reverse',borderRadius:3,overflow:'hidden' }}>
+                  {segs.map((seg,si)=>(
+                    <div key={si} style={{ flex:seg.min, background:seg.color, opacity:0.8 }} />
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+          <div style={{ display:'flex',justifyContent:'space-between',marginTop:5 }}>
+            <span style={{ fontSize:9,color:T.textFaint }}>0h</span>
+            <span style={{ fontSize:9,color:T.textFaint }}>12h</span>
+            <span style={{ fontSize:9,color:T.textFaint }}>23h</span>
+          </div>
+          <div style={{ display:'flex',gap:6,marginTop:8,flexWrap:'wrap' }}>
+            {TEAM.map(m=><span key={m.id} style={{ fontSize:10,color:m.color,display:'flex',alignItems:'center',gap:4,fontWeight:600 }}><span style={{ width:8,height:8,borderRadius:2,background:m.color,display:'inline-block' }}/>{m.name.split(' ')[0]}</span>)}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Row 4: Radars ── */}
+      <div style={{ ...card(dg?'linear-gradient(145deg,#0d1117,#12161e)':'linear-gradient(145deg,#fff,#f5f8ff)') }}>
+        <div style={{ fontSize:11,color:T.textFaint,textTransform:'uppercase',letterSpacing:'2px',marginBottom:20 }}>Types de tâches / personne</div>
+        <div style={{ display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:20 }}>
+          {personRadar.map(({member,data})=>{
+            const hasData=data.some(d=>d.value>0);
+            return (
+              <div key={member.id} style={{ display:'flex',flexDirection:'column',alignItems:'center' }}>
+                <div style={{ display:'flex',alignItems:'center',gap:8,marginBottom:10,alignSelf:'flex-start' }}>
+                  <span style={{ fontSize:22 }}>{member.emoji}</span>
+                  <div>
+                    <div style={{ fontSize:13,fontWeight:600,color:T.text }}>{member.name}</div>
+                    <div style={{ fontSize:11,color:T.textFaint }}>{durLabel(data.reduce((s,d)=>s+d.value,0))}</div>
+                  </div>
+                </div>
+                {hasData
+                  ? <RadarChart data={data} size={150} dark={dark} memberColor={member.color} />
+                  : <div style={{ height:150,display:'flex',alignItems:'center',justifyContent:'center',color:T.textFaint,fontSize:12 }}>Aucune tâche</div>
+                }
+                <div style={{ display:'flex',flexWrap:'wrap',gap:4,marginTop:8,justifyContent:'center' }}>
+                  {data.filter(d=>d.value>0).map((d,i)=>{
+                    const t=TASK_TYPES[i]; const meta=TASK_META[t];
+                    return <span key={t} style={{ fontSize:10,background:`${meta?.color}18`,borderRadius:99,padding:'2px 7px',color:meta?.color,fontWeight:600 }}>{meta?.emoji} {durLabel(d.value)}</span>;
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Entry Modal ──────────────────────────────────────────────
+function EntryModal({ data, clients, onSave, onDelete, onClose, dark }) {
+  const T=THEMES[dark?'dark':'light'];
+  const isNew=!data.id;
+  const [clientId,setClientId]=useState(data.clientId||'');
+  const [taskType,setTaskType]=useState(data.taskType||'');
+  const [note,setNote]=useState(data.note||'');
+  const [startT,setStartT]=useState(fmtMin(data.startMin));
+  const [endT,setEndT]=useState(fmtMin(data.endMin));
+  const dur=parseT(endT)-parseT(startT);
+
+  const save=()=>{const s=parseT(startT),e=parseT(endT);if(e<=s)return;onSave({...data,clientId,taskType,note,startMin:s,endMin:e});};
+
+  return (
+    <div style={{ position:'fixed',inset:0,background:T.modalOverlay,backdropFilter:'blur(6px)',zIndex:100,display:'flex',alignItems:'center',justifyContent:'center',animation:'fadeIn 0.15s ease' }} onClick={onClose}>
+      <div style={{ background:T.modalBg,border:`1px solid ${T.border}`,borderRadius:20,padding:'28px',width:440,maxWidth:'95vw',boxShadow:'0 8px 40px rgba(0,0,0,0.15)',animation:'slideUp 0.2s ease' }} onClick={e=>e.stopPropagation()}>
+        <div style={{ display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16 }}>
+          <span style={{ fontFamily:'Poppins,sans-serif',fontWeight:600,fontSize:16,color:T.text }}>{isNew?'Nouvelle entrée':'Modifier'}</span>
+          <button onClick={onClose} style={{ background:'none',border:'none',color:T.textFaint,cursor:'pointer',fontSize:18 }}>✕</button>
+        </div>
+        <div style={{ fontSize:13,color:T.textMuted,marginBottom:16 }}>{new Date(data.date+'T12:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</div>
+        {/* Time */}
+        <div style={{ display:'flex',gap:8,marginBottom:16,alignItems:'flex-end' }}>
+          {[['Début',startT,setStartT],['Fin',endT,setEndT]].map(([label,val,set],i)=>(
+            <React.Fragment key={i}>
+              <div style={{ flex:1 }}>
+                <div style={{ fontSize:11,color:T.textMuted,marginBottom:4 }}>{label}</div>
+                <input type="time" value={val} onChange={e=>set(e.target.value)} style={{ background:T.inputBg,border:`1px solid ${T.inputBorder}`,color:T.inputColor,borderRadius:10,padding:'10px 12px',fontSize:14,fontFamily:'DM Sans,sans-serif',outline:'none',width:'100%' }} />
+              </div>
+              {i===0&&<div style={{ color:T.textFaint,paddingBottom:10 }}>→</div>}
+            </React.Fragment>
+          ))}
+          <div style={{ paddingBottom:10,fontSize:13,color:'#5b6af0',fontWeight:700,minWidth:36,textAlign:'right' }}>{dur>0?durLabel(dur):''}</div>
+        </div>
+        {/* Clients */}
+        <div style={{ marginBottom:16 }}>
+          <div style={{ fontSize:11,color:T.textMuted,marginBottom:8 }}>Client</div>
+          <div style={{ display:'flex',flexWrap:'wrap',gap:6 }}>
+            {clients.map(c=>{
+              const cc=getCC(c.color), sel=clientId===c.id;
+              return <button key={c.id} onClick={()=>setClientId(c.id)} style={{ background:sel?cc.bg(dark):T.pillBg,border:`1px solid ${sel?cc.bd(dark):'transparent'}`,color:sel?cc.text(dark):T.textMuted,borderRadius:999,padding:'6px 14px',fontSize:13,cursor:'pointer',fontFamily:'DM Sans,sans-serif',fontWeight:sel?600:400,transition:'all 0.15s' }}>{c.name}</button>;
+            })}
+          </div>
+        </div>
+        {/* Task type */}
+        <div style={{ marginBottom:14 }}>
+          <div style={{ fontSize:11,color:T.textMuted,marginBottom:8 }}>Type de tâche</div>
+          <div style={{ display:'flex',flexWrap:'wrap',gap:6 }}>
+            {TASK_TYPES.map(t=>{
+              const sel=taskType===t;
+              return <button key={t} onClick={()=>setTaskType(sel?'':t)} style={{ background:sel?'rgba(91,106,240,0.12)':'transparent',border:`1px solid ${sel?'rgba(91,106,240,0.4)':T.border}`,color:sel?'#5b6af0':T.textMuted,borderRadius:999,padding:'6px 14px',fontSize:13,cursor:'pointer',fontFamily:'DM Sans,sans-serif',fontWeight:sel?600:400,transition:'all 0.15s' }}>{t}</button>;
+            })}
+          </div>
+        </div>
+        {/* Note */}
+        <div style={{ marginBottom:22 }}>
+          <div style={{ fontSize:11,color:T.textMuted,marginBottom:4 }}>Note (optionnel)</div>
+          <input value={note} onChange={e=>setNote(e.target.value)} placeholder="Détails supplémentaires…" onKeyDown={e=>e.key==='Enter'&&save()} style={{ background:T.inputBg,border:`1px solid ${T.inputBorder}`,color:T.inputColor,borderRadius:10,padding:'10px 14px',fontSize:14,fontFamily:'DM Sans,sans-serif',outline:'none',width:'100%' }} />
+        </div>
+        <div style={{ display:'flex',justifyContent:'space-between' }}>
+          {!isNew?<button onClick={()=>onDelete(data.id)} style={{ background:'none',border:`1px solid rgba(225,29,72,0.25)`,color:'#e11d48',borderRadius:999,padding:'9px 16px',fontSize:14,cursor:'pointer',fontFamily:'DM Sans,sans-serif' }}>Supprimer</button>:<div/>}
+          <div style={{ display:'flex',gap:8 }}>
+            <button onClick={onClose} style={{ background:T.btnGhostBg,border:`1px solid ${T.btnGhostBorder}`,color:T.btnGhostColor,borderRadius:999,padding:'9px 16px',fontSize:14,cursor:'pointer',fontFamily:'DM Sans,sans-serif' }}>Annuler</button>
+            <button onClick={save} disabled={!clientId} style={{ background:'#5b6af0',color:'#fff',border:'none',borderRadius:999,padding:'9px 18px',fontSize:14,fontWeight:600,cursor:'pointer',fontFamily:'DM Sans,sans-serif',opacity:clientId?1:0.4 }}>Enregistrer →</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Admin Panel (Jules only) ──────────────────────────────────
+const EMOJI_LIST = ['🧑\u200d🎨','👩\u200d💻','🧑\u200d🚀','👩\u200d🎤','🧑\u200d💼','👩\u200d🏫','🧑\u200d🔬','👩\u200d🎤','🧑\u200d🍳','👩\u200d💻','🧑\u200d🎭','👨\u200d💼','👩\u200d🎨','🧑\u200d🔧'];
+const COLOR_LIST = ['#5b6af0','#a78bfa','#f472b6','#34d399','#f59e0b','#06b6d4','#f43f5e','#10b981','#8b5cf6','#fb923c'];
+
+function AdminPanel({ team, onSave, onClose, dark }) {
+  const T=THEMES[dark?'dark':'light'];
+  const [members, setMembers] = React.useState(team.map(m=>({...m})));
+  const [newMember, setNewMember] = React.useState({ name:'', initials:'', emoji:'🧑\u200d💼', color:'#5b6af0', tz:'Europe/Paris', lat:48.85, lng:2.35, pwd:'' });
+
+  const update=(id,field,val)=>setMembers(prev=>prev.map(m=>m.id===id?{...m,[field]:val}:m));
+  const remove=(id)=>setMembers(prev=>prev.filter(m=>m.id!==id));
+  const addMember=()=>{
+    if(!newMember.name.trim()||!newMember.pwd.trim()) return;
+    const initials=newMember.name.trim().split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+    setMembers(prev=>[...prev,{...newMember,id:'u'+Date.now(),initials}]);
+    setNewMember({ name:'',initials:'',emoji:'🧑\u200d💼',color:'#5b6af0',tz:'Europe/Paris',lat:48.85,lng:2.35,pwd:'' });
+  };
+
+  return (
+    <div style={{ position:'fixed',inset:0,background:'rgba(0,0,0,0.7)',backdropFilter:'blur(6px)',zIndex:200,display:'flex',alignItems:'center',justifyContent:'center' }} onClick={onClose}>
+      <div style={{ background:T.surface,border:`1px solid ${T.border}`,borderRadius:20,padding:'28px',width:520,maxWidth:'95vw',maxHeight:'80vh',overflowY:'auto',boxShadow:'0 8px 40px rgba(0,0,0,0.3)' }} onClick={e=>e.stopPropagation()}>
+        <div style={{ display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:20 }}>
+          <span style={{ fontFamily:'Poppins,sans-serif',fontWeight:600,fontSize:16,color:T.text }}>Gestion équipe</span>
+          <button onClick={onClose} style={{ background:'none',border:'none',color:T.textFaint,cursor:'pointer',fontSize:18 }}>✕</button>
+        </div>
+
+        {/* Existing members */}
+        <div style={{ display:'flex',flexDirection:'column',gap:10,marginBottom:20 }}>
+          {members.map(m=>(
+            <div key={m.id} style={{ display:'flex',alignItems:'center',gap:10,padding:'12px 14px',background:T.statCardBg,border:`1px solid ${T.border}`,borderRadius:12 }}>
+              <select value={m.emoji} onChange={e=>update(m.id,'emoji',e.target.value)} style={{ background:'transparent',border:'none',fontSize:20,cursor:'pointer',outline:'none' }}>
+                {EMOJI_LIST.map(e=><option key={e}>{e}</option>)}
+              </select>
+              <input value={m.name} onChange={e=>update(m.id,'name',e.target.value)} placeholder="Nom"
+                style={{ flex:1,background:'transparent',border:'none',color:T.text,fontSize:14,fontFamily:'DM Sans,sans-serif',outline:'none',fontWeight:600 }} />
+              <div style={{ display:'flex',alignItems:'center',gap:6 }}>
+                <span style={{ fontSize:11,color:T.textFaint }}>Mdp:</span>
+                <input value={m.pwd} onChange={e=>update(m.id,'pwd',e.target.value)} type="text" placeholder="mot de passe"
+                  style={{ width:120,background:T.surface,border:`1px solid ${T.border}`,color:T.text,borderRadius:7,padding:'4px 8px',fontSize:12,fontFamily:'DM Sans,sans-serif',outline:'none' }} />
+              </div>
+              {m.id!=='u1'&&(
+                <button onClick={()=>remove(m.id)} style={{ background:'none',border:'none',color:'#f43f5e',cursor:'pointer',fontSize:14 }}>✕</button>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Add new member */}
+        <div style={{ borderTop:`1px solid ${T.border}`,paddingTop:16,marginBottom:20 }}>
+          <div style={{ fontSize:11,color:T.textFaint,textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:10 }}>Ajouter un membre</div>
+          <div style={{ display:'flex',gap:8,flexWrap:'wrap' }}>
+            <select value={newMember.emoji} onChange={e=>setNewMember(p=>({...p,emoji:e.target.value}))} style={{ background:T.statCardBg,border:`1px solid ${T.border}`,borderRadius:8,fontSize:20,padding:'6px',cursor:'pointer',outline:'none' }}>
+              {EMOJI_LIST.map(e=><option key={e}>{e}</option>)}
+            </select>
+            <input value={newMember.name} onChange={e=>setNewMember(p=>({...p,name:e.target.value}))} placeholder="Prénom Nom"
+              style={{ flex:1,minWidth:100,background:T.statCardBg,border:`1px solid ${T.border}`,color:T.text,borderRadius:8,padding:'8px 10px',fontSize:14,fontFamily:'DM Sans,sans-serif',outline:'none' }} />
+            <div style={{ display:'flex',gap:6,flexWrap:'wrap' }}>
+              {COLOR_LIST.map(c=>(
+                <div key={c} onClick={()=>setNewMember(p=>({...p,color:c}))} style={{ width:20,height:20,borderRadius:'50%',background:c,cursor:'pointer',outline:newMember.color===c?'2px solid white':'none',outlineOffset:2 }} />
+              ))}
+            </div>
+            <input value={newMember.pwd} onChange={e=>setNewMember(p=>({...p,pwd:e.target.value}))} placeholder="Mot de passe"
+              style={{ width:150,background:T.statCardBg,border:`1px solid ${T.border}`,color:T.text,borderRadius:8,padding:'8px 10px',fontSize:13,fontFamily:'DM Sans,sans-serif',outline:'none' }} />
+            <button onClick={addMember} style={{ background:'#4f72f5',color:'#fff',border:'none',borderRadius:8,padding:'8px 16px',fontSize:13,fontWeight:600,cursor:'pointer',fontFamily:'DM Sans,sans-serif' }}>+ Ajouter</button>
+          </div>
+        </div>
+
+        <div style={{ display:'flex',justifyContent:'flex-end',gap:8 }}>
+          <button onClick={onClose} style={{ background:T.statCardBg,border:`1px solid ${T.border}`,borderRadius:10,padding:'10px 18px',color:T.textMuted,cursor:'pointer',fontFamily:'DM Sans,sans-serif',fontSize:14 }}>Annuler</button>
+          <button onClick={()=>onSave(members)} style={{ background:'#4f72f5',color:'#fff',border:'none',borderRadius:10,padding:'10px 18px',fontSize:14,fontWeight:600,cursor:'pointer',fontFamily:'DM Sans,sans-serif' }}>Enregistrer →</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Sidebar ──────────────────────────────────────────────────
+function Sidebar({ user, blocks, teamBlocks, clients, weekStart, showWeekends, dark, onDarkToggle, onLogout, onAddClient, visibleTeam, onToggleTeam, onSync, syncing, lastSync, view, setView, chrono, onChronoStart, onChronoStop, fmtChrono, onAdminOpen, team }) {
+  const T=THEMES[dark?'dark':'light'];
+  const days=Array.from({length:showWeekends?7:5},(_,i)=>dateKey(addDays(weekStart,i)));
+  const myBlocks=blocks.filter(b=>days.includes(b.date)&&b.userId===user.id);
+  const totalMin=myBlocks.reduce((s,b)=>s+b.endMin-b.startMin,0);
+  const teammates=(team||TEAM).filter(m=>m.id!==user.id);
+  const [addMode,setAddMode]=useState(false);
+  const [newName,setNewName]=useState('');
+  const CKEYS=Object.keys(CLIENT_COLORS);
+
+  const handleAdd=e=>{e.preventDefault();if(!newName.trim())return;onAddClient({id:'c'+Date.now(),name:newName.trim(),color:CKEYS[clients.length%CKEYS.length]});setNewName('');setAddMode(false);};
+
+  return (
+    <div style={{ width:236,flexShrink:0,background:T.sidebar,borderRight:`1px solid ${T.border}`,display:'flex',flexDirection:'column',padding:'18px 16px',overflow:'hidden' }}>
+      {/* Logo + theme toggle */}
+      <div style={{ display:'flex',alignItems:'center',marginBottom:24 }}>
+        <img src={dark?'assets/logo-mark-white.svg':'assets/logo-mark.svg'} style={{ height:20,marginRight:8 }} />
+        <span style={{ fontFamily:'Poppins,sans-serif',fontWeight:700,fontSize:13,color:T.text,letterSpacing:'-0.5px',flex:1 }}>
+          Clockify <em style={{ background:'linear-gradient(135deg,#5b6af0,#8b5cf6)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',fontStyle:'italic' }}>OOO</em>
+        </span>
+        <button onClick={onDarkToggle} title={dark?'Mode clair':'Mode sombre'} style={{ background:T.surface2,border:`1px solid ${T.border}`,borderRadius:999,padding:'5px 8px',cursor:'pointer',fontSize:14,lineHeight:1,color:T.textMuted }}>
+          {dark?'☀️':'🌙'}
+        </button>
+      </div>
+
+      {/* View tabs */}
+      <div style={{ display:'flex',gap:4,marginBottom:20,background:T.statCardBg,borderRadius:12,padding:4 }}>
+        {[['Semaine','week'],['Dashboard','dash']].map(([label,v])=>(
+          <button key={v} onClick={()=>setView(v)} style={{ flex:1,background:view===v?T.surface:'transparent',border:`1px solid ${view===v?T.border:'transparent'}`,borderRadius:9,padding:'7px 6px',fontSize:12,fontWeight:view===v?600:400,color:view===v?T.text:T.textMuted,cursor:'pointer',fontFamily:'DM Sans,sans-serif',transition:'all 0.2s' }}>
+            {label}
+          </button>
+        ))}
+      </div>
+
+      {/* Total */}
+      <div style={{ background:T.statCardBg,border:`1px solid ${T.statCardBorder}`,borderRadius:14,padding:'14px 16px',marginBottom:18 }}>
+        <div style={{ fontSize:11,color:T.textFaint,textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:6 }}>Ma semaine</div>
+        <div style={{ fontFamily:'Poppins,sans-serif',fontWeight:700,fontSize:28,color:T.text,letterSpacing:'-1px' }}>{durLabel(totalMin)}</div>
+        <div style={{ fontSize:12,color:T.textFaint,marginTop:2 }}>{myBlocks.length} entrée{myBlocks.length!==1?'s':''}</div>
+      </div>
+
+      {/* Chrono */}
+      <div style={{ marginBottom:18, background:chrono.running?'rgba(244,63,94,0.08)':'#111', border:`1px solid ${chrono.running?'rgba(244,63,94,0.3)':'rgba(255,255,255,0.07)'}`, borderRadius:14, padding:'14px 16px', transition:'all 0.3s', position:'relative', overflow:'hidden' }}>
+        {!chrono.running && <div style={{ position:'absolute', inset:0, background:'linear-gradient(135deg,rgba(91,106,240,0.08),rgba(167,139,250,0.06),rgba(244,114,182,0.04))', pointerEvents:'none' }} />}
+        <div style={{ fontSize:10, color:chrono.running?'#f43f5e':'rgba(255,255,255,0.4)', textTransform:'uppercase', letterSpacing:'1.5px', marginBottom:8, display:'flex', alignItems:'center', gap:5 }}>
+          {chrono.running && <span style={{ display:'inline-block', width:6, height:6, borderRadius:'50%', background:'#f43f5e', animation:'pulse 1s infinite' }} />}
+          Chronomètre
+        </div>
+        <div style={{ fontFamily:'Poppins,sans-serif', fontWeight:700, fontSize:28, letterSpacing:'-0.5px', marginBottom:12, transition:'all 0.3s',
+          color: chrono.running ? '#f43f5e' : 'transparent',
+          background: chrono.running ? 'none' : 'linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6)',
+          WebkitBackgroundClip: chrono.running ? 'unset' : 'text',
+          WebkitTextFillColor: chrono.running ? '#f43f5e' : 'transparent',
+        }}>
+          {fmtChrono(chrono.elapsed)}
+        </div>
+        <button onClick={chrono.running?onChronoStop:onChronoStart} style={{ width:'100%', border:'none', borderRadius:10, padding:'9px', fontSize:13, fontWeight:600, cursor:'pointer', fontFamily:'DM Sans,sans-serif', transition:'all 0.2s', color:'#fff',
+          background: chrono.running ? '#f43f5e' : 'linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6)',
+          boxShadow: chrono.running ? '0 4px 14px rgba(244,63,94,0.4)' : '0 4px 14px rgba(107,127,255,0.35)',
+        }}>
+          {chrono.running?'⏹ Stop & enregistrer':'▶ Démarrer'}
+        </button>
+      </div>
+
+      {/* Clients */}
+      <div style={{ fontSize:11,color:T.textFaint,textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:10 }}>Clients</div>
+      <div style={{ flex:1,overflowY:'auto',marginBottom:6 }}>
+        {clients.map(c=>{
+          const cc=getCC(c.color);
+          const min=myBlocks.filter(b=>b.clientId===c.id).reduce((s,b)=>s+b.endMin-b.startMin,0);
+          const pct=totalMin>0?(min/totalMin)*100:0;
+          return (
+            <div key={c.id} style={{ marginBottom:10 }}>
+              <div style={{ display:'flex',justifyContent:'space-between',marginBottom:3 }}>
+                <span style={{ fontSize:13,color:min>0?T.text:T.textFaint,fontWeight:min>0?500:400 }}>{c.name}</span>
+                {min>0&&<span style={{ fontSize:12,color:cc.text(dark),fontWeight:600 }}>{durLabel(min)}</span>}
+              </div>
+              {min>0&&<div style={{ height:3,background:T.statCardBg,borderRadius:99 }}><div style={{ height:'100%',width:`${pct}%`,background:cc.fg,borderRadius:99,opacity:0.7 }} /></div>}
+            </div>
+          );
+        })}
+        {addMode?(
+          <form onSubmit={handleAdd} style={{ marginTop:8 }}>
+            <input value={newName} onChange={e=>setNewName(e.target.value)} placeholder="Nom du client" autoFocus style={{ background:T.inputBg,border:`1px solid ${T.inputBorder}`,color:T.inputColor,borderRadius:9,padding:'8px 10px',fontSize:13,fontFamily:'DM Sans,sans-serif',outline:'none',width:'100%',marginBottom:7 }} />
+            <div style={{ display:'flex',gap:5 }}>
+              <button type="submit" style={{ flex:1,background:'#5b6af0',color:'#fff',border:'none',borderRadius:9,padding:'7px',fontSize:12,fontWeight:600,cursor:'pointer',fontFamily:'DM Sans,sans-serif' }}>Ajouter</button>
+              <button type="button" onClick={()=>setAddMode(false)} style={{ background:T.btnGhostBg,border:`1px solid ${T.btnGhostBorder}`,color:T.btnGhostColor,borderRadius:9,padding:'7px 10px',fontSize:12,cursor:'pointer',fontFamily:'DM Sans,sans-serif' }}>✕</button>
+            </div>
+          </form>
+        ):(
+          <button onClick={()=>setAddMode(true)} style={{ background:'none',border:`1px dashed ${T.border}`,borderRadius:9,padding:'7px 10px',color:T.textFaint,fontSize:12,cursor:'pointer',width:'100%',marginTop:4,fontFamily:'DM Sans,sans-serif',transition:'all 0.2s' }}
+            onMouseEnter={e=>{e.target.style.borderColor='rgba(91,106,240,0.5)';e.target.style.color='#5b6af0';}}
+            onMouseLeave={e=>{e.target.style.borderColor=T.border;e.target.style.color=T.textFaint;}}>
+            + Client
+          </button>
+        )}
+      </div>
+
+      {/* Team */}
+      <div style={{ borderTop:`1px solid ${T.border}`,paddingTop:14,marginBottom:14 }}>
+        <div style={{ fontSize:11,color:T.textFaint,textTransform:'uppercase',letterSpacing:'1.5px',marginBottom:10 }}>Calendriers visibles</div>
+        {/* Own calendar toggle */}
+        {[user,...teammates].map(m=>{
+          const isMe=m.id===user.id;
+          const vis=visibleTeam.includes(m.id);
+          return (
+            <div key={m.id} onClick={()=>onToggleTeam(m.id)} style={{ display:'flex',alignItems:'center',gap:8,marginBottom:6,cursor:'pointer',padding:'5px 8px',borderRadius:10,transition:'background 0.15s',background:vis?T.statCardBg:'transparent' }}
+              onMouseEnter={e=>e.currentTarget.style.background=T.statCardBg}
+              onMouseLeave={e=>e.currentTarget.style.background=vis?T.statCardBg:'transparent'}>
+              <span style={{ fontSize:20, opacity:vis?1:0.4, transition:'opacity 0.2s' }}>{m.emoji}</span>
+              <span style={{ fontSize:13,color:vis?T.text:T.textFaint,fontWeight:vis?500:400,flex:1,transition:'color 0.2s' }}>{m.name}</span>
+              <div style={{ width:14,height:14,borderRadius:4,border:`2px solid ${vis?m.color:T.border}`,background:vis?m.color:'transparent',display:'flex',alignItems:'center',justifyContent:'center',transition:'all 0.2s' }}>
+                {vis&&<span style={{ color:'#fff',fontSize:8 }}>✓</span>}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Notion Sync */}
+      <button onClick={onSync} disabled={syncing} style={{ display:'flex',alignItems:'center',gap:10,width:'100%',background:dark?'rgba(22,163,74,0.12)':'rgba(22,163,74,0.08)',border:'1px solid rgba(22,163,74,0.3)',borderRadius:12,padding:'11px 14px',cursor:syncing?'default':'pointer',fontFamily:'DM Sans,sans-serif',transition:'all 0.25s',marginBottom:4,position:'relative',overflow:'hidden' }}
+        onMouseEnter={e=>{if(!syncing){e.currentTarget.style.background=dark?'rgba(22,163,74,0.22)':'rgba(22,163,74,0.14)';e.currentTarget.style.borderColor='rgba(22,163,74,0.55)';}}}
+        onMouseLeave={e=>{if(!syncing){e.currentTarget.style.background=dark?'rgba(22,163,74,0.12)':'rgba(22,163,74,0.08)';e.currentTarget.style.borderColor='rgba(79,114,245,0.3)';}}}
+      >
+        <div style={{ width:28,height:28,borderRadius:8,background:'#fff',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,boxShadow:'0 2px 8px rgba(0,0,0,0.15)',overflow:'hidden' }}>
+          {syncing
+            ? <span style={{ display:'inline-block',animation:'spin 1s linear infinite',fontSize:14,color:'#333',lineHeight:1 }}>⟳</span>
+            : <img src="assets/logo-notion.png" style={{ width:22,height:22,objectFit:'contain' }} />
+          }
+        </div>
+        <div style={{ flex:1 }}>
+          <div style={{ fontSize:13,fontWeight:600,color:'#16a34a' }}>{syncing?'Synchronisation…':'Sync Notion'}</div>
+          {lastSync&&<div style={{ fontSize:10,color:T.textFaint }}>Dernière sync {lastSync}</div>}
+        </div>
+        {!syncing&&<span style={{ fontSize:12,color:'rgba(79,114,245,0.5)' }}>→</span>}
+      </button>
+
+
+      {/* User */}
+      <div style={{ display:'flex',alignItems:'center',gap:8 }}>
+        <Avatar member={user} size={30} />
+        <span style={{ fontSize:13,color:T.textMuted,flex:1 }}>{user.name}</span>
+        {user.id==='u1'&&(
+          <button onClick={onAdminOpen} style={{ background:'none',border:'none',color:T.textFaint,cursor:'pointer',fontSize:13,transition:'color 0.15s' }}
+            onMouseEnter={e=>e.target.style.color='#4f72f5'} onMouseLeave={e=>e.target.style.color=T.textFaint} title="Gérer l'équipe">⚙</button>
+        )}
+        <button onClick={onLogout} style={{ background:'none',border:'none',color:T.textFaint,cursor:'pointer',fontSize:13,transition:'color 0.15s' }}
+          onMouseEnter={e=>e.target.style.color='#e11d48'}
+          onMouseLeave={e=>e.target.style.color=T.textFaint}>↩</button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Ghost button helper ───────────────────────────────────────
+function GhostBtn({ T, onClick, children, style={} }) {
+  return (
+    <button onClick={onClick} style={{ background:T.btnGhostBg,border:`1px solid ${T.btnGhostBorder}`,color:T.btnGhostColor,borderRadius:999,padding:'9px 16px',fontFamily:'DM Sans,sans-serif',fontSize:14,cursor:'pointer',transition:'all 0.15s',...style }}
+      onMouseEnter={e=>{e.currentTarget.style.background=T.btnGhostHoverBg;e.currentTarget.style.color=T.btnGhostHoverColor;}}
+      onMouseLeave={e=>{e.currentTarget.style.background=T.btnGhostBg;e.currentTarget.style.color=T.btnGhostColor;}}
+    >{children}</button>
+  );
+}
+
+// ─── App ──────────────────────────────────────────────────────
+function App() {
+  const [dark,setDark]=useState(()=>{try{return JSON.parse(localStorage.getItem('ooo_dark')||'false');}catch{return false;}});
+  const [user,setUser]=useState(()=>{try{return JSON.parse(localStorage.getItem('ooo_session3'));}catch{return null;}});
+  const [clients,setClients]=useState(()=>{try{return JSON.parse(localStorage.getItem('ooo_clients3')||'null')||DEFAULT_CLIENTS;}catch{return DEFAULT_CLIENTS;}});
+  const [blocks,setBlocks]=useState(()=>{try{return JSON.parse(localStorage.getItem('ooo_blocks3')||'[]');}catch{return[];}});
+  const [teamBlocks]=useState(()=>seedTeamBlocks());
+  const [rates,setRates]=useState(()=>{try{return JSON.parse(localStorage.getItem('ooo_rates3')||'null')||DEFAULT_RATES;}catch{return DEFAULT_RATES;}});
+  const [teamMembers,setTeamMembers]=useState(()=>loadTeam());
+  const [showAdmin,setShowAdmin]=useState(false);
+  const [locations,setLocations]=useState(()=>{try{return JSON.parse(localStorage.getItem('ooo_locs')||'{}');}catch{return {};}});
+  const [visibleTeam,setVisibleTeam]=useState(()=>loadTeam().map(m=>m.id));
+  const [weekOffset,setWeekOffset]=useState(0);
+  const [showWeekends,setShowWeekends]=useState(()=>{try{return JSON.parse(localStorage.getItem('ooo_weekends3')||'false');}catch{return false;}});
+  const [view,setView]=useState('week');
+  const [syncing,setSyncing]=useState(false);
+  const [lastSync,setLastSync]=useState(null);
+  const [toast,setToast]=useState(null);
+  const [chrono,setChrono]=useState({running:false,startedAt:null,elapsed:0});
+  const chronoRef=useRef(null);
+
+  useEffect(()=>{if(user)localStorage.setItem('ooo_session3',JSON.stringify(user));},[user]);
+  useEffect(()=>{localStorage.setItem('ooo_blocks3',JSON.stringify(blocks));},[blocks]);
+  useEffect(()=>{localStorage.setItem('ooo_clients3',JSON.stringify(clients));},[clients]);
+  useEffect(()=>{localStorage.setItem('ooo_rates3',JSON.stringify(rates));},[rates]);
+  useEffect(()=>{localStorage.setItem('ooo_team',JSON.stringify(teamMembers));},[teamMembers]);
+  useEffect(()=>{localStorage.setItem('ooo_locs',JSON.stringify(locations));},[locations]);
+  useEffect(()=>{localStorage.setItem('ooo_weekends3',JSON.stringify(showWeekends));},[showWeekends]);
+  useEffect(()=>{localStorage.setItem('ooo_dark',JSON.stringify(dark));},[dark]);
+
+  // Calendar events (from Calendar child)
+  useEffect(()=>{
+    const save=e=>{
+      const w=e.detail;
+      if(w.id) setBlocks(p=>p.map(b=>b.id===w.id?w:b));
+      else setBlocks(p=>[...p,{...w,id:'b'+Date.now()}]);
+      showT('✓ Entrée enregistrée');
+    };
+    const del=e=>{ setBlocks(p=>p.filter(b=>b.id!==e.detail)); showT('🗑 Entrée supprimée'); };
+    window.addEventListener('ooo-save',save); window.addEventListener('ooo-delete',del);
+    return ()=>{ window.removeEventListener('ooo-save',save); window.removeEventListener('ooo-delete',del); };
+  },[]);
+
+  // Chrono tick
+  useEffect(()=>{
+    if(chrono.running){
+      chronoRef.current=setInterval(()=>{
+        setChrono(p=>({...p,elapsed:Math.floor((Date.now()-p.startedAt)/1000)}));
+      },1000);
+    } else {
+      clearInterval(chronoRef.current);
+    }
+    return()=>clearInterval(chronoRef.current);
+  },[chrono.running]);
+
+  const chronoStart=()=>{
+    const now=Date.now();
+    setChrono({running:true,startedAt:now,elapsed:0});
+  };
+  const chronoStop=()=>{
+    const startedAt=chrono.startedAt;
+    setChrono({running:false,startedAt:null,elapsed:0});
+    // Open modal with computed times
+    const startDate=new Date(startedAt);
+    const endDate=new Date();
+    const startMin=startDate.getHours()*60+startDate.getMinutes();
+    const endMin=endDate.getHours()*60+endDate.getMinutes();
+    const dk=dateKey(startDate);
+    window.dispatchEvent(new CustomEvent('ooo-open-modal',{detail:{date:dk,startMin,endMin,clientId:'',taskType:'',note:''}}));
+  };
+
+  const fmtChrono=s=>{
+    const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;
+    if(h>0) return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+    return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+  };
+
+  const showT=msg=>{setToast(msg);setTimeout(()=>setToast(null),3000);};
+  const handleSync=async()=>{
+    setSyncing(true);
+    try {
+      await fetch('https://n8n.srv1422950.hstgr.cloud/webhook/time-clock',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          blocks: blocks.map(b=>({
+            ...b,
+            userName: TEAM.find(m=>m.id===b.userId)?.name||b.userId,
+            clientName: clients.find(c=>c.id===b.clientId)?.name||b.clientId,
+            durationMin: b.endMin-b.startMin,
+            exportedAt: new Date().toISOString()
+          })),
+          clients,
+          exportedAt: new Date().toISOString()
+        })
+      });
+      showT('✓ Synchronisé avec Notion');
+    } catch(err) {
+      showT('⚠ Erreur sync: '+err.message);
+    }
+    setSyncing(false);
+    const now=new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    setLastSync(now);
+  };
+
+  const T=THEMES[dark?'dark':'light'];
+
+  // Style scoped scrollbar thumb
+  useEffect(()=>{
+    let s=document.getElementById('ooo-scroll-style');
+    if(!s){s=document.createElement('style');s.id='ooo-scroll-style';document.head.appendChild(s);}
+    s.textContent=`::-webkit-scrollbar-thumb{background:${T.scrollThumb};}body{background:${T.bg};color:${T.text};}`;
+  },[dark]);
+
+  if(!user) return <Login onLogin={u=>setUser(u)} team={teamMembers} />;
+
+  return (
+    <div style={{ display:'flex',height:'100%',background:T.bg }}>
+      <Sidebar
+        user={user} blocks={blocks} teamBlocks={teamBlocks} clients={clients}
+        weekStart={getWeekStart(weekOffset)} showWeekends={showWeekends}
+        dark={dark} onDarkToggle={()=>setDark(d=>!d)}
+        onLogout={()=>{localStorage.removeItem('ooo_session3');setUser(null);}}
+        onAddClient={c=>setClients(p=>[...p,c])}
+        visibleTeam={visibleTeam} onToggleTeam={id=>setVisibleTeam(p=>p.includes(id)?p.filter(x=>x!==id):[...p,id])}
+        onSync={handleSync} syncing={syncing} lastSync={lastSync}
+        view={view} setView={setView}
+        chrono={chrono} onChronoStart={chronoStart} onChronoStop={chronoStop} fmtChrono={fmtChrono}
+        onAdminOpen={()=>setShowAdmin(true)}
+        team={teamMembers}
+      />
+      {view==='week'
+        ? <Calendar user={user} blocks={blocks} teamBlocks={teamBlocks} clients={clients}
+            weekOffset={weekOffset} setWeekOffset={setWeekOffset}
+            showWeekends={showWeekends} setShowWeekends={setShowWeekends}
+            startHour={0} endHour={24} visibleTeam={visibleTeam} dark={dark} teamProp={teamMembers} />
+        : <Dashboard blocks={blocks} teamBlocks={teamBlocks} clients={clients} dark={dark} rates={rates} onRateChange={(id,v)=>setRates(p=>({...p,[id]:v}))} locations={locations} onLocationChange={(id,loc)=>setLocations(p=>({...p,[id]:loc}))} />
+      }
+      {showAdmin&&user.id==='u1'&&(
+        <AdminPanel team={teamMembers} dark={dark}
+          onSave={m=>{setTeamMembers(m);setShowAdmin(false);}}
+          onClose={()=>setShowAdmin(false)} />
+      )}
+      {toast&&<div style={{ position:'fixed',bottom:24,right:24,background:T.toastBg,border:`1px solid ${T.toastBorder}`,color:T.toastColor,padding:'12px 20px',borderRadius:12,fontSize:14,fontWeight:500,zIndex:200,boxShadow:'0 4px 16px rgba(0,0,0,0.1)',animation:'slideIn 0.3s ease' }}>{toast}</div>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
