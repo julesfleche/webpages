@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Léo × OOO — Portail client</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,600&family=DM+Sans:wght@400;500;600&family=Figtree:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--white:#fff;--off-white:#f5f4f0;--gray-50:#fafaf9;--gray-100:#f3f2ef;--gray-200:#e8e7e3;--gray-300:#d4d3ce;--gray-500:#8a8984;--gray-700:#444441;--black:#080808;--accent:#5b6af0;--accent-2:#6b7fff;--accent-3:#a78bfa;--accent-gradient:linear-gradient(135deg,#6b7fff,#a78bfa);--pm:#5F14F5;--pm-2:#9A69F9;--pm-3:#C9B1FB;--success:#16a34a;--blue:#2563eb;--red:#dc2626;--border:rgba(0,0,0,.08);--shadow-sm:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);--shadow-md:0 4px 16px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);--shadow-lg:0 8px 32px rgba(0,0,0,.10);--r-sm:6px;--r-md:8px;--r-lg:10px;--r-xl:14px;--r-pill:999px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--off-white);color:var(--black);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.6;min-height:100vh}
+h1,h2,h3,h4{font-family:'Poppins',sans-serif;font-weight:600;line-height:1.15;padding-bottom:.15em;padding-top:.05em;overflow:visible}
+em,.accent-em{font-style:italic;background:var(--accent-gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;padding-right:.12em;padding-left:.02em;display:inline-block;line-height:inherit}
+
+/* AUTH */
+#auth-screen{position:fixed;inset:0;background:linear-gradient(135deg,#0E0227 0%,#1a0438 50%,#25095F 100%);display:flex;align-items:center;justify-content:center;z-index:9999}
+.auth-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-xl);padding:48px 40px 40px;width:100%;max-width:400px;backdrop-filter:blur(24px);animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.auth-pm-mark{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.auth-pm-mark svg{width:48px;height:48px}
+.auth-pm-name{font-family:'Figtree',sans-serif;font-weight:800;font-size:20px;background:linear-gradient(135deg,#C9B1FB,#9A69F9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.3px}
+.auth-pm-sub{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:1px}
+.auth-title{font-family:'Poppins',sans-serif;font-size:20px;font-weight:600;color:#fff;letter-spacing:-.4px;margin-bottom:4px}
+.auth-sub{font-size:13px;color:rgba(255,255,255,.3);margin-bottom:24px}
+.auth-input-wrap{position:relative;margin-bottom:10px}
+.auth-input{width:100%;padding:13px 44px 13px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-md);color:#fff;font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:border-color .2s;letter-spacing:3px}
+.auth-input::placeholder{letter-spacing:0;color:rgba(255,255,255,.25)}
+.auth-input:focus{border-color:rgba(159,103,255,.6);background:rgba(159,103,255,.07)}
+.auth-input.error{border-color:rgba(220,38,38,.6);animation:shake .3s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.auth-eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:rgba(255,255,255,.3);font-size:16px;user-select:none}
+.auth-btn{width:100%;padding:13px;border-radius:var(--r-pill);border:none;background:linear-gradient(135deg,#9A69F9,#5F14F5);font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;color:#fff;cursor:pointer;transition:all .2s;margin-top:4px;box-shadow:0 4px 20px rgba(95,20,245,.35)}
+.auth-btn:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(95,20,245,.5)}
+.auth-error{color:#f87171;font-size:12px;text-align:center;margin-top:10px;min-height:18px}
+
+/* APP */
+#app{display:none}
+#app.visible{display:block}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;background:var(--black);border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.nav-logo svg{width:28px;height:28px}
+.nav-logo-name{font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:#fff;letter-spacing:-.3px}
+.nav-logo-sub{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#555}
+.nav-sep{width:1px;height:28px;background:rgba(255,255,255,.08)}
+.pm-dot{width:8px;height:8px;border-radius:50%;background:var(--pm-2);box-shadow:0 0 8px rgba(154,105,249,.7);animation:pulse 2.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+.nav-client-name{font-family:'Figtree',sans-serif;font-weight:700;font-size:14px;background:linear-gradient(135deg,#C9B1FB,#9A69F9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-status{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:var(--r-pill);font-size:11px;font-weight:600;background:rgba(91,106,240,.15);border:1px solid rgba(91,106,240,.25);color:#9aa3f7}
+.nav-actions{display:flex;align-items:center;gap:10px}
+.btn-nav{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:var(--r-pill);font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;cursor:pointer;text-decoration:none;transition:all .2s;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.06);color:#fff;position:relative;overflow:hidden}
+.btn-nav::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6);opacity:0;transition:opacity .2s;border-radius:inherit}
+.btn-nav:hover::before{opacity:1}
+.btn-nav span{position:relative;z-index:1;display:flex;align-items:center;gap:7px}
+.btn-slack{background:#4A154B;border-color:rgba(74,21,75,.6)}
+.btn-slack:hover::before{opacity:0}
+.btn-slack:hover{background:#611564;transform:translateY(-1px)}
+
+/* HERO */
+.hero{background:var(--white);border-bottom:1px solid var(--border);padding:40px 40px 32px}
+.hero-inner{max-width:1400px;margin:0 auto}
+.hero-title{font-size:clamp(24px,3.2vw,36px);letter-spacing:-1.5px;color:var(--black)}
+.hero-desc{color:var(--gray-500);margin-top:8px;font-size:15px;max-width:460px}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.meta-pill{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:var(--r-pill);font-size:12px;font-weight:500;background:var(--gray-100);border:1px solid var(--border);color:var(--gray-700)}
+.meta-pill.active{background:rgba(91,106,240,.08);border-color:rgba(91,106,240,.2);color:var(--accent)}
+.meta-dot-live{width:6px;height:6px;border-radius:50%;background:#16a34a;box-shadow:0 0 5px rgba(22,163,74,.7);animation:pulse 2s infinite;display:inline-block}
+
+/* PAGE */
+.page-content{max-width:1400px;margin:0 auto;padding:36px 40px 80px}
+.section-block{margin-bottom:44px}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.section-title{font-size:18px;letter-spacing:-.4px;color:var(--black);display:flex;align-items:center;gap:10px}
+.section-count{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;color:var(--gray-500);background:var(--gray-100);border:1px solid var(--border);padding:2px 8px;border-radius:var(--r-pill)}
+
+/* GANTT V6 — UN SEUL SCROLL */
+.gantt-section{margin-left:-40px;margin-right:-40px;padding-left:40px;padding-right:40px}
+.gantt-outer{background:var(--white);border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow-md)}
+.gantt-scroll{overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch}
+.gantt-scroll::-webkit-scrollbar{height:4px}
+.gantt-scroll::-webkit-scrollbar-track{background:var(--gray-100)}
+.gantt-scroll::-webkit-scrollbar-thumb{background:var(--gray-300);border-radius:2px}
+.gantt-inner-wrap{display:flex;flex-direction:column}
+.gantt-header-row{display:flex;position:sticky;top:64px;z-index:10;background:var(--gray-50);border-bottom:2px solid var(--border)}
+.gantt-corner{width:140px;flex-shrink:0;display:flex;align-items:center;padding:0 18px;border-right:1px solid var(--border);background:var(--gray-50);position:sticky;left:0;z-index:12}
+.gantt-label-col-text{font-family:'Poppins',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray-500)}
+.gantt-days-row{display:flex}
+.gantt-day-cell{flex-shrink:0;display:flex;flex-direction:column;justify-content:center;align-items:center;height:48px;border-right:1px solid var(--border);gap:2px}
+.gantt-day-num{font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;color:var(--gray-700);line-height:1}
+.gantt-day-name{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px}
+.gantt-day-cell.today{background:rgba(91,106,240,.07)}
+.gantt-day-cell.today .gantt-day-num{color:var(--accent);font-weight:700}
+.gantt-day-cell.today .gantt-day-name{color:var(--accent);font-weight:700}
+.gantt-day-cell.weekend{background:#fafaf8}
+.gantt-day-cell.weekend .gantt-day-num{color:var(--gray-500)}
+.gantt-day-cell.weekend .gantt-day-name{color:var(--gray-300)}
+.gantt-day-cell.call-day .gantt-day-num{color:#dc2626;font-weight:700}
+.gantt-day-cell.call-day .gantt-day-name{color:#dc2626}
+.gantt-row{display:flex;border-bottom:1px solid var(--border);min-height:90px}
+.gantt-row:last-child{border-bottom:none}
+.gantt-row-label{width:140px;flex-shrink:0;display:flex;align-items:center;gap:10px;padding:0 18px;border-right:1px solid var(--border);background:var(--gray-50);position:sticky;left:0;z-index:2;min-height:90px}
+.gantt-row-icon{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.gantt-row-name{font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;color:var(--gray-700);letter-spacing:-.1px}
+.gantt-track{position:relative;min-height:90px}
+.gantt-today-marker{position:absolute;top:0;bottom:0;width:2px;background:var(--accent);z-index:4;box-shadow:0 0 8px rgba(91,106,240,.35);pointer-events:none}
+.g-bar{position:absolute;border-radius:5px;display:flex;flex-direction:column;justify-content:center;overflow:hidden;z-index:2;transition:filter .15s,box-shadow .15s;cursor:default}
+.g-bar:hover{filter:brightness(.96);box-shadow:0 4px 16px rgba(0,0,0,.12)!important;z-index:5}
+.g-bar-title{font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2}
+.g-bar-sub{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:.7;margin-top:2px}
+.bar-ooo-active{background:linear-gradient(90deg,#6366F1,#4F46E5);box-shadow:0 1px 8px rgba(79,70,229,.25);color:#fff;padding:0 12px}
+.bar-ooo-future{background:#EEF2FF;border:1px solid #C7D2FE;color:#4338CA;padding:0 12px}
+.bar-pm-active{background:linear-gradient(90deg,#9A69F9,#7C3AED);box-shadow:0 1px 8px rgba(124,58,237,.25);color:#fff;padding:0 12px}
+.bar-pm-future{background:#F3EEFE;border:1px solid #DDD6FE;color:#6D28D9;padding:0 12px}
+.bar-call{display:flex;flex-direction:column;align-items:center;justify-content:center;background:#FEF2F2;border:1px solid #FECACA;color:#DC2626;border-radius:5px;padding:0 6px;text-align:center}
+.bar-call .g-bar-title{font-size:10px;font-weight:700;text-align:center;letter-spacing:.2px}
+.bar-call .g-bar-sub{font-size:9px;text-align:center;opacity:.7}
+
+/* PILLS */
+.status-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:var(--r-pill);font-size:11px;font-weight:600;font-family:'DM Sans',sans-serif}
+.status-ready{background:rgba(22,163,74,.1);border:1px solid rgba(22,163,74,.25);color:#16a34a}
+.status-inprogress{background:rgba(37,99,235,.08);border:1px solid rgba(37,99,235,.2);color:var(--blue)}
+.status-todo{background:rgba(107,114,128,.08);border:1px solid rgba(107,114,128,.18);color:#6b7280}
+
+/* FILTER */
+.filter-tabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.filter-tab{padding:6px 14px;border-radius:var(--r-pill);border:1px solid var(--border);background:var(--white);color:var(--gray-500);font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;box-shadow:var(--shadow-sm)}
+.filter-tab.active{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 2px 8px rgba(91,106,240,.25)}
+.filter-tab:hover:not(.active){border-color:var(--gray-300);color:var(--gray-700)}
+
+/* AUTO GRID */
+.auto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.auto-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;transition:all .2s;cursor:pointer;text-decoration:none;display:block;box-shadow:var(--shadow-sm)}
+.auto-card:hover{border-color:rgba(91,106,240,.3);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.auto-card.no-video{cursor:default}
+.auto-card.no-video:hover{transform:none;border-color:var(--border)}
+.auto-video-wrap{position:relative;aspect-ratio:16/9;background:var(--gray-100);overflow:hidden}
+.auto-video-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(91,106,240,.05),rgba(167,139,250,.04))}
+.auto-play-btn{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.9);border:none;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 12px rgba(0,0,0,.12);transition:all .2s}
+.auto-play-btn svg{width:16px;height:16px;fill:var(--accent);margin-left:2px}
+.auto-card:hover .auto-play-btn{background:var(--accent);transform:translate(-50%,-50%) scale(1.1)}
+.auto-card:hover .auto-play-btn svg{fill:#fff}
+.auto-body{padding:14px 16px 16px}
+.auto-status-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.auto-name{font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;letter-spacing:-.2px;color:var(--black);margin-bottom:3px}
+.auto-sub{font-size:12px;color:var(--gray-500);line-height:1.5}
+
+/* SKILLS */
+.skills-list{display:flex;flex-direction:column;gap:8px}
+.skill-row{display:flex;align-items:center;gap:14px;background:var(--white);border:1px solid var(--border);border-radius:var(--r-md);padding:13px 16px;transition:all .2s;box-shadow:var(--shadow-sm)}
+.skill-row:hover{border-color:rgba(91,106,240,.25);box-shadow:var(--shadow-md)}
+.skill-icon{font-size:20px;flex-shrink:0;width:32px;text-align:center}
+.skill-info{flex:1;min-width:0}
+.skill-name{font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;color:var(--black);margin-bottom:2px}
+.skill-name code{font-family:'Courier New',monospace;font-size:12px;background:rgba(91,106,240,.07);border:1px solid rgba(91,106,240,.15);border-radius:4px;padding:1px 6px;color:var(--accent);margin-right:6px}
+.skill-desc{font-size:12px;color:var(--gray-500);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+/* KITS */
+.kits-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px}
+.kit-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;transition:all .2s;box-shadow:var(--shadow-sm)}
+.kit-card.kit-current{border-color:rgba(91,106,240,.3);background:rgba(91,106,240,.02)}
+.kit-card:hover{border-color:rgba(91,106,240,.3);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.kit-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.kit-number{font-family:'Poppins',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray-500)}
+.kit-title{font-family:'Poppins',sans-serif;font-weight:600;font-size:17px;letter-spacing:-.4px;color:var(--black);margin-bottom:6px}
+.kit-desc{font-size:13px;color:var(--gray-500);margin-bottom:16px;line-height:1.5}
+.kit-automations{display:flex;flex-direction:column;gap:7px}
+.kit-auto-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--gray-700)}
+.kit-auto-item .check{color:var(--success);font-size:13px}
+.kit-auto-item .pending{color:var(--gray-300);font-size:13px}
+.kit-url-btn{display:inline-flex;align-items:center;gap:6px;margin-top:16px;padding:8px 16px;border-radius:var(--r-pill);border:1px solid var(--border);background:var(--gray-50);color:var(--gray-700);font-size:12px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer;font-family:'DM Sans',sans-serif}
+.kit-url-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(91,106,240,.05)}
+
+/* DARK BAND / FOOTER */
+.dark-band{background:var(--black);padding:32px 40px}
+.dark-band-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.dark-cta-title{font-family:'Poppins',sans-serif;font-size:16px;font-weight:600;color:#fff;letter-spacing:-.3px}
+.dark-cta-sub{font-size:13px;color:#555;margin-top:2px}
+.dark-btns{display:flex;gap:10px;align-items:center}
+footer{background:#050505;border-top:1px solid rgba(255,255,255,.04);padding:20px 40px;display:flex;align-items:center;justify-content:center;gap:8px;color:#444;font-size:12px}
+footer svg{width:16px;height:16px;opacity:.3}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);backdrop-filter:blur(12px);z-index:1000;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border:1px solid var(--border);border-radius:var(--r-xl);width:100%;max-width:680px;overflow:hidden;animation:slideUp .2s ease-out;box-shadow:var(--shadow-lg);position:relative}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.modal-video{aspect-ratio:16/9;background:var(--black)}
+.modal-video iframe{width:100%;height:100%;border:none}
+.modal-body{padding:20px 24px 24px}
+.modal-title{font-family:'Poppins',sans-serif;font-weight:600;font-size:17px;letter-spacing:-.4px;color:var(--black);margin-bottom:5px}
+.modal-sub{font-size:13px;color:var(--gray-500)}
+.modal-close{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.08);border:none;color:var(--gray-700);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;z-index:2}
+.modal-close:hover{background:rgba(0,0,0,.14)}
+
+@media(max-width:768px){nav{padding:0 16px}.hero,.page-content{padding-left:16px;padding-right:16px}.auto-grid,.kits-grid{grid-template-columns:1fr}.dark-band{padding:28px 16px}footer{padding:20px 16px}.gantt-section{margin-left:-16px;margin-right:-16px}.gantt-row-label{width:100px}.gantt-corner{width:100px}}
+::-webkit-scrollbar{width:5px;height:4px}
+::-webkit-scrollbar-track{background:rgba(0,0,0,.04)}
+::-webkit-scrollbar-thumb{background:var(--gray-300);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-card">
+    <div class="auth-pm-mark">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 157.477 200">
+        <path d="M139.555,30.832L83.334,3.269c-8.89-4.359-19.297-4.359-28.187,0L17.922,25.683C2.876,35.313,0,38.958,0,54.429v136.101c0,8.799,10.969,12.823,16.659,6.111l27.459-32.395,30.024,14.72c8.89,4.359,19.297,4.359,28.187,0l37.226-22.414c10.969-5.378,17.922-16.53,17.922-28.746V59.578c0-12.217-6.952-23.369-17.922-28.746ZM88.236,148.044c0,7.475-7.837,12.36-14.548,9.07l-41.852-20.519c-5.984-2.934-9.777-9.017-9.777-15.681v-60.718c0-6.879,7.213-11.376,13.39-8.348l43.924,21.535c5.425,2.66,8.863,8.175,8.863,14.217v60.445Z" fill="#9A69F9"/>
+      </svg>
+      <div><div class="auth-pm-name">Purplemail</div><div class="auth-pm-sub">Portail client OOO</div></div>
+    </div>
+    <div class="auth-title">Accès sécurisé 🔒</div>
+    <div class="auth-sub">Entre le mot de passe pour accéder à ton espace.</div>
+    <div class="auth-input-wrap">
+      <input type="password" id="pwd-input" class="auth-input" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')checkAuth()" autocomplete="current-password"/>
+      <span class="auth-eye" onclick="togglePwd()" id="eye-icon">👁</span>
+    </div>
+    <button class="auth-btn" onclick="checkAuth()">Accéder au portail →</button>
+    <div class="auth-error" id="auth-error"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 659 659" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" fill="white"/></svg>
+    <div style="display:flex;flex-direction:column;gap:1px;"><span class="nav-logo-name">Out of Office</span><span class="nav-logo-sub">IA et automatisations</span></div>
+  </a>
+  <div style="display:flex;align-items:center;gap:14px;">
+    <div class="nav-sep"></div>
+    <div style="display:flex;align-items:center;gap:8px;"><div class="pm-dot"></div><span class="nav-client-name">Léo</span></div>
+    <span class="nav-status"><span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;box-shadow:0 0 5px rgba(34,197,94,.7);"></span>Actif · Mois 2</span>
+  </div>
+  <div class="nav-actions">
+    <a href="https://app.slack.com/client/T091602G07Q" target="_blank" class="btn-nav btn-slack"><span><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zm2.521-10.123a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zm10.122 2.521a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zm-1.268 0a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zm-2.523 10.122a2.527 2.527 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zm0-1.268a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg>Slack OOO</span></a>
+    <a href="https://n8n.srv1423048.hstgr.cloud" target="_blank" class="btn-nav"><span><svg fill="currentColor" fill-rule="evenodd" height="16" width="16" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="M24 8.4c0 1.325-1.102 2.4-2.462 2.4-1.146 0-2.11-.765-2.384-1.8h-3.436c-.602 0-1.115.424-1.214 1.003l-.101.592a2.38 2.38 0 01-.8 1.405c.412.354.704.844.8 1.405l.1.592A1.222 1.222 0 0015.719 15h.975c.273-1.035 1.237-1.8 2.384-1.8 1.36 0 2.461 1.075 2.461 2.4S20.436 18 19.078 18c-1.147 0-2.11-.765-2.384-1.8h-.975c-1.204 0-2.23-.848-2.428-2.005l-.101-.592a1.222 1.222 0 00-1.214-1.003H10.97c-.308.984-1.246 1.7-2.356 1.7-1.11 0-2.048-.716-2.355-1.7H4.817c-.308.984-1.246 1.7-2.355 1.7C1.102 14.3 0 13.225 0 11.9s1.102-2.4 2.462-2.4c1.183 0 2.172.815 2.408 1.9h1.337c.236-1.085 1.225-1.9 2.408-1.9 1.184 0 2.172.815 2.408 1.9h.952c.601 0 1.115-.424 1.213-1.003l.102-.592c.198-1.157 1.225-2.005 2.428-2.005h3.436c.274-1.035 1.238-1.8 2.384-1.8C22.898 6 24 7.075 24 8.4zm-1.23 0c0 .663-.552 1.2-1.232 1.2-.68 0-1.23-.537-1.23-1.2 0-.663.55-1.2 1.23-1.2.68 0 1.231.537 1.231 1.2zM2.461 13.1c.68 0 1.23-.537 1.23-1.2 0-.663-.55-1.2-1.23-1.2-.68 0-1.231.537-1.231 1.2 0 .663.55 1.2 1.23 1.2zm6.153 0c.68 0 1.231-.537 1.231-1.2 0-.663-.55-1.2-1.23-1.2-.68 0-1.231.537-1.231 1.2 0 .663.55 1.2 1.23 1.2zm10.462 3.7c.68 0 1.23-.537 1.23-1.2 0-.663-.55-1.2-1.23-1.2-.68 0-1.23.537-1.23 1.2 0 .663.55 1.2 1.23 1.2z"/></svg>n8n</span></a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <h1 class="hero-title">Bienvenue, <em>Léo</em> 👋</h1>
+    <p class="hero-desc">Retrouve ici ta roadmap, tes automatisations actives, tes skills Claude et tes kits de livraison.</p>
+    <div class="hero-meta">
+      <span class="meta-pill active"><span class="meta-dot-live"></span> Sprint 1 livré aujourd'hui</span>
+      <span class="meta-pill">📅 20 avr. → 18 mai 2026</span>
+      <span class="meta-pill">🧑‍💼 Expert : Jules F.</span>
+    </div>
+  </div>
+</div>
+
+<div class="page-content">
+
+  <!-- GANTT -->
+  <div class="section-block">
+    <div class="section-header">
+      <h2 class="section-title">🗺️ Roadmap <span class="section-count">20 avr. → 18 mai</span></h2>
+      <span id="gantt-scroll-hint" style="font-size:12px;color:var(--gray-500);">← Scroll →</span>
+    </div>
+    <div class="gantt-section">
+      <div class="gantt-outer">
+        <div class="gantt-scroll" id="gantt-scroll">
+          <div class="gantt-inner-wrap" id="gantt-inner-wrap">
+            <div class="gantt-header-row" id="gantt-header-row">
+              <div class="gantt-corner"><span class="gantt-label-col-text">Qui</span></div>
+              <div class="gantt-days-row" id="gantt-days-row"></div>
+            </div>
+            <div class="gantt-row">
+              <div class="gantt-row-label"><div class="gantt-row-icon" style="background:#EEF2FF;">🔥</div><span class="gantt-row-name">OOO</span></div>
+              <div class="gantt-track" id="track-ooo"></div>
+            </div>
+            <div class="gantt-row">
+              <div class="gantt-row-label"><div class="gantt-row-icon" style="background:#F3EEFE;">💜</div><span class="gantt-row-name">Léo</span></div>
+              <div class="gantt-track" id="track-pm"></div>
+            </div>
+            <div class="gantt-row" style="min-height:86px;">
+              <div class="gantt-row-label" style="min-height:86px;"><div class="gantt-row-icon" style="background:#FEF2F2;">📞</div><span class="gantt-row-name">Calls</span></div>
+              <div class="gantt-track" id="track-both" style="min-height:86px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTOMATISATIONS -->
+  <div class="section-block">
+    <div class="section-header"><h2 class="section-title">⚡ Automatisations <span class="section-count">9</span></h2></div>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterAuto('all',this)">Toutes</button>
+      <button class="filter-tab" onclick="filterAuto('ready',this)">✅ Ready</button>
+      <button class="filter-tab" onclick="filterAuto('inprogress',this)">🔵 En cours</button>
+      <button class="filter-tab" onclick="filterAuto('todo',this)">⚪ À faire</button>
+    </div>
+    <div class="auto-grid" id="auto-grid">
+      <div class="auto-card" data-status="ready" onclick="openModal('onboarding-client')"><div class="auto-video-wrap"><div class="auto-video-placeholder"><div style="font-size:36px;">🤝</div></div><div class="auto-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><div class="auto-body"><div class="auto-status-row"><span class="status-pill status-ready">✅ Ready</span><span style="font-size:11px;color:var(--gray-500);">Kit 1</span></div><div class="auto-name">Onboarding client</div><div class="auto-sub">Onboardez un client en 2 minutes avec Claude</div></div></div>
+      <div class="auto-card" data-status="ready" onclick="openModal('onboarding-presta')"><div class="auto-video-wrap"><div class="auto-video-placeholder"><div style="font-size:36px;">👥</div></div><div class="auto-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><div class="auto-body"><div class="auto-status-row"><span class="status-pill status-ready">✅ Ready</span><span style="font-size:11px;color:var(--gray-500);">Kit 1</span></div><div class="auto-name">Onboarding prestataire</div><div class="auto-sub">Automatiser l'onboarding prestataire avec n8n</div></div></div>
+      <div class="auto-card" data-status="ready" onclick="openModal('cgp')"><div class="auto-video-wrap"><div class="auto-video-placeholder"><div style="font-size:36px;">📄</div></div><div class="auto-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><div class="auto-body"><div class="auto-status-row"><span class="status-pill status-ready">✅ Ready</span><span style="font-size:11px;color:var(--gray-500);">Kit 1</span></div><div class="auto-name">Création des CGP</div><div class="auto-sub">Générer tes contrats CGP automatiquement</div></div></div>
+      <div class="auto-card" data-status="ready" onclick="openModal('contrat-presta')"><div class="auto-video-wrap"><div class="auto-video-placeholder"><div style="font-size:36px;">✍️</div></div><div class="auto-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><div class="auto-body"><div class="auto-status-row"><span class="status-pill status-ready">✅ Ready</span><span style="font-size:11px;color:var(--gray-500);">Kit 1</span></div><div class="auto-name">Contrat prestataire</div><div class="auto-sub">Créer et envoyer pour signature. Claude ou Notion</div></div></div>
+      <div class="auto-card" data-status="ready" onclick="openModal('design')"><div class="auto-video-wrap"><div class="auto-video-placeholder"><div style="font-size:36px;">🎨</div></div><div class="auto-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><div class="auto-body"><div class="auto-status-row"><span class="status-pill status-ready">✅ Ready</span><span style="font-size:11px;color:var(--gray-500);">Kit 1</span></div><div class="auto-name">Design Purplemail</div><div class="auto-sub">N'importe quel livrable sur la charte Purplemail</div></div></div>
+      <div class="auto-card" data-status="ready" onclick="openModal('sop')"><div class="auto-video-wrap"><div class="auto-video-placeholder"><div style="font-size:36px;">📋</div></div><div class="auto-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div><div class="auto-body"><div class="auto-status-row"><span class="status-pill status-ready">✅ Ready</span><span style="font-size:11px;color:var(--gray-500);">Kit 1</span></div><div class="auto-name">SOP Notion avec Claude</div><div class="auto-sub">SOPs clairs dans Notion en quelques prompts</div></div></div>
+      <div class="auto-card no-video" data-status="inprogress"><div class="auto-video-wrap"><div class="auto-video-placeholder"><div style="text-align:center;"><div style="font-size:36px;margin-bottom:6px;">📊</div><div style="font-size:11px;color:var(--gray-500);">Vidéo bientôt</div></div></div></div><div class="auto-body"><div class="auto-status-row"><span class="status-pill status-inprogress">🔵 En cours</span><span style="font-size:11px;color:var(--gray-500);">Kit 1</span></div><div class="auto-name">Reporting Purplemail</div><div class="auto-sub">Génération auto des reportings Klaviyo + Kanal</div></div></div>
+      <div class="auto-card no-video" data-status="inprogress"><div class="auto-video-wrap"><div class="auto-video-placeholder"><div style="text-align:center;"><div style="font-size:36px;margin-bottom:6px;">🌐</div><div style="font-size:11px;color:var(--gray-500);">Vidéo bientôt</div></div></div></div><div class="auto-body"><div class="auto-status-row"><span class="status-pill status-inprogress">🔵 En cours</span></div><div class="auto-name">Portail client custom</div><div class="auto-sub">Portail accessible en ligne, personnalisé par client</div></div></div>
+      <div class="auto-card no-video" data-status="todo" style="opacity:.65;"><div class="auto-video-wrap"><div class="auto-video-placeholder"><div style="text-align:center;"><div style="font-size:36px;margin-bottom:6px;">🤖</div><div style="font-size:11px;color:var(--gray-500);">Sprint 2</div></div></div></div><div class="auto-body"><div class="auto-status-row"><span class="status-pill status-todo">⚪ À faire</span></div><div class="auto-name">Chatbot RAG</div><div class="auto-sub">Chatbot IA avec base de connaissances Purplemail</div></div></div>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="section-block">
+    <div class="section-header"><h2 class="section-title">🧠 Skills Claude <span class="section-count">9</span></h2><span style="font-size:12px;color:var(--gray-500);">À installer dans Claude</span></div>
+    <div class="skills-list">
+      <div class="skill-row"><div class="skill-icon">🤝</div><div class="skill-info"><div class="skill-name"><code>/purplemail-onboarding-client</code></div><div class="skill-desc">Lance l'onboarding complet d'un nouveau client Purplemail via le workflow n8n.</div></div><span class="status-pill status-ready" style="flex-shrink:0;">✅ Ready</span></div>
+      <div class="skill-row"><div class="skill-icon">👥</div><div class="skill-info"><div class="skill-name"><code>/purplemail-onboarding-presta</code></div><div class="skill-desc">Lance l'onboarding complet d'un nouveau prestataire. Crée ou résout le binôme via Notion.</div></div><span class="status-pill status-ready" style="flex-shrink:0;">✅ Ready</span></div>
+      <div class="skill-row"><div class="skill-icon">📄</div><div class="skill-info"><div class="skill-name"><code>/purplemail-cgp-client</code></div><div class="skill-desc">Génère et envoie les Conditions Générales de Prestation à un client via DocuSeal.</div></div><span class="status-pill status-ready" style="flex-shrink:0;">✅ Ready</span></div>
+      <div class="skill-row"><div class="skill-icon">✍️</div><div class="skill-info"><div class="skill-name"><code>/purplemail-contrat-presta</code></div><div class="skill-desc">Génère et envoie un contrat de sous-traitance Purplemail via DocuSeal.</div></div><span class="status-pill status-ready" style="flex-shrink:0;">✅ Ready</span></div>
+      <div class="skill-row"><div class="skill-icon">🎨</div><div class="skill-info"><div class="skill-name"><code>/purplemail-design</code></div><div class="skill-desc">Crée n'importe quel asset visuel ou template email sur la charte graphique Purplemail.</div></div><span class="status-pill status-ready" style="flex-shrink:0;">✅ Ready</span></div>
+      <div class="skill-row"><div class="skill-icon">📋</div><div class="skill-info"><div class="skill-name"><code>/purplemail-sop-creator</code></div><div class="skill-desc">Crée et publie un SOP formaté selon les standards Purplemail dans Notion.</div></div><span class="status-pill status-ready" style="flex-shrink:0;">✅ Ready</span></div>
+      <div class="skill-row"><div class="skill-icon">💬</div><div class="skill-info"><div class="skill-name"><code>/purplemail-messages-auto</code></div><div class="skill-desc">Rédige et publie un message automatique Purplemail (Email ou Slack) dans Notion.</div></div><span class="status-pill status-ready" style="flex-shrink:0;">✅ Ready</span></div>
+      <div class="skill-row"><div class="skill-icon">🖋️</div><div class="skill-info"><div class="skill-name"><code>/purplemail-style-admin</code></div><div class="skill-desc">Guidelines de style pour créer des documents administratifs Purplemail.</div></div><span class="status-pill status-ready" style="flex-shrink:0;">✅ Ready</span></div>
+      <div class="skill-row" style="opacity:.65;"><div class="skill-icon">📊</div><div class="skill-info"><div class="skill-name"><code>/purplemail-reporting</code></div><div class="skill-desc">Génère les reportings clients automatiquement à partir des données Klaviyo et Kanal.</div></div><span class="status-pill status-inprogress" style="flex-shrink:0;">🔵 En cours</span></div>
+    </div>
+  </div>
+
+  <!-- KITS -->
+  <div class="section-block">
+    <div class="section-header"><h2 class="section-title">📦 Kits de livraison <span class="section-count">2</span></h2></div>
+    <div class="kits-grid">
+      <div class="kit-card">
+        <div class="kit-header"><span class="kit-number">Kit 00</span><span class="status-pill status-ready">✅ Livré</span></div>
+        <div class="kit-title">Kit de démarrage</div>
+        <div class="kit-desc">Accès à l'espace client OOO, setup Claude, connexion n8n, documentation initiale.</div>
+        <div class="kit-automations">
+          <div class="kit-auto-item"><span class="check">✅</span> Accès portail client</div>
+          <div class="kit-auto-item"><span class="check">✅</span> Setup Claude + skills de base</div>
+          <div class="kit-auto-item"><span class="check">✅</span> Connexion n8n + MCP</div>
+          <div class="kit-auto-item"><span class="check">✅</span> Documentation onboarding</div>
+        </div>
+        <a href="https://julesfleche.github.io/webpages/landings/ooo-kit-demarrage/" target="_blank" class="kit-url-btn">🔗 Voir le kit →</a>
+      </div>
+      <div class="kit-card kit-current">
+        <div class="kit-header"><span class="kit-number">Kit 01</span><span class="status-pill status-ready">✅ Livré</span></div>
+        <div class="kit-title">Kit de livraison 1</div>
+        <div class="kit-desc">Admin Purplemail complet — contrats, onboarding, SOPs, design system Claude.</div>
+        <div class="kit-automations">
+          <div class="kit-auto-item"><span class="check">✅</span> Onboarding client automatisé</div>
+          <div class="kit-auto-item"><span class="check">✅</span> Onboarding prestataire automatisé</div>
+          <div class="kit-auto-item"><span class="check">✅</span> Création CGP automatique</div>
+          <div class="kit-auto-item"><span class="check">✅</span> Contrats prestataire auto</div>
+          <div class="kit-auto-item"><span class="check">✅</span> Design Purplemail avec Claude</div>
+          <div class="kit-auto-item"><span class="check">✅</span> Créer des SOPs Notion avec Claude</div>
+          <div class="kit-auto-item"><span class="pending">⏳</span> Reporting Purplemail</div>
+        </div>
+        <a href="https://julesfleche.github.io/webpages/landings/purplemail-livraison-1/" target="_blank" class="kit-url-btn">🔗 Voir le kit →</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="dark-band">
+  <div class="dark-band-inner">
+    <div><div class="dark-cta-title">Une question ? Un blocage ?</div><div class="dark-cta-sub">L'équipe OOO répond sur Slack en moins de 24h.</div></div>
+    <div class="dark-btns">
+      <a href="https://app.slack.com/client/T091602G07Q" target="_blank" class="btn-nav btn-slack"><span><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zm2.521-10.123a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zm10.122 2.521a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zm-1.268 0a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zm-2.523 10.122a2.527 2.527 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zm0-1.268a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/></svg>Slack →</span></a>
+      <a href="https://n8n.srv1423048.hstgr.cloud" target="_blank" class="btn-nav"><span><svg fill="currentColor" fill-rule="evenodd" height="16" width="16" viewBox="0 0 24 24"><path clip-rule="evenodd" d="M24 8.4c0 1.325-1.102 2.4-2.462 2.4-1.146 0-2.11-.765-2.384-1.8h-3.436c-.602 0-1.115.424-1.214 1.003l-.101.592a2.38 2.38 0 01-.8 1.405c.412.354.704.844.8 1.405l.1.592A1.222 1.222 0 0015.719 15h.975c.273-1.035 1.237-1.8 2.384-1.8 1.36 0 2.461 1.075 2.461 2.4S20.436 18 19.078 18c-1.147 0-2.11-.765-2.384-1.8h-.975c-1.204 0-2.23-.848-2.428-2.005l-.101-.592a1.222 1.222 0 00-1.214-1.003H10.97c-.308.984-1.246 1.7-2.356 1.7-1.11 0-2.048-.716-2.355-1.7H4.817c-.308.984-1.246 1.7-2.355 1.7C1.102 14.3 0 13.225 0 11.9s1.102-2.4 2.462-2.4c1.183 0 2.172.815 2.408 1.9h1.337c.236-1.085 1.225-1.9 2.408-1.9 1.184 0 2.172.815 2.408 1.9h.952c.601 0 1.115-.424 1.213-1.003l.102-.592c.198-1.157 1.225-2.005 2.428-2.005h3.436c.274-1.035 1.238-1.8 2.384-1.8C22.898 6 24 7.075 24 8.4zm-1.23 0c0 .663-.552 1.2-1.232 1.2-.68 0-1.23-.537-1.23-1.2 0-.663.55-1.2 1.23-1.2.68 0 1.231.537 1.231 1.2zM2.461 13.1c.68 0 1.23-.537 1.23-1.2 0-.663-.55-1.2-1.23-1.2-.68 0-1.231.537-1.231 1.2 0 .663.55 1.2 1.23 1.2zm6.153 0c.68 0 1.231-.537 1.231-1.2 0-.663-.55-1.2-1.23-1.2-.68 0-1.231.537-1.231 1.2 0 .663.55 1.2 1.23 1.2zm10.462 3.7c.68 0 1.23-.537 1.23-1.2 0-.663-.55-1.2-1.23-1.2-.68 0-1.23.537-1.23 1.2 0 .663.55 1.2 1.23 1.2z"/></svg>n8n →</span></a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <svg viewBox="0 0 659 659" fill="none"><path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" fill="#555"/></svg>
+  <span>Fait avec Claude, of course 😌 · Out of Office 2026 · leo@purplemail.fr</span>
+</footer>
+
+</div>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalCheck(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-video" id="modal-video-container"></div>
+    <div class="modal-body">
+      <div class="modal-title" id="modal-title"></div>
+      <div class="modal-sub" id="modal-sub"></div>
+      <a id="modal-link" href="#" target="_blank" style="display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:12px;color:var(--accent);text-decoration:none;font-weight:600;">Ouvrir dans Tella.tv ↗</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const PASSWORD='purplemail2026';
+function checkAuth(){
+  const val=document.getElementById('pwd-input').value;
+  if(val===PASSWORD){document.getElementById('auth-screen').style.display='none';document.getElementById('app').classList.add('visible');setTimeout(renderGantt,50);}
+  else{const inp=document.getElementById('pwd-input');inp.classList.add('error');document.getElementById('auth-error').textContent='Mot de passe incorrect.';setTimeout(()=>inp.classList.remove('error'),600);}
+}
+function togglePwd(){const inp=document.getElementById('pwd-input');inp.type=inp.type==='password'?'text':'password';document.getElementById('eye-icon').textContent=inp.type==='password'?'👁':'🙈';}
+
+const GANTT_START=new Date('2026-04-20');
+const NB_DAYS=28,DAYS_VISIBLE=14;
+const CALL_DAYS_STR=['2026-04-20','2026-04-27','2026-05-04','2026-05-11','2026-05-18'];
+const DAYS_FR=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+const MONTHS_FR=['Jan','Fév','Mars','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
+function dayOffset(d){return Math.round((new Date(d)-GANTT_START)/86400000);}
+
+function renderGantt(){
+  const go=document.querySelector('.gantt-outer');
+  const LW=140,aw=go.clientWidth-LW;
+  const DP=Math.floor(aw/DAYS_VISIBLE),TW=NB_DAYS*DP;
+  const calls=new Set(CALL_DAYS_STR.map(dayOffset));
+  const today=Math.round((new Date().setHours(0,0,0,0)-GANTT_START)/86400000);
+
+  document.getElementById('gantt-inner-wrap').style.minWidth=(LW+TW)+'px';
+  document.getElementById('gantt-header-row').style.minWidth=(LW+TW)+'px';
+  const dr=document.getElementById('gantt-days-row');
+  dr.style.width=TW+'px';
+  ['track-ooo','track-pm','track-both'].forEach(id=>{const e=document.getElementById(id);e.style.width=TW+'px';e.style.minWidth=TW+'px';});
+
+  let hh='';
+  for(let d=0;d<NB_DAYS;d++){
+    const dt=new Date(GANTT_START.getTime()+d*86400000);
+    const dw=dt.getDay(),iW=dw===0||dw===6,iT=d===today,iC=calls.has(d);
+    let cls='gantt-day-cell';
+    if(iW)cls+=' weekend';if(iT)cls+=' today';if(iC)cls+=' call-day';
+    let sub;
+    if(iT)sub='<span class="gantt-day-name" style="color:var(--accent);font-weight:700;">Auj.</span>';
+    else if(dt.getDate()===1)sub='<span class="gantt-day-name" style="font-weight:700;color:var(--gray-700);">'+MONTHS_FR[dt.getMonth()]+'</span>';
+    else sub='<span class="gantt-day-name">'+DAYS_FR[dw]+'</span>';
+    hh+='<div class="'+cls+'" style="width:'+DP+'px;"><span class="gantt-day-num">'+dt.getDate()+'</span>'+sub+'</div>';
+  }
+  dr.innerHTML=hh;
+
+  function bg(tid,isCR){
+    const el=document.getElementById(tid);let b='';
+    for(let d=0;d<NB_DAYS;d++){
+      const dt=new Date(GANTT_START.getTime()+d*86400000),dw=dt.getDay();
+      const iW=dw===0||dw===6,iT=d===today,iC=calls.has(d);
+      let c='transparent';
+      if(iW)c='#f9f8f5';if(iC&&!isCR)c='rgba(220,38,38,.03)';if(iT)c='rgba(91,106,240,.05)';
+      if(c!=='transparent')b+='<div style="position:absolute;top:0;bottom:0;left:'+(d*DP)+'px;width:'+DP+'px;background:'+c+';pointer-events:none;"></div>';
+      if(d>0){const lc=iW?'rgba(0,0,0,.06)':'rgba(0,0,0,.03)';b+='<div style="position:absolute;top:0;bottom:0;left:'+(d*DP)+'px;width:1px;background:'+lc+';pointer-events:none;"></div>';}
+    }
+    if(today>=0&&today<NB_DAYS)b+='<div class="gantt-today-marker" style="left:'+(today*DP+Math.floor(DP/2))+'px;"></div>';
+    el.innerHTML=b;
+  }
+  bg('track-ooo',false);bg('track-pm',false);bg('track-both',true);
+
+  function bar(l,s,a,e,cls,t,h){
+    const lx=dayOffset(a)*DP+4,w=Math.max(DP-8,(dayOffset(e)-dayOffset(a))*DP-8);
+    return '<div class="g-bar '+cls+'" style="left:'+lx+'px;width:'+w+'px;top:'+t+'px;height:'+h+'px;"><span class="g-bar-title">'+l+'</span>'+(s?'<span class="g-bar-sub">'+s+'</span>':'')+'</div>';
+  }
+  function cb(l,s,d){
+    const lx=dayOffset(d)*DP+3,w=DP-6;
+    return '<div class="g-bar bar-call" style="left:'+lx+'px;width:'+w+'px;top:8px;height:70px;"><div class="g-bar-title">'+l+'</div>'+(s?'<div class="g-bar-sub">'+s+'</div>':'')+'</div>';
+  }
+
+  document.getElementById('track-ooo').innerHTML+=
+    bar('Sprint 1','Contrats · Onboarding · SOPs · Design','2026-04-20','2026-04-27','bar-ooo-active',14,62)+
+    bar('Sprint 2','Reporting · Chatbot RAG Purplemail','2026-04-27','2026-05-11','bar-ooo-future',14,62)+
+    bar('Sprint 3','Finalisation · Formation · Feedbacks','2026-05-11','2026-05-18','bar-ooo-future',14,62);
+  document.getElementById('track-pm').innerHTML+=
+    bar('Accès Plaud','Partager accès enregistrements','2026-04-20','2026-04-24','bar-pm-active',17,56)+
+    bar('Feedbacks S1','Retours sur les automatisations','2026-04-24','2026-04-27','bar-pm-active',17,56)+
+    bar('Tests & retours','Tester reporting + chatbot','2026-04-27','2026-05-11','bar-pm-future',17,56)+
+    bar('Feedbacks finaux','Validation avant off-boarding','2026-05-11','2026-05-18','bar-pm-future',17,56);
+  document.getElementById('track-both').innerHTML+=
+    cb('Call S1 ✅','Livraison Kit 1','2026-04-20')+
+    cb('Call S2','Prép. Sprint 2','2026-04-27')+
+    cb('Call S3','Review reporting','2026-05-04')+
+    cb('Call S4','Prép. Sprint 3','2026-05-11')+
+    cb('Offboarding','Clôture retainer','2026-05-18');
+
+  document.getElementById('gantt-scroll').scrollLeft=Math.max(0,(today-1)*DP);
+  if(TW<=aw)document.getElementById('gantt-scroll-hint').style.display='none';
+}
+
+window.addEventListener('resize',()=>{if(document.getElementById('app').classList.contains('visible'))renderGantt();});
+
+function filterAuto(s,b){document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.auto-card').forEach(c=>{c.style.display=(s==='all'||c.dataset.status===s)?'':'none';});}
+
+const automations={
+  'onboarding-client':{title:'Onboarding client',sub:'Onboardez un client en 2 minutes avec Claude',url:'https://www.tella.tv/video/automatiser-l-onboarding-client-avec-claude-et-n8n-7mhb'},
+  'onboarding-presta':{title:'Onboarding prestataire',sub:"Automatiser l'onboarding prestataire avec n8n",url:'https://www.tella.tv/video/automatiser-l-onboarding-avec-n8n-0imm'},
+  'cgp':{title:'Création des CGP',sub:'Générer tes contrats CGP automatiquement via Claude',url:'https://www.tella.tv/video/generer-vos-contrats-cgp-automatiquement-g1uu'},
+  'contrat-presta':{title:'Contrat prestataire',sub:'Créer et envoyer pour signature. Claude ou Notion.',url:'https://www.tella.tv/video/automatiser-vos-contrats-de-prestation-4clt'},
+  'design':{title:'Design Purplemail',sub:"Créer n'importe quel livrable sur la charte Purplemail",url:'https://www.tella.tv/video/automatisez-votre-charte-graphique-avec-claude-7b9q'},
+  'sop':{title:'SOP Notion avec Claude',sub:'SOPs clairs et propres dans Notion en quelques prompts.',url:'https://www.tella.tv/video/creer-vos-sop-notion-avec-purple-mail-gqoz'}
+};
+function openModal(k){
+  const d=automations[k];if(!d)return;
+  const id=d.url.split('/').pop();
+  document.getElementById('modal-title').textContent=d.title;
+  document.getElementById('modal-sub').textContent=d.sub;
+  document.getElementById('modal-link').href=d.url;
+  document.getElementById('modal-video-container').innerHTML='<iframe src="https://www.tella.tv/video/'+id+'/embed" frameborder="0" allowfullscreen allow="autoplay;encrypted-media"></iframe>';
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open');document.getElementById('modal-video-container').innerHTML='';document.body.style.overflow='';}
+function closeModalCheck(e){if(e.target===document.getElementById('modal-overlay'))closeModal();}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+</script>
+</body>
+</html>
