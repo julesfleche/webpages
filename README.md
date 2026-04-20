@@ -25,6 +25,7 @@ webpages/
 | Claude Design — Lead Magnet OOO | landings | https://julesfleche.github.io/webpages/landings/claude-design-leadmagnet/ | Avril 2026 |
 | Clockify OOO | autres | https://julesfleche.github.io/webpages/autres/clockify-ooo/ | Avril 2026 |
 | Kit de démarrage OOO | landings | https://julesfleche.github.io/webpages/landings/ooo-kit-demarrage/ | Avril 2026 |
+| Purplemail — Kit de livraison 1 | landings | https://julesfleche.github.io/webpages/landings/purplemail-livraison-1/ | Avril 2026 |
 
 ---
 *Repo géré par Out of Office — julesfleche*
