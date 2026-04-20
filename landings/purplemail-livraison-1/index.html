@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kit de livraison 1 — Purplemail × OOO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;0,700;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root{--f1:'Poppins',sans-serif;--f2:'DM Sans',sans-serif}
+.hero{--bg:#080808;--bg2:#111;--bg3:#1a1a1a;--ac:#5b6af0;--al:rgba(91,106,240,.15);--bd:rgba(255,255,255,.08);--tx:#fff;--tx2:#888884;--tx3:#555552;--cb:#fff;--ct:#080808}
+body{--bg:#f5f4f0;--bg2:#fff;--bg3:#eae9e3;--ac:#5b6af0;--al:rgba(91,106,240,.1);--bd:rgba(0,0,0,.08);--tx:#111;--tx2:#6b6b67;--tx3:#999997;--card:#fff;--logo:#080808;--cb:#080808;--ct:#fff;--sb:#f0f0ec;--sbbd:rgba(0,0,0,.06)}
+[data-theme="dark"] body{--bg:#080808;--bg2:#111;--bg3:#1a1a1a;--ac:#5b6af0;--al:rgba(91,106,240,.15);--bd:rgba(255,255,255,.08);--tx:#fff;--tx2:#888884;--tx3:#555552;--card:#111;--logo:#fff;--cb:#fff;--ct:#080808;--sb:#1a1a1a;--sbbd:rgba(255,255,255,.08)}
+[data-theme="dark"] .hero{--bg:#080808;--tx:#fff;--tx2:#888884;--tx3:#555552;--bd:rgba(255,255,255,.08)}
+*{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}
+body{font-family:var(--f2);background:var(--bg);color:var(--tx);line-height:1.6;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+h1,h2,h3,h4{font-family:var(--f1);font-weight:600;line-height:1.15;padding-bottom:.12em;overflow:visible}
+em{font-style:italic;background:linear-gradient(135deg,#6b7fff,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-right:.1em;display:inline-block;line-height:inherit}
+nav{position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);border-bottom:1px solid var(--bd);padding:14px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(245,244,240,.92)}
+[data-theme="dark"] nav{background:rgba(8,8,8,.92)}
+.nav-l{display:flex;align-items:center;gap:14px}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.nav-txt{font-family:var(--f1);font-weight:600;font-size:14px;letter-spacing:-.4px;color:var(--tx)}
+.nav-sep{width:1px;height:16px;background:var(--bd)}
+.nav-kit{font-size:12px;color:var(--tx2)}
+.nav-r{display:flex;align-items:center;gap:10px}
+.nav-date{font-size:12px;color:var(--tx3)}
+.tbtn{width:32px;height:32px;border-radius:7px;border:1px solid var(--bd);background:transparent;color:var(--tx2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s}
+.tbtn:hover{border-color:var(--ac);color:var(--tx)}
+.hero{background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(91,106,240,.2) 0%,transparent 70%),var(--bg);border-bottom:1px solid var(--bd);padding:80px 48px 72px;position:relative;overflow:hidden;text-align:center;color:var(--tx)}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--bd) 1px,transparent 1px),linear-gradient(90deg,var(--bd) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse 70% 60% at 50% 30%,black 0%,transparent 80%);opacity:.5;pointer-events:none}
+.hero-inner{position:relative;z-index:1;max-width:760px;margin:0 auto}
+.kh-bc{display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;color:var(--tx3);margin-bottom:20px}
+.kh-bc span{color:var(--tx2)}
+.kh-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(91,106,240,.1);border:1px solid rgba(91,106,240,.25);border-radius:999px;padding:6px 14px;font-size:12px;color:var(--tx2);margin-bottom:24px}
+.kh-dot{width:5px;height:5px;border-radius:50%;background:#22c55e}
+.hero h1{font-size:clamp(30px,4vw,52px);letter-spacing:-2px;margin-bottom:16px;color:var(--tx)}
+.hero p{color:var(--tx2);font-size:16px;line-height:1.7;margin-bottom:36px;max-width:600px;margin-left:auto;margin-right:auto}
+.hero-meta{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:0}
+.hm-stat{display:flex;align-items:center;gap:8px}
+.hm-num{font-family:var(--f1);font-weight:700;font-size:22px;letter-spacing:-1px;background:linear-gradient(135deg,#6b7fff,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hm-label{font-size:13px;color:var(--tx2)}
+.hm-div{width:1px;height:28px;background:var(--bd)}
+.hero-btns{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:36px}
+.btn-p{display:inline-flex;align-items:center;gap:7px;background:var(--cb);color:var(--ct);border:0;border-radius:999px;padding:13px 26px;font-family:var(--f2);font-weight:600;font-size:14px;cursor:pointer;text-decoration:none;position:relative;overflow:hidden;isolation:isolate;transition:transform .2s,box-shadow .2s}
+.btn-p::after{content:'';position:absolute;inset:0;border-radius:999px;background:linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6);opacity:0;transition:opacity .3s;z-index:-1}
+.btn-p:hover{transform:translateY(-1px);box-shadow:0 8px 28px rgba(107,127,255,.35)}
+.btn-p:hover::after{opacity:1}
+[data-theme="light"] .btn-p:hover{color:#fff}
+.btn-g{display:inline-flex;align-items:center;gap:7px;background:transparent;color:var(--tx);border:1px solid var(--bd);border-radius:999px;padding:13px 26px;font-family:var(--f2);font-weight:600;font-size:14px;cursor:pointer;text-decoration:none;transition:border-color .2s,background .2s}
+.btn-g:hover{border-color:rgba(91,106,240,.5);background:rgba(91,106,240,.06)}
+.btn-sm{padding:9px 18px;font-size:13px}
+.hero .btn-g{color:var(--tx);border-color:rgba(255,255,255,.2)}
+.hero .btn-g:hover{border-color:rgba(91,106,240,.5);background:rgba(91,106,240,.1);color:#fff}
+.wrap{max-width:1160px;margin:0 auto;padding:0 48px}
+.section{padding:72px 0;border-bottom:1px solid var(--bd)}
+.section:last-of-type{border-bottom:0}
+.sec-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--ac);font-weight:500;display:block;margin-bottom:12px}
+.section h2{font-size:clamp(24px,3vw,40px);letter-spacing:-1.5px;margin-bottom:12px}
+.sec-intro{color:var(--tx2);font-size:15px;max-width:560px;margin-bottom:44px;line-height:1.65}
+.cat-hd{display:flex;align-items:center;gap:12px;margin-bottom:24px;margin-top:48px}
+.cat-hd:first-child{margin-top:0}
+.cat-pill{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:999px}
+.cat-pill-purple{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);color:#7C3AED}
+.cat-pill-teal{background:rgba(20,184,166,.1);border:1px solid rgba(20,184,166,.2);color:#0d9488}
+.cat-line{flex:1;height:1px;background:var(--bd)}
+.cat-count{font-size:12px;color:var(--tx3)}
+.cards-list{display:flex;flex-direction:column;gap:20px}
+.auto-card{background:var(--card);border:1px solid var(--bd);border-radius:20px;overflow:hidden;transition:border-color .3s,box-shadow .2s}
+.auto-card:hover{border-color:rgba(91,106,240,.3);box-shadow:0 4px 24px rgba(91,106,240,.06)}
+.ac-top{display:grid;grid-template-columns:1fr 360px;gap:0;border-bottom:1px solid var(--bd)}
+.ac-info{padding:28px 32px;border-right:1px solid var(--bd)}
+.ac-badge-row{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.ac-num{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx3);font-weight:600}
+.ac-live{display:flex;align-items:center;gap:5px;font-size:11px;color:#16a34a;background:rgba(22,163,74,.08);border:1px solid rgba(22,163,74,.18);border-radius:999px;padding:3px 10px}
+.ac-live-dot{width:5px;height:5px;border-radius:50%;background:#22c55e}
+.ac-icon{font-size:24px;margin-bottom:12px}
+.ac-info h3{font-size:19px;letter-spacing:-.5px;margin-bottom:8px}
+.ac-info p{color:var(--tx2);font-size:13px;line-height:1.65}
+.tools-row{display:flex;gap:5px;flex-wrap:wrap;margin-top:12px}
+.tp{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:500}
+.tp-v{background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.2);color:#7c3aed}
+.tp-b{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:#2563eb}
+.tp-g{background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.18);color:#16a34a}
+.tp-a{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.18);color:#d97706}
+.tp-r{background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.18);color:#e11d48}
+.tp-t{background:rgba(20,184,166,.08);border:1px solid rgba(20,184,166,.18);color:#0d9488}
+.ac-video{padding:20px 24px;display:flex;flex-direction:column;gap:10px}
+.ac-video-lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx3);font-weight:600}
+.video-frame{border-radius:12px;overflow:hidden;border:1px solid var(--bd);background:var(--sb);aspect-ratio:16/9;position:relative;flex:1}
+.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vp-txt{font-size:12px;color:var(--tx3)}
+.vp-sub{font-size:10px;color:var(--tx3);margin-top:-4px}
+.ac-body{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid var(--bd)}
+.ac-does{padding:22px 32px;border-right:1px solid var(--bd)}
+.ac-skill-wrap{padding:22px 24px}
+.ac-section-lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx3);font-weight:600;margin-bottom:12px}
+.does-list{display:flex;flex-direction:column;gap:7px}
+.does-item{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--tx2);line-height:1.45}
+.dn{width:18px;height:18px;border-radius:50%;background:var(--al);border:1px solid rgba(91,106,240,.2);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--ac);flex-shrink:0;margin-top:2px}
+.skill-block{background:var(--sb);border:1px solid var(--sbbd);border-radius:12px;overflow:hidden}
+.skill-hd{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;transition:background .15s}
+.skill-hd:hover{background:rgba(91,106,240,.04)}
+.skill-name{font-family:'SF Mono','Menlo',monospace;font-size:12px;color:var(--ac);font-weight:500}
+.skill-toggle{display:flex;align-items:center;gap:6px}
+.skill-gh{font-size:10px;color:var(--tx3);background:var(--bg);border:1px solid var(--bd);border-radius:4px;padding:2px 6px}
+.skill-arr{font-size:11px;color:var(--tx3);transition:transform .3s}
+.skill-block.open .skill-arr{transform:rotate(90deg)}
+.skill-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.skill-block.open .skill-body{max-height:600px}
+.sk-div{height:1px;background:var(--sbbd)}
+.sk-sec{padding:12px 14px;border-bottom:1px solid var(--sbbd)}
+.sk-sec:last-child{border-bottom:0}
+.sk-lbl{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--tx3);font-weight:600;margin-bottom:7px}
+.sk-text{font-size:12px;color:var(--tx2);line-height:1.55}
+.sk-triggers{display:flex;flex-wrap:wrap;gap:5px;margin-top:3px}
+.sk-tp{font-size:11px;color:var(--ac);background:var(--al);border:1px solid rgba(91,106,240,.15);border-radius:5px;padding:2px 8px;font-family:'SF Mono','Menlo',monospace}
+.sk-steps{list-style:none;display:flex;flex-direction:column;gap:4px;counter-reset:step}
+.sk-steps li{display:flex;align-items:flex-start;gap:7px;font-size:12px;color:var(--tx2);line-height:1.45;counter-increment:step}
+.sk-steps li::before{content:counter(step);width:15px;height:15px;border-radius:50%;background:var(--al);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:var(--ac);flex-shrink:0;margin-top:2px}
+.wf-row{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg);border-radius:7px;border:1px solid var(--bd)}
+.wf-name{font-size:12px;font-weight:600;flex:1;color:var(--tx)}
+.wf-id{font-family:'SF Mono','Menlo',monospace;font-size:10px;color:var(--tx3)}
+.wf-live{font-size:10px;color:#16a34a;background:rgba(22,163,74,.06);border:1px solid rgba(22,163,74,.15);border-radius:999px;padding:2px 7px}
+.fetch-box{background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:44px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.fs-h3{font-size:clamp(20px,2.5vw,32px);letter-spacing:-1px;margin-bottom:12px}
+.fs-sub{color:var(--tx2);font-size:14px;line-height:1.7;margin-bottom:24px}
+.fs-steps{display:flex;flex-direction:column;gap:10px}
+.fs-step{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;background:var(--sb);border:1px solid var(--sbbd);border-radius:11px}
+.fs-n{width:26px;height:26px;border-radius:50%;background:var(--al);border:1px solid rgba(91,106,240,.25);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--ac);flex-shrink:0}
+.fs-text{font-size:13px;color:var(--tx2);line-height:1.5;padding-top:3px}
+.fs-text strong{color:var(--tx)}
+.fs-text a{color:var(--ac);text-decoration:none}
+.fs-text a:hover{text-decoration:underline}
+.copybox{margin-top:12px;background:var(--sb);border:1px solid var(--sbbd);border-radius:9px;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.copybox code{font-family:'SF Mono','Menlo',monospace;font-size:13px;color:var(--ac)}
+.cpbtn{padding:5px 12px;border-radius:999px;border:1px solid var(--bd);background:transparent;color:var(--tx2);font-family:var(--f2);font-size:11px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.cpbtn:hover{border-color:var(--ac);color:var(--ac)}
+.fs-ok{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;background:rgba(22,163,74,.05);border:1px solid rgba(22,163,74,.15);border-radius:11px}
+.fs-n-ok{width:26px;height:26px;border-radius:50%;background:rgba(22,163,74,.12);border:1px solid rgba(22,163,74,.25);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#16a34a;flex-shrink:0}
+.fs-ok-text{font-size:13px;color:#16a34a;line-height:1.5;padding-top:3px}
+.checklist{background:var(--card);border:1px solid var(--bd);border-radius:18px;overflow:hidden;max-width:680px}
+.cl-hd{padding:15px 22px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.cl-ttl{font-family:var(--f1);font-size:14px;font-weight:600;letter-spacing:-.3px;color:var(--tx)}
+.cl-row{display:flex;align-items:center;gap:12px;padding:12px 22px;border-bottom:1px solid var(--bd);cursor:pointer;transition:background .15s}
+.cl-row:last-child{border-bottom:0}
+.cl-row:hover{background:rgba(91,106,240,.02)}
+.cl-chk{width:20px;height:20px;border-radius:50%;border:2px solid rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;color:transparent;transition:all .2s}
+[data-theme="dark"] .cl-chk{border-color:rgba(255,255,255,.2)}
+.cl-chk.done{background:var(--ac);border-color:var(--ac);color:#fff}
+.cl-label{font-size:13px;color:var(--tx);flex:1}
+.cl-badge{font-size:11px;color:var(--tx3)}
+.next-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ns-card{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:26px 28px;position:relative;overflow:hidden}
+.ns-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#6b7fff,#a78bfa)}
+.ns-when{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ac);font-weight:600;margin-bottom:12px}
+.ns-card h3{font-size:18px;letter-spacing:-.5px;margin-bottom:14px}
+.ns-items{display:flex;flex-direction:column;gap:9px}
+.ns-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--tx2)}
+.ns-bullet{width:5px;height:5px;border-radius:50%;background:rgba(91,106,240,.4);flex-shrink:0;margin-top:6px}
+footer{padding:36px 48px;border-top:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.footer-brand{display:flex;align-items:center;gap:9px;font-family:var(--f1);font-size:13px;font-weight:600;color:var(--tx);text-decoration:none}
+.footer-r{font-size:11px;color:var(--tx3)}
+@media(max-width:960px){nav{padding:12px 20px}.hero{padding:56px 20px 48px}.wrap{padding:0 20px}.section{padding:52px 0}.ac-top,.ac-body{grid-template-columns:1fr}.ac-info{border-right:0;border-bottom:1px solid var(--bd)}.ac-does{border-right:0;border-bottom:1px solid var(--bd)}.fetch-box{grid-template-columns:1fr;padding:24px}.next-grid{grid-template-columns:1fr}footer{padding:28px 20px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-l">
+    <a class="nav-logo" href="#"><svg width="18" height="18" viewBox="0 0 659 659" fill="none"><path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" style="fill:var(--logo)"/></svg><span class="nav-txt">Out of Office</span></a>
+    <div class="nav-sep"></div>
+    <span class="nav-kit">Livraison <strong style="color:var(--tx)">Purplemail</strong></span>
+  </div>
+  <div class="nav-r"><span class="nav-date">20 avril 2026</span><button class="tbtn" id="tbtn" onclick="toggleTheme()">🌙</button></div>
+</nav>
+<div class="hero">
+  <div class="hero-inner">
+    <div class="kh-bc"><span>Purplemail</span><span style="color:var(--tx3)">›</span><span>Kit de livraison 1 · Onboarding et Contrats et Design</span></div>
+    <div class="kh-badge"><div class="kh-dot"></div>Sprint 1 — livré le 20 avril 2026</div>
+    <h1>Kit de livraison 1 :<br><em>Onboarding</em>, Contrats et Design.</h1>
+    <p>6 automatisations et SOPs livrés pour couvrir l’onboarding client, prestataire, la génération de contrats et les process design. Chaque card explique ce que ça fait, comment le déclencher depuis Claude, et contient le contenu complet.</p>
+    <div class="hero-btns"><a href="#automatisations" class="btn-p"><span>Voir les automatisations →</span></a><a href="#install" class="btn-g">Comment installer</a></div>
+    <div class="hero-meta">
+      <div class="hm-stat"><div class="hm-num">4</div><div class="hm-label">Workflows n8n actifs</div></div>
+      <div class="hm-div"></div>
+      <div class="hm-stat"><div class="hm-num">6</div><div class="hm-label">Skills Claude livrés</div></div>
+      <div class="hm-div"></div>
+      <div class="hm-stat"><div class="hm-num">~2<span style="font-size:13px;letter-spacing:0"> min</span></div><div class="hm-label">Du prompt à la signature</div></div>
+      <div class="hm-div"></div>
+      <div class="hm-stat"><div class="hm-num">2</div><div class="hm-label">SOPs Design livrés</div></div>
+    </div>
+  </div>
+</div>
+<div class="wrap">
+<section class="section" id="automatisations">
+  <span class="sec-label">Automatisations &amp; SOPs</span>
+  <h2>Ce qui est livré <em>dans ce sprint</em>.</h2>
+  <p class="sec-intro">Clique sur le skill pour voir son contenu complet.</p>
+  <div class="cat-hd"><span class="cat-pill cat-pill-purple">⚙️ Onboarding &amp; Contrats</span><div class="cat-line"></div><span class="cat-count">4 automatisations</span></div>
+  <div class="cards-list">
+    <div class="auto-card"><div class="ac-top"><div class="ac-info"><div class="ac-badge-row"><span class="ac-num">Automatisation 01</span><span class="ac-live"><span class="ac-live-dot"></span>Actif</span></div><div class="ac-icon">🧑‍💼</div><h3>Onboarding Client</h3><p>Lance le setup complet d’un nouveau client en une commande : canaux Slack, dossier Drive, portail Notion depuis le template binôme, mail de bienvenue et CGP envoyées pour signature.</p><div class="tools-row"><span class="tp tp-v">Notion</span><span class="tp tp-b">Slack</span><span class="tp tp-g">Google Drive</span><span class="tp tp-a">Gmail</span><span class="tp tp-r">DocuSeal</span></div></div><div class="ac-video"><div class="ac-video-lbl">Vidéo de démo</div><div class="video-frame"><iframe src="https://www.tella.tv/video/automatiser-l-onboarding-client-avec-claude-et-n8n-7mhb/embed?b=0&title=0&a=1&loop=0&autoPlay=false&t=0&muted=0&wt=0" allowfullscreen allowtransparency></iframe></div></div></div><div class="ac-body"><div class="ac-does"><div class="ac-section-lbl">Ce que ça fait</div><div class="does-list"><div class="does-item"><div class="dn">1</div>Collecte les 6 infos client et résout le binôme dans Notion</div><div class="does-item"><div class="dn">2</div>Crée les canaux Slack externe (client) et interne (équipe)</div><div class="does-item"><div class="dn">3</div>Crée le dossier Google Drive et le partage avec le client</div><div class="does-item"><div class="dn">4</div>Crée le portail Notion client depuis le template binôme</div><div class="does-item"><div class="dn">5</div>Envoie le message de bienvenue Slack + mail Gmail</div><div class="does-item"><div class="dn">6</div>Déclenche automatiquement l’envoi des CGP via DocuSeal</div></div></div><div class="ac-skill-wrap"><div class="ac-section-lbl">Skill Claude</div><div class="skill-block" id="sk1"><div class="skill-hd" onclick="toggleSkill('sk1')"><span class="skill-name">purplemail-onboarding-client</span><div class="skill-toggle"><span class="skill-gh">GitHub</span><span class="skill-arr">›</span></div></div><div class="skill-body"><div class="sk-div"></div><div class="sk-sec"><div class="sk-lbl">Triggers</div><div class="sk-triggers"><span class="sk-tp">"onboarder un client"</span><span class="sk-tp">"nouveau client Purplemail"</span><span class="sk-tp">"créer le portail [nom]"</span></div></div><div class="sk-sec"><div class="sk-lbl">Infos requises</div><div class="sk-text">nom_client · prenom · email · binome · siret · adresse<br><span style="font-size:10px;color:var(--tx3)">Tous obligatoires — Claude bloque si un champ manque</span></div></div><div class="sk-sec"><div class="sk-lbl">Étapes</div><ol class="sk-steps"><li>Collecter les 6 infos obligatoires</li><li>Résoudre le binôme via Notion MCP → récupérer l’ID</li><li>Afficher le récap complet → attendre validation "oui"</li><li>Créer le portail Notion (template binôme) AVANT le workflow</li><li>Chercher le workflow via n8n-mcp:search_workflows</li><li>Exécuter le workflow avec les 7 champs en payload</li><li>Afficher le résultat (Notion · Drive · Slack · CGP · Mail)</li></ol></div><div class="sk-sec"><div class="sk-lbl">Workflow n8n</div><div class="wf-row"><span class="wf-name">Purplemail - Onboarding Client</span><span class="wf-id">ElMHj5g3lVDzXY66</span><span class="wf-live">● Actif</span></div></div></div></div></div></div></div>
+    <div class="auto-card"><div class="ac-top"><div class="ac-info"><div class="ac-badge-row"><span class="ac-num">Automatisation 02</span><span class="ac-live"><span class="ac-live-dot"></span>Actif</span></div><div class="ac-icon">🧑‍💻</div><h3>Onboarding Prestataire</h3><p>Intègre un nouveau prestataire en une commande : binôme Notion, fiche Team, invitation Slack, DM + mail de bienvenue, et contrat de sous-traitance DocuSeal automatique.</p><div class="tools-row"><span class="tp tp-v">Notion</span><span class="tp tp-b">Slack</span><span class="tp tp-a">Gmail</span><span class="tp tp-r">DocuSeal</span></div></div><div class="ac-video"><div class="ac-video-lbl">Vidéo de démo</div><div class="video-frame"><iframe src="https://www.tella.tv/video/automatiser-l-onboarding-avec-n8n-0imm/embed?b=0&title=0&a=1&loop=0&autoPlay=false&t=0&muted=0&wt=0" allowfullscreen allowtransparency></iframe></div></div></div><div class="ac-body"><div class="ac-does"><div class="ac-section-lbl">Ce que ça fait</div><div class="does-list"><div class="does-item"><div class="dn">1</div>Vérifie si un binôme existe ou en crée un nouveau dans Notion</div><div class="does-item"><div class="dn">2</div>Crée la fiche membre Team dans la DB Notion Purplemail</div><div class="does-item"><div class="dn">3</div>Invite le prestataire au workspace Slack Purplemail</div><div class="does-item"><div class="dn">4</div>Envoie un DM Slack + mail Gmail de bienvenue</div><div class="does-item"><div class="dn">5</div>Déclenche l’envoi du contrat sous-traitance via DocuSeal</div></div></div><div class="ac-skill-wrap"><div class="ac-section-lbl">Skill Claude</div><div class="skill-block" id="sk2"><div class="skill-hd" onclick="toggleSkill('sk2')"><span class="skill-name">purplemail-onboarding-presta</span><div class="skill-toggle"><span class="skill-gh">GitHub</span><span class="skill-arr">›</span></div></div><div class="skill-body"><div class="sk-div"></div><div class="sk-sec"><div class="sk-lbl">Triggers</div><div class="sk-triggers"><span class="sk-tp">"onboarder un presta"</span><span class="sk-tp">"nouveau prestataire"</span><span class="sk-tp">"intégrer [prénom]"</span></div></div><div class="sk-sec"><div class="sk-lbl">Infos requises</div><div class="sk-text">prénom · nom · email · expertise · tarif</div></div><div class="sk-sec"><div class="sk-lbl">Étapes</div><ol class="sk-steps"><li>Collecter les infos prestataire</li><li>Résoudre ou créer le binôme via Notion MCP</li><li>Afficher le récap → attendre validation explicite</li><li>Exécuter le workflow n8n "Purplemail - Onboarding Prestataire"</li><li>Retourner le lien DocuSeal du contrat</li></ol></div><div class="sk-sec"><div class="sk-lbl">Workflow n8n</div><div class="wf-row"><span class="wf-name">Purplemail - Onboarding Prestataire</span><span class="wf-id">Hg1ZlAg60yd5U9EC</span><span class="wf-live">● Actif</span></div></div></div></div></div></div></div>
+    <div class="auto-card"><div class="ac-top"><div class="ac-info"><div class="ac-badge-row"><span class="ac-num">Automatisation 03</span><span class="ac-live"><span class="ac-live-dot"></span>Actif</span></div><div class="ac-icon">📄</div><h3>CGP Client</h3><p>Génère et envoie les Conditions Générales de Prestation pré-remplies à un client via DocuSeal. Peut être déclenché seul ou est enchâîné automatiquement depuis l’onboarding client.</p><div class="tools-row"><span class="tp tp-r">DocuSeal</span><span class="tp tp-b">Slack</span><span class="tp tp-v">Notion</span><span class="tp tp-a">Gmail</span></div></div><div class="ac-video"><div class="ac-video-lbl">Vidéo de démo</div><div class="video-frame"><iframe src="https://www.tella.tv/video/generer-vos-contrats-cgp-automatiquement-g1uu/embed?b=0&title=0&a=1&loop=0&autoPlay=false&t=0&muted=0&wt=0" allowfullscreen allowtransparency></iframe></div></div></div><div class="ac-body"><div class="ac-does"><div class="ac-section-lbl">Ce que ça fait</div><div class="does-list"><div class="does-item"><div class="dn">1</div>Pré-remplit le template CGP (SIRET, adresse, signataire, date)</div><div class="does-item"><div class="dn">2</div>Envoie le lien de signature au client via DocuSeal</div><div class="does-item"><div class="dn">3</div>Notifie Léo sur Slack avec le signing_url</div><div class="does-item"><div class="dn">4</div>Crée l’entrée dans la DB Contrats Notion</div><div class="does-item"><div class="dn">5</div>Suivi statut automatique : Envoyé → Ouvert → Signé</div></div></div><div class="ac-skill-wrap"><div class="ac-section-lbl">Skill Claude</div><div class="skill-block" id="sk3"><div class="skill-hd" onclick="toggleSkill('sk3')"><span class="skill-name">purplemail-cgp-client</span><div class="skill-toggle"><span class="skill-gh">GitHub</span><span class="skill-arr">›</span></div></div><div class="skill-body"><div class="sk-div"></div><div class="sk-sec"><div class="sk-lbl">Triggers</div><div class="sk-triggers"><span class="sk-tp">"envoie les CGP à [client]"</span><span class="sk-tp">"générer les conditions générales"</span></div></div><div class="sk-sec"><div class="sk-lbl">7 champs requis</div><div class="sk-text">client_email · entreprise · siret · prenom_nom · domicile · ville · date</div></div><div class="sk-sec"><div class="sk-lbl">Étapes</div><ol class="sk-steps"><li>Collecter les 7 champs</li><li>Afficher le récap → attendre validation de Léo</li><li>Exécuter "DocuSeal — Créer CGP" via n8n</li><li>Retourner signing_url + submission_id + statut</li></ol></div><div class="sk-sec"><div class="sk-lbl">Workflow n8n</div><div class="wf-row"><span class="wf-name">DocuSeal — Créer CGP</span><span class="wf-id">zO92P73EfEIQENtu</span><span class="wf-live">● Actif</span></div></div></div></div></div></div></div>
+    <div class="auto-card"><div class="ac-top"><div class="ac-info"><div class="ac-badge-row"><span class="ac-num">Automatisation 04</span><span class="ac-live"><span class="ac-live-dot"></span>Actif</span></div><div class="ac-icon">✍️</div><h3>Contrat Sous-traitance</h3><p>Génère et envoie le contrat de sous-traitance Purplemail au prestataire via DocuSeal. Peut être déclenché seul ou est enchâîné automatiquement depuis l’onboarding prestataire.</p><div class="tools-row"><span class="tp tp-r">DocuSeal</span><span class="tp tp-b">Slack</span><span class="tp tp-v">Notion</span><span class="tp tp-a">Gmail</span></div></div><div class="ac-video"><div class="ac-video-lbl">Vidéo de démo</div><div class="video-frame"><iframe src="https://www.tella.tv/video/automatiser-vos-contrats-de-prestation-4clt/embed?b=0&title=0&a=1&loop=0&autoPlay=false&t=0&muted=0&wt=0" allowfullscreen allowtransparency></iframe></div></div></div><div class="ac-body"><div class="ac-does"><div class="ac-section-lbl">Ce que ça fait</div><div class="does-list"><div class="does-item"><div class="dn">1</div>Pré-remplit le template sous-traitance avec les infos prestataire</div><div class="does-item"><div class="dn">2</div>Envoie le lien de signature au prestataire via DocuSeal</div><div class="does-item"><div class="dn">3</div>Notifie Jules sur Slack avec le signing_url</div><div class="does-item"><div class="dn">4</div>Crée l’entrée dans la DB Contrats Notion</div></div></div><div class="ac-skill-wrap"><div class="ac-section-lbl">Skill Claude</div><div class="skill-block" id="sk4"><div class="skill-hd" onclick="toggleSkill('sk4')"><span class="skill-name">purplemail-contrat-presta</span><div class="skill-toggle"><span class="skill-gh">GitHub</span><span class="skill-arr">›</span></div></div><div class="skill-body"><div class="sk-div"></div><div class="sk-sec"><div class="sk-lbl">Triggers</div><div class="sk-triggers"><span class="sk-tp">"génère le contrat pour [nom]"</span><span class="sk-tp">"envoie le contrat à [presta]"</span></div></div><div class="sk-sec"><div class="sk-lbl">7 champs requis</div><div class="sk-text">prestataire_email · entreprise · siret · prenom_nom · domicile · ville · date</div></div><div class="sk-sec"><div class="sk-lbl">Étapes</div><ol class="sk-steps"><li>Collecter les 7 champs (date = today par défaut)</li><li>Afficher le récap → attendre validation de Léo</li><li>Exécuter "DocuSeal — Créer Contrat Sous-traitance"</li><li>Retourner signing_url + submission_id + statut</li></ol></div><div class="sk-sec"><div class="sk-lbl">Workflow n8n</div><div class="wf-row"><span class="wf-name">DocuSeal — Créer Contrat Sous-traitance</span><span class="wf-id">YPVMg5AmA8bBgdfR</span><span class="wf-live">● Actif</span></div></div></div></div></div></div></div>
+  </div>
+  <div class="cat-hd"><span class="cat-pill cat-pill-teal">🎨 Design</span><div class="cat-line"></div><span class="cat-count">2 SOPs</span></div>
+  <div class="cards-list">
+    <div class="auto-card"><div class="ac-top"><div class="ac-info"><div class="ac-badge-row"><span class="ac-num">SOP 01 · Design</span><span class="ac-live"><span class="ac-live-dot"></span>Fonctionnel</span></div><div class="ac-icon">✉️</div><h3>Rédiger les messages automatiques</h3><p>Rédige et publie les messages automatiques Purplemail (Email ou Slack) dans la base Notion — depuis les déclencheurs jusqu’au contenu avec toutes les variables disponibles.</p><div class="tools-row"><span class="tp tp-v">Notion</span><span class="tp tp-b">Slack</span><span class="tp tp-a">Gmail</span></div></div><div class="ac-video"><div class="ac-video-lbl">Vidéo de démo</div><div class="video-frame"><iframe src="https://www.tella.tv/video/creer-vos-sop-notion-avec-purple-mail-gqoz/embed?b=0&title=0&a=1&loop=0&autoPlay=false&t=0&muted=0&wt=0" allowfullscreen allowtransparency></iframe></div></div></div><div class="ac-body"><div class="ac-does"><div class="ac-section-lbl">Ce que ça fait</div><div class="does-list"><div class="does-item"><div class="dn">1</div>Rédige les messages Email selon les règles de style Purplemail</div><div class="does-item"><div class="dn">2</div>Rédige les messages Slack avec ton décontracté, signature "— Léo"</div><div class="does-item"><div class="dn">3</div>Gère les variables disponibles : [prenom], [urlContrat | "texte"], etc.</div><div class="does-item"><div class="dn">4</div>Publie dans la base Notion avec statut À valider</div></div></div><div class="ac-skill-wrap"><div class="ac-section-lbl">Skill Claude</div><div class="skill-block" id="sk5"><div class="skill-hd" onclick="toggleSkill('sk5')"><span class="skill-name">purplemail-messages-auto</span><div class="skill-toggle"><span class="skill-gh">GitHub</span><span class="skill-arr">›</span></div></div><div class="skill-body"><div class="sk-div"></div><div class="sk-sec"><div class="sk-lbl">Triggers</div><div class="sk-triggers"><span class="sk-tp">"rédige le message pour [déclencheur]"</span><span class="sk-tp">"message auto [X]"</span></div></div><div class="sk-sec"><div class="sk-lbl">Infos requises</div><div class="sk-text">Canal (Email/Slack) · Déclencheur · Destinataire · Variables dispo · Contenu attendu</div></div><div class="sk-sec"><div class="sk-lbl">Étapes</div><ol class="sk-steps"><li>Collecter les 5 infos</li><li>Rédiger selon standards Email ou Slack Purplemail</li><li>Valider avec Léo</li><li>Publier dans Notion → statut À valider</li><li>Retourner l’URL Notion</li></ol></div><div class="sk-sec"><div class="sk-lbl">Base Notion</div><div class="wf-row"><span class="wf-name">Messages automatiques PurpleMail</span><span class="wf-id">collection://33af6f69</span><span class="wf-live">● Actif</span></div></div></div></div></div></div></div>
+    <div class="auto-card"><div class="ac-top"><div class="ac-info"><div class="ac-badge-row"><span class="ac-num">SOP 02 · Design</span><span class="ac-live"><span class="ac-live-dot"></span>Fonctionnel</span></div><div class="ac-icon">📋</div><h3>Créer un SOP avec Claude</h3><p>Génère et publie un SOP formaté selon les standards Purplemail dans la base Notion SOPs — depuis un document existant, un workflow décrit, ou de zéro.</p><div class="tools-row"><span class="tp tp-v">Notion</span><span class="tp tp-t">SOPs DB</span></div></div><div class="ac-video"><div class="ac-video-lbl">Vidéo de démo</div><div class="video-frame"><iframe src="https://www.tella.tv/video/automatisez-votre-charte-graphique-avec-claude-7b9q/embed?b=0&title=0&a=1&loop=0&autoPlay=false&t=0&muted=0&wt=0" allowfullscreen allowtransparency></iframe></div></div></div><div class="ac-body"><div class="ac-does"><div class="ac-section-lbl">Ce que ça fait</div><div class="does-list"><div class="does-item"><div class="dn">1</div>Détecte la méthode : depuis un doc, un workflow décrit, ou à la main</div><div class="does-item"><div class="dn">2</div>Génère le contenu structuré : quand utiliser, prérequis, étapes, checklist</div><div class="does-item"><div class="dn">3</div>Applique le template universel Purplemail (callouts colorés, table of contents)</div><div class="does-item"><div class="dn">4</div>Publie dans la base Notion SOPs avec catégorie, privacy, statut</div></div></div><div class="ac-skill-wrap"><div class="ac-section-lbl">Skill Claude</div><div class="skill-block" id="sk6"><div class="skill-hd" onclick="toggleSkill('sk6')"><span class="skill-name">purplemail-sop-creator</span><div class="skill-toggle"><span class="skill-gh">GitHub</span><span class="skill-arr">›</span></div></div><div class="skill-body"><div class="sk-div"></div><div class="sk-sec"><div class="sk-lbl">Triggers</div><div class="sk-triggers"><span class="sk-tp">"crée le SOP de [X]"</span><span class="sk-tp">"documente ce process"</span><span class="sk-tp">"nouveau SOP Purplemail"</span></div></div><div class="sk-sec"><div class="sk-lbl">Infos requises</div><div class="sk-text">Nom du SOP · Catégorie · Privacy · Temps estimé · Owner</div></div><div class="sk-sec"><div class="sk-lbl">Étapes</div><ol class="sk-steps"><li>Détecter la méthode (doc / workflow / manuel)</li><li>Collecter les 5 infos</li><li>Générer le contenu avec le template universel</li><li>Valider avec Léo</li><li>Publier dans Notion SOPs collection://0edf6f69</li><li>Retourner l’URL + rappeler d’ajouter le lien Loom</li></ol></div><div class="sk-sec"><div class="sk-lbl">Base Notion</div><div class="wf-row"><span class="wf-name">SOPs Purplemail</span><span class="wf-id">collection://0edf6f69</span><span class="wf-live">● Actif</span></div></div></div></div></div></div></div>
+  </div>
+</section>
+<section class="section" id="install">
+  <span class="sec-label">Installation</span>
+  <h2>Comment tout installer <em>chez Purplemail</em> ?</h2>
+  <p class="sec-intro">Tous les skills livrés dans ce kit s’installent en une seule commande Claude.</p>
+  <div class="fetch-box">
+    <div>
+      <h3 class="fs-h3">Utilisez le skill <em>fetch-skills</em>.</h3>
+      <p class="fs-sub">fetch-skills est le skill bootstrap. Installé une seule fois manuellement, il récupère tous les autres depuis le repo GitHub <code style="font-size:12px;color:var(--ac);background:var(--sb);padding:2px 6px;border-radius:4px">client-purplemail</code> en une commande.</p>
+      <a href="https://julesfleche.github.io/webpages/landings/ooo-kit-demarrage/" class="btn-g btn-sm" target="_blank" style="margin-top:8px">Voir le kit de démarrage →</a>
+    </div>
+    <div class="fs-steps">
+      <div class="fs-step"><div class="fs-n">1</div><div class="fs-text">Assure-toi d’avoir le skill <strong>fetch-skills</strong> installé. Sinon, <a href="https://julesfleche.github.io/webpages/landings/ooo-kit-demarrage/" target="_blank">voir le Kit de démarrage fourni</a>.</div></div>
+      <div class="fs-step"><div class="fs-n">2</div><div class="fs-text">Ouvre une nouvelle conversation dans <strong>Claude Desktop</strong> et tape :</div></div>
+      <div class="copybox"><code id="cmd-fetch">récupère mes skills</code><button class="cpbtn" onclick="cpText('cmd-fetch',this)">Copier</button></div>
+      <div class="fs-step"><div class="fs-n">3</div><div class="fs-text">Claude trouve les <strong>6 skills</strong> et te propose "Save as a skill" pour chacun.</div></div>
+      <div class="fs-ok"><div class="fs-n-ok">✓</div><div class="fs-ok-text">Tous les skills sont installés. Même commande au prochain sprint pour tout mettre à jour.</div></div>
+    </div>
+  </div>
+</section>
+<section class="section" id="checklist">
+  <span class="sec-label">Recette</span>
+  <h2>Checklist de <em>test</em>.</h2>
+  <p class="sec-intro">Coche chaque item. Un problème ? Message sur Slack.</p>
+  <div class="checklist">
+    <div class="cl-hd"><span class="cl-ttl">Sprint 1 — Onboarding &amp; Design</span><span id="prog" style="font-size:12px;color:var(--tx3)">0 / 8</span></div>
+    <div class="cl-row" onclick="ck(this)"><div class="cl-chk">✓</div><span class="cl-label">Onboarding client : taper "onboarde un client test" dans Claude</span><span class="cl-badge">Skill</span></div>
+    <div class="cl-row" onclick="ck(this)"><div class="cl-chk">✓</div><span class="cl-label">Canaux Slack créés + portail Notion client créé</span><span class="cl-badge">Notion · Slack</span></div>
+    <div class="cl-row" onclick="ck(this)"><div class="cl-chk">✓</div><span class="cl-label">CGP reçues par email + lien DocuSeal fonctionnel</span><span class="cl-badge">DocuSeal</span></div>
+    <div class="cl-row" onclick="ck(this)"><div class="cl-chk">✓</div><span class="cl-label">Onboarding prestataire : taper "onboarde un presta test"</span><span class="cl-badge">Skill</span></div>
+    <div class="cl-row" onclick="ck(this)"><div class="cl-chk">✓</div><span class="cl-label">Prestataire invité Slack + contrat sous-traitance reçu</span><span class="cl-badge">Slack · DocuSeal</span></div>
+    <div class="cl-row" onclick="ck(this)"><div class="cl-chk">✓</div><span class="cl-label">Messages auto : taper "rédige le message de bienvenue client"</span><span class="cl-badge">Skill</span></div>
+    <div class="cl-row" onclick="ck(this)"><div class="cl-chk">✓</div><span class="cl-label">Message publié dans Notion avec statut À valider</span><span class="cl-badge">Notion</span></div>
+    <div class="cl-row" onclick="ck(this)"><div class="cl-chk">✓</div><span class="cl-label">SOP creator : taper "crée le SOP de l’onboarding client"</span><span class="cl-badge">Skill</span></div>
+  </div>
+</section>
+<section class="section" id="next">
+  <span class="sec-label">Roadmap</span>
+  <h2>Les prochaines <em>livraisons</em>.</h2>
+  <p class="sec-intro">Ce qui arrive dans les prochains sprints.</p>
+  <div class="next-grid">
+    <div class="ns-card"><div class="ns-when">Dans 7 jours · Sprint 2</div><h3>Reporting &amp; Portail client</h3><div class="ns-items"><div class="ns-item"><div class="ns-bullet"></div><strong style="color:var(--tx)">Une brique Reportings</strong> : reporting mensuel Klaviyo automatisé par client, HTML interactif livré chaque mois</div><div class="ns-item"><div class="ns-bullet"></div><strong style="color:var(--tx)">Une brique Portail client</strong> : accès client à ses données, livrables et documents directement depuis Notion</div></div></div>
+    <div class="ns-card"><div class="ns-when">Dans 14 jours · Sprint 3</div><h3>Chatbot RAG &amp; Finalisation</h3><div class="ns-items"><div class="ns-item"><div class="ns-bullet"></div><strong style="color:var(--tx)">Une brique Chatbot RAG</strong> : assistant IA sur la base de connaissances Purplemail</div><div class="ns-item"><div class="ns-bullet"></div><strong style="color:var(--tx)">Finalisation Notion</strong> : automatisations portail client, factures automatiques, suivi KPIs</div></div></div>
+  </div>
+</section>
+</div>
+<footer>
+  <a class="footer-brand" href="#"><svg width="16" height="16" viewBox="0 0 659 659" fill="none"><path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" style="fill:var(--logo)"/></svg>Out of Office</a>
+  <span class="footer-r">Purplemail · Kit de livraison 1 · Onboarding et Contrats et Design · Avril 2026</span>
+</footer>
+<script>
+function toggleTheme(){const h=document.documentElement,b=document.getElementById('tbtn');h.getAttribute('data-theme')==='light'?(h.setAttribute('data-theme','dark'),b.textContent='☀️'):(h.setAttribute('data-theme','light'),b.textContent='🌙')}
+function toggleSkill(id){document.getElementById(id).classList.toggle('open')}
+function ck(row){row.querySelector('.cl-chk').classList.toggle('done');const t=document.querySelectorAll('.cl-chk').length,d=document.querySelectorAll('.cl-chk.done').length;document.getElementById('prog').textContent=d+' / '+t}
+function cpText(id,btn){navigator.clipboard.writeText(document.getElementById(id).textContent.trim()).then(()=>{btn.textContent='Copié ✓';setTimeout(()=>btn.textContent='Copier',2500)})}
+</script>
+</body>
+</html>
