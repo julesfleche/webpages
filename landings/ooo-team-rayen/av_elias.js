@@ -1,1 +1,1 @@
-window.__ELIAS_SRC__='data:image/png;base64,ELIAS_DATA_HERE';
+ELIAS_CONTENT
