@@ -4,7 +4,490 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Out of Office — New Era · For Rayen</title>
-<meta http-equiv="refresh" content="0; url=https://julesfleche.github.io/webpages/landings/ooo-team-rayen/v4.html">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --black:#080808;--black-2:#111111;--black-3:#1a1a1a;
+  --off-white:#f5f4f0;--off-white-2:#eeede9;
+  --accent:#5b6af0;--accent-2:#6b7fff;--purple:#a78bfa;--pink:#f472b6;
+  --muted:#888884;--muted-2:#555552;--white:#ffffff;
+  --bd:rgba(255,255,255,0.08);--bdl:rgba(0,0,0,0.08);
+}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:'Poppins',sans-serif;font-weight:600;line-height:1.15;padding-bottom:.15em;padding-top:.05em;overflow:visible;}
+em,.em{font-style:italic;background:linear-gradient(135deg,#6b7fff,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-right:.12em;padding-left:.02em;display:inline-block;line-height:inherit;}
+.em-dark{background:linear-gradient(135deg,#5b6af0,#8b5cf6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--white);color:var(--black);border:none;border-radius:999px;padding:15px 30px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;position:relative;overflow:hidden;isolation:isolate;transition:transform .2s,box-shadow .2s;}
+.btn::after{content:'';position:absolute;inset:0;border-radius:999px;background:linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6);opacity:0;transition:opacity .3s;z-index:-1;}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 32px rgba(107,127,255,.35);}
+.btn:hover::after{opacity:1;}
+.btn:hover span{color:var(--white);}
+.btn span{position:relative;z-index:1;transition:color .3s;}
+.btn-ghost{display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--white);border:1px solid var(--bd);border-radius:999px;padding:15px 30px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;transition:border-color .2s,background .2s;}
+.btn-ghost:hover{border-color:rgba(91,106,240,.5);background:rgba(91,106,240,.06);}
+.logo-svg path{fill:var(--white);}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 52px;background:rgba(8,8,8,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);}
+.nav-brand{display:flex;align-items:center;gap:11px;text-decoration:none;}
+.nav-brand-text{font-family:'Poppins',sans-serif;font-weight:600;font-size:16px;letter-spacing:-.4px;color:var(--white);}
+.nav-pill{background:rgba(91,106,240,.12);border:1px solid rgba(91,106,240,.28);color:#8b99ff;border-radius:999px;padding:6px 14px;font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;}
+.s{padding:110px 52px;}
+.s-light{background:var(--off-white);color:var(--black);}
+.s-dark2{background:var(--black-2);}
+.wrap{max-width:1100px;margin:0 auto;}
+.label{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent-2);margin-bottom:16px;display:block;}
+.label-dark{color:var(--accent);}
+.s-title{font-size:clamp(34px,4vw,54px);letter-spacing:-1.8px;margin-bottom:16px;}
+.s-sub{font-size:17px;color:var(--muted);line-height:1.68;max-width:520px;margin-bottom:64px;}
+.s-light .s-sub{color:var(--muted-2);}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:150px 52px 110px;background:radial-gradient(ellipse 70% 55% at 50% 0%,rgba(91,106,240,.14) 0%,transparent 65%),var(--black);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--bd) 1px,transparent 1px),linear-gradient(90deg,var(--bd) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(ellipse 60% 55% at 50% 20%,black 0%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse 60% 55% at 50% 20%,black 0%,transparent 80%);opacity:.4;pointer-events:none;}
+.hero-inner{position:relative;z-index:1;max-width:820px;margin:0 auto;}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid var(--bd);border-radius:999px;padding:8px 18px;margin-bottom:40px;font-size:13px;color:var(--muted);font-weight:500;}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;}
+.hero h1{font-size:clamp(52px,7vw,92px);letter-spacing:-3px;line-height:1.03;padding-bottom:.18em;margin-bottom:28px;}
+.hero-sub{font-size:19px;color:var(--muted);max-width:520px;margin:0 auto 52px;line-height:1.65;}
+.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+#globe-section{position:relative;width:100%;overflow:hidden;background:radial-gradient(ellipse 60% 40% at 50% 100%,rgba(91,106,240,0.08),transparent 60%),#080808;}
+#globe-mount{width:100%;height:75vh;}
+#globe-mount canvas{display:block;}
+.pin-overlay{position:absolute;inset:0;pointer-events:none;}
+.pin{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;}
+.pin-ring{position:absolute;left:50%;top:50%;border-radius:50%;border:2px solid #5b6af0;transform:translate(-50%,-50%);animation:pulse-ring 2.2s ease-out infinite;}
+@keyframes pulse-ring{0%{width:48px;height:48px;opacity:.9;}100%{width:80px;height:80px;opacity:0;}}
+.pin-label{position:absolute;left:50%;transform:translateX(-50%);top:calc(100% + 8px);text-align:center;white-space:nowrap;opacity:0;transition:opacity .2s;pointer-events:none;text-shadow:0 2px 8px rgba(0,0,0,.95);}
+.pin:hover .pin-label{opacity:1;}
+.pin-name{color:#fff;font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;}
+.pin-time{color:#5b6af0;font-size:11px;margin-top:2px;}
+.pod-diagram{margin-top:64px;display:flex;flex-direction:column;align-items:center;gap:0;}
+.pod-row{display:flex;align-items:center;justify-content:center;gap:0;width:100%;}
+.pod-row-spacer{height:48px;display:flex;align-items:center;justify-content:center;position:relative;width:100%;}
+.pc{background:var(--black-2);border:1px solid var(--bd);border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:12px;width:220px;transition:border-color .3s;}
+.pc:hover{border-color:rgba(91,106,240,.4);}
+.pc.hl{background:rgba(91,106,240,.08);border-color:rgba(91,106,240,.35);box-shadow:0 0 32px rgba(91,106,240,.12);}
+.pc.dim{opacity:.5;border-style:dashed;}
+.av{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;overflow:hidden;}
+.av img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.av-blue{background:rgba(107,127,255,.15);border:1px solid rgba(107,127,255,.25);}
+.av-purple{background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.25);}
+.pn{font-weight:600;font-size:14px;}
+.pr{font-size:11px;color:var(--muted);margin-top:2px;}
+.pp{font-size:10px;font-weight:600;padding:3px 9px;border-radius:999px;letter-spacing:.3px;white-space:nowrap;}
+.pp-m{background:rgba(91,106,240,.15);color:#8b99ff;border:1px solid rgba(91,106,240,.25);}
+.pp-b{background:rgba(167,139,250,.15);color:#c4b5fd;border:1px solid rgba(167,139,250,.25);}
+.pp-new{background:rgba(52,211,153,.1);color:#6ee7b7;border:1px solid rgba(52,211,153,.2);}
+.jc{background:linear-gradient(135deg,rgba(91,106,240,.13),rgba(167,139,250,.07));border:1.5px solid rgba(91,106,240,.45);border-radius:22px;padding:28px 36px;text-align:center;box-shadow:0 0 52px rgba(91,106,240,.18);position:relative;width:240px;}
+.jc::before{content:'';position:absolute;inset:0;border-radius:22px;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(91,106,240,.12) 0%,transparent 70%);pointer-events:none;}
+.jc-av{width:56px;height:56px;border-radius:50%;margin:0 auto 10px;overflow:hidden;border:2px solid rgba(91,106,240,.55);}
+.jc-av img{width:100%;height:100%;object-fit:cover;object-position:center 15%;border-radius:50%;}
+.jc-name{font-family:'Poppins',sans-serif;font-weight:600;font-size:17px;margin-bottom:3px;}
+.jc-role{font-size:12px;color:var(--muted);}
+.cb{background:var(--black-2);border:1px dashed rgba(255,255,255,.15);border-radius:16px;padding:18px 28px;text-align:center;}
+.cb-name{font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;margin-bottom:3px;}
+.cb-sub{font-size:12px;color:var(--muted);}
+.role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:64px;}
+.role-card{background:var(--off-white-2);border:1px solid var(--bdl);border-radius:22px;padding:36px 32px;transition:transform .2s,box-shadow .25s;}
+.role-card:hover{transform:translateY(-4px);box-shadow:0 20px 48px rgba(0,0,0,.1);}
+.role-icon{font-size:30px;margin-bottom:22px;display:block;}
+.role-title{font-family:'Poppins',sans-serif;font-weight:600;font-size:18px;letter-spacing:-.3px;color:var(--black);margin-bottom:12px;}
+.role-text{font-size:14px;color:var(--muted-2);line-height:1.7;}
+.role-tag{display:inline-block;margin-top:18px;padding:5px 13px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.3px;background:rgba(91,106,240,.1);color:var(--accent);border:1px solid rgba(91,106,240,.2);}
+.sprint-box{background:var(--black-3);border:1px solid var(--bd);border-radius:22px;padding:48px;margin-top:64px;}
+.sprint-tl{margin-bottom:52px;}
+.sprint-tl-markers{display:flex;justify-content:space-between;margin-bottom:10px;}
+.sprint-tl-marker{font-family:'Poppins',sans-serif;font-weight:600;font-size:12px;color:var(--accent-2);}
+.sprint-tl-bar{height:4px;background:linear-gradient(90deg,#6b7fff,#a78bfa,#f472b6);border-radius:999px;position:relative;}
+.sprint-tl-dot{position:absolute;top:50%;transform:translateY(-50%);width:14px;height:14px;border-radius:50%;border:2px solid var(--black-3);}
+.d0{left:0;background:#6b7fff;box-shadow:0 0 10px rgba(107,127,255,.6);}
+.d3{left:43%;background:#a78bfa;box-shadow:0 0 10px rgba(167,139,250,.6);}
+.d6{left:85%;background:#e879f9;}
+.d7{right:0;background:#f472b6;box-shadow:0 0 10px rgba(244,114,182,.6);}
+.sprint-rows{display:flex;flex-direction:column;gap:0;}
+.sprint-row{display:grid;grid-template-columns:130px 1fr;gap:24px;align-items:center;padding:20px 0;border-bottom:1px solid var(--bd);}
+.sprint-row:last-child{border-bottom:none;padding-bottom:0;}
+.sprint-role-label{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.sprint-tasks{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.st{padding:10px 18px;border-radius:12px;font-size:13px;font-weight:500;border:1px solid;}
+.st-b{background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.25);color:#c4b5fd;}
+.st-m{background:rgba(91,106,240,.1);border-color:rgba(91,106,240,.25);color:#8b99ff;}
+.st-arrow{color:var(--muted-2);font-size:16px;}
+.st-gap{width:24px;height:2px;background:var(--bd);border-radius:999px;}
+.week-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-top:64px;}
+.week-col{display:flex;flex-direction:column;gap:8px;}
+.week-day-name{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted-2);padding-bottom:10px;border-bottom:1px solid var(--bdl);margin-bottom:4px;}
+.we{padding:11px 13px;border-radius:10px;font-size:12px;font-weight:500;line-height:1.45;border:1px solid;}
+.we small{opacity:.65;font-size:11px;display:block;margin-top:2px;}
+.we-call{background:rgba(91,106,240,.08);border-color:rgba(91,106,240,.2);color:#8b99ff;}
+.we-form{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.2);color:#c4b5fd;}
+.we-build{background:rgba(52,211,153,.07);border-color:rgba(52,211,153,.15);color:#6ee7b7;}
+.we-loom{background:rgba(239,68,68,.07);border-color:rgba(239,68,68,.15);color:#fca5a5;}
+.elias-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
+.elias-profile{background:var(--black-2);border:1px solid var(--bd);border-radius:22px;padding:32px;}
+.elias-head{display:flex;align-items:center;gap:16px;margin-bottom:22px;}
+.elias-av{width:56px;height:56px;border-radius:50%;overflow:hidden;border:2px solid rgba(107,127,255,.35);flex-shrink:0;}
+.elias-av img{width:100%;height:100%;object-fit:cover;object-position:center 10%;border-radius:50%;}
+.elias-name{font-family:'Poppins',sans-serif;font-weight:600;font-size:17px;color:var(--white);}
+.elias-role-text{font-size:13px;color:var(--muted);margin-top:2px;}
+.elias-items{display:flex;flex-direction:column;gap:10px;}
+.elias-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);}
+.elias-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+.elias-note{background:rgba(91,106,240,.07);border:1px solid rgba(91,106,240,.18);border-radius:14px;padding:18px 22px;font-size:13px;color:var(--muted);line-height:1.65;margin-top:16px;}
+.tools-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:64px;}
+.tool-card{border-radius:22px;padding:36px 32px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .25s;}
+.tool-card:hover{transform:translateY(-3px);}
+.tool-card.dark{background:var(--black-3);border:1px solid var(--bd);}
+.tool-card.dark:hover{border-color:rgba(91,106,240,.35);box-shadow:0 16px 48px rgba(0,0,0,.4);}
+.tool-card.light{background:var(--off-white-2);border:1px solid var(--bdl);}
+.tool-card.light:hover{box-shadow:0 16px 48px rgba(0,0,0,.08);}
+.tool-logo{font-size:32px;margin-bottom:20px;display:block;}
+.tool-name{font-family:'Poppins',sans-serif;font-weight:600;font-size:20px;letter-spacing:-.5px;margin-bottom:10px;}
+.tool-card.dark .tool-name{color:var(--white);}
+.tool-card.light .tool-name{color:var(--black);}
+.tool-desc{font-size:14px;line-height:1.7;}
+.tool-card.dark .tool-desc{color:var(--muted);}
+.tool-card.light .tool-desc{color:var(--muted-2);}
+.tool-tag{display:inline-block;margin-top:16px;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.3px;}
+.tool-card.dark .tool-tag{background:rgba(91,106,240,.12);color:#8b99ff;border:1px solid rgba(91,106,240,.2);}
+.tool-card.light .tool-tag{background:rgba(91,106,240,.1);color:var(--accent);border:1px solid rgba(91,106,240,.2);}
+.cta-s{background:var(--black);text-align:center;padding:120px 52px;position:relative;overflow:hidden;}
+.cta-s::before{content:'';position:absolute;bottom:-120px;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(ellipse,rgba(91,106,240,.14) 0%,transparent 65%);pointer-events:none;}
+.cta-s h2{font-size:clamp(38px,5.5vw,70px);letter-spacing:-2.5px;margin-bottom:20px;position:relative;z-index:1;}
+.cta-s p{font-size:18px;color:var(--muted);margin-bottom:52px;position:relative;z-index:1;}
+.cta-stats{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;position:relative;z-index:1;}
+.cta-stat{background:rgba(255,255,255,.03);border:1px solid var(--bd);border-radius:18px;padding:26px 40px;text-align:center;}
+.cta-stat-num{font-family:'Poppins',sans-serif;font-weight:600;font-size:30px;letter-spacing:-1px;background:linear-gradient(135deg,#6b7fff,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.cta-stat-label{font-size:13px;color:var(--muted);margin-top:4px;}
+footer{background:var(--black);border-top:1px solid var(--bd);padding:36px 52px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.ft-brand{display:flex;align-items:center;gap:10px;}
+.ft-brand-text{font-family:'Poppins',sans-serif;font-weight:600;font-size:15px;color:var(--white);letter-spacing:-.3px;}
+.ft-text{font-size:13px;color:var(--muted-2);}
+@media(max-width:900px){nav{padding:16px 24px;}.s{padding:80px 24px;}.hero{padding:130px 24px 80px;}.role-grid,.tools-grid{grid-template-columns:1fr;}.week-grid{grid-template-columns:1fr 1fr;}.elias-grid{grid-template-columns:1fr;gap:40px;}.cta-stats{flex-direction:column;align-items:center;}footer{flex-direction:column;text-align:center;}}
+</style>
 </head>
-<body>Redirecting...</body>
+<body>
+
+<nav>
+  <a href="#" class="nav-brand">
+    <svg class="logo-svg" width="28" height="28" viewBox="0 0 659 659" fill="none"><path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z"/></svg>
+    <span class="nav-brand-text">Out of Office</span>
+  </a>
+  <span class="nav-pill">For Rayen ✦</span>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="hero-dot"></span>Team update · May 2026</div>
+    <h1>OOO enters a<br><em>new era</em></h1>
+    <p class="hero-sub">From an n8n agency to a full stack automation agency. Claude, Lovable, n8n. And you, right at the center of it.</p>
+    <div class="hero-ctas">
+      <a href="#pods" class="btn"><span>See the structure →</span></a>
+      <a href="#role" class="btn-ghost">Your role ↓</a>
+    </div>
+  </div>
+</section>
+
+<section id="globe-section">
+  <div id="globe-mount"></div>
+  <div class="pin-overlay" id="pin-overlay"></div>
+</section>
+
+<section id="pods" class="s" style="background:var(--black-2);">
+  <div class="wrap">
+    <span class="label">How we're organized</span>
+    <h2 class="s-title">The <em>pod</em> structure</h2>
+    <p class="s-sub">One Manager owns the client relationship. Builders deliver. Each pod runs autonomously.</p>
+    <div class="pod-diagram">
+      <div class="pod-row" style="gap:80px;">
+        <div class="pc hl" id="pc-rayen">
+          <div class="av av-purple" style="overflow:hidden;padding:0;"><img id="rayen-av-pod" style="width:100%;height:100%;object-fit:cover;object-position:center 10%;border-radius:50%;" alt="Rayen"/></div>
+          <div style="flex:1;"><div class="pn">Rayen</div><div class="pr">AI Builder · Lead</div></div>
+          <span class="pp pp-b">Builder</span>
+        </div>
+        <div class="pc" style="background:rgba(107,127,255,.06);border-color:rgba(107,127,255,.28);">
+          <div class="av av-blue" style="overflow:hidden;padding:0;"><img id="elias-av-pod" style="width:100%;height:100%;object-fit:cover;object-position:center 10%;border-radius:50%;" alt="Elias"/></div>
+          <div style="flex:1;"><div class="pn">Elias</div><div class="pr">AI Builder · New</div></div>
+          <span class="pp pp-new">New</span>
+        </div>
+      </div>
+      <div class="pod-row-spacer" style="height:72px;position:relative;width:680px;max-width:100%;">
+        <svg viewBox="0 0 680 72" style="position:absolute;top:0;left:0;width:100%;height:100%;overflow:visible;" preserveAspectRatio="xMidYMid meet">
+          <defs><linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#6b7fff"/><stop offset="100%" stop-color="#a78bfa"/></linearGradient></defs>
+          <path d="M 170 0 L 170 36 Q 170 36 340 36 L 340 72" stroke="url(#grad1)" stroke-width="2" fill="none" stroke-dasharray="4 3" opacity="0.7"/>
+          <path d="M 510 0 L 510 36 Q 510 36 340 36 L 340 72" stroke="url(#grad1)" stroke-width="2" fill="none" stroke-dasharray="4 3" opacity="0.7"/>
+          <polygon points="335,68 345,68 340,74" fill="#a78bfa" opacity="0.8"/>
+        </svg>
+        <div style="position:absolute;left:12%;top:50%;transform:translateY(-50%);font-size:11px;color:var(--muted);font-style:italic;">trains &amp; reviews</div>
+        <div style="position:absolute;right:12%;top:50%;transform:translateY(-50%);font-size:11px;color:var(--muted);font-style:italic;">trains &amp; reviews</div>
+      </div>
+      <div class="jc">
+        <div class="jc-av"><img id="jules-av-pod" alt="Jules"/></div>
+        <div class="jc-name">Jules</div>
+        <div class="jc-role">Founder · Senior Manager</div>
+        <span class="pp pp-m" style="margin-top:10px;font-size:11px;">Manager</span>
+      </div>
+      <div class="pod-row-spacer" style="height:72px;position:relative;width:240px;">
+        <svg viewBox="0 0 240 72" style="position:absolute;top:0;left:0;width:100%;height:100%;" preserveAspectRatio="xMidYMid meet">
+          <defs><linearGradient id="grad2" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#a78bfa"/><stop offset="100%" stop-color="#f472b6"/></linearGradient></defs>
+          <line x1="120" y1="0" x2="120" y2="60" stroke="url(#grad2)" stroke-width="2" stroke-dasharray="4 3" opacity="0.7"/>
+          <polygon points="115,57 125,57 120,64" fill="#f472b6" opacity="0.75"/>
+        </svg>
+        <div style="position:absolute;left:50%;transform:translateX(-50%);top:50%;white-space:nowrap;font-size:11px;color:var(--muted);font-style:italic;text-align:center;line-height:1.4;margin-top:-8px;">presents &amp; owns<br>the relationship</div>
+      </div>
+      <div class="cb"><div style="font-size:22px;margin-bottom:6px;">🏢</div><div class="cb-name">Clients</div><div class="cb-sub">8–10 retainers per pod</div></div>
+    </div>
+    <div style="display:flex;gap:16px;margin-top:52px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:160px;background:rgba(91,106,240,.07);border:1px solid rgba(91,106,240,.18);border-radius:16px;padding:22px 28px;"><div style="font-family:'Poppins',sans-serif;font-weight:600;font-size:26px;letter-spacing:-1px;background:linear-gradient(135deg,#6b7fff,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">8–10</div><div style="font-size:13px;color:var(--muted);margin-top:4px;">Clients per pod</div></div>
+      <div style="flex:1;min-width:160px;background:rgba(91,106,240,.07);border:1px solid rgba(91,106,240,.18);border-radius:16px;padding:22px 28px;"><div style="font-family:'Poppins',sans-serif;font-weight:600;font-size:26px;letter-spacing:-1px;background:linear-gradient(135deg,#6b7fff,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">×1/mo</div><div style="font-size:13px;color:var(--muted);margin-top:4px;">New Builder recruited</div></div>
+      <div style="flex:1;min-width:160px;background:rgba(91,106,240,.07);border:1px solid rgba(91,106,240,.18);border-radius:16px;padding:22px 28px;"><div style="font-family:'Poppins',sans-serif;font-weight:600;font-size:26px;letter-spacing:-1px;background:linear-gradient(135deg,#6b7fff,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">7d</div><div style="font-size:13px;color:var(--muted);margin-top:4px;">Sprint cycle</div></div>
+      <div style="flex:1;min-width:160px;background:rgba(91,106,240,.07);border:1px solid rgba(91,106,240,.18);border-radius:16px;padding:22px 28px;"><div style="font-family:'Poppins',sans-serif;font-weight:600;font-size:26px;letter-spacing:-1px;background:linear-gradient(135deg,#6b7fff,#a78bfa);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">Full</div><div style="font-size:13px;color:var(--muted);margin-top:4px;">Stack · Claude + Lovable + n8n</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="role" class="s s-light">
+  <div class="wrap">
+    <span class="label label-dark">Your role</span>
+    <h2 class="s-title">What we <em class="em-dark">expect from you</em></h2>
+    <p class="s-sub">You're not just another Builder. You're the first one — the reference — the person who defines what "building well" means at OOO.</p>
+    <div class="role-grid">
+      <div class="role-card"><span class="role-icon">⚡</span><div class="role-title">Build the automations</div><p class="role-text">You build client automations: n8n workflows, Claude agents, Lovable apps. You are the production engine of the pod. Jules reviews, you ship.</p><span class="role-tag">Core craft</span></div>
+      <div class="role-card"><span class="role-icon">🧠</span><div class="role-title">Master the stack</div><p class="role-text">Claude, n8n, Lovable. You become the strongest on the team on these tools. Jules trains you directly. We go slow but steady.</p><span class="role-tag">Ongoing training</span></div>
+      <div class="role-card"><span class="role-icon">👥</span><div class="role-title">Recruit and train</div><p class="role-text">You'll find and onboard the next AI Builders — about one per month. You set the standard for what great automation work looks like at OOO.</p><span class="role-tag">Lead Builders</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="s" style="background:var(--black);">
+  <div class="wrap">
+    <span class="label">The rhythm</span>
+    <h2 class="s-title">We deliver by <em>sprints</em></h2>
+    <p class="s-sub">Each week follows a clear cycle: you build, Jules reviews and presents to the client. 7 days, two loops.</p>
+    <div class="sprint-box">
+      <div class="sprint-tl">
+        <div class="sprint-tl-markers"><span class="sprint-tl-marker">J0</span><span class="sprint-tl-marker">J+3</span><span class="sprint-tl-marker">J+6</span><span class="sprint-tl-marker">J+7</span></div>
+        <div class="sprint-tl-bar"><div class="sprint-tl-dot d0"></div><div class="sprint-tl-dot d3"></div><div class="sprint-tl-dot d6"></div><div class="sprint-tl-dot d7"></div></div>
+      </div>
+      <div class="sprint-rows">
+        <div class="sprint-row"><span class="sprint-role-label">AI Builder</span><div class="sprint-tasks"><div class="st st-b">Vibe dev</div><span class="st-arrow">→</span><div class="st st-b">Deliverables</div><div class="st-gap"></div><div class="st st-b">Vibe dev</div><span class="st-arrow">→</span><div class="st st-b">Deliverables</div></div></div>
+        <div class="sprint-row"><span class="sprint-role-label">AI Manager</span><div class="sprint-tasks"><div class="st st-m">Tool access</div><div class="st-gap"></div><div class="st st-m">Review</div><div class="st-gap"></div><div class="st st-m">Review</div><span class="st-arrow">→</span><div class="st st-m">Client call</div></div></div>
+      </div>
+    </div>
+    <div style="margin-top:20px;background:rgba(167,139,250,.07);border:1px solid rgba(167,139,250,.18);border-radius:16px;padding:20px 28px;font-size:14px;color:var(--muted);line-height:1.7;"><strong style="color:var(--white);">Vibe dev</strong> — you build directly with Claude, Lovable, n8n. Iterating fast, testing live, shipping clean.</div>
+  </div>
+</section>
+
+<section class="s s-light">
+  <div class="wrap">
+    <span class="label label-dark">Your week</span>
+    <h2 class="s-title">A typical <em class="em-dark">week at OOO</em></h2>
+    <p class="s-sub">Two team calls, two training sessions with Jules, async reviews mid-week. The rest: pure build time.</p>
+    <div class="week-grid">
+      <div class="week-col"><div class="week-day-name">Monday</div><div class="we we-call">☎️ Team Call · 9am<small>60 min · full team</small></div><div class="we we-form">🧠 Training Call · pm<small>60 min · Jules × Builders</small></div><div class="we we-build">⚡ Build</div></div>
+      <div class="week-col"><div class="week-day-name">Tuesday</div><div class="we we-build">⚡ Build</div><div class="we we-loom">🎥 Review · Loom or call<small>15–30 min async or live</small></div></div>
+      <div class="week-col"><div class="week-day-name">Wednesday</div><div class="we we-call">☎️ Team Call · 9am<small>60 min · full team</small></div><div class="we we-form">🧠 Training Call · pm<small>60 min · Jules × Builders</small></div><div class="we we-build">⚡ Build</div></div>
+      <div class="week-col"><div class="week-day-name">Thursday</div><div class="we we-build">⚡ Build</div><div class="we we-loom">🎥 Review · Loom or call<small>15–30 min async or live</small></div></div>
+      <div class="week-col"><div class="week-day-name">Friday</div><div class="we we-build">⚡ Build · deliverables</div><div class="we we-call">📬 Client update<small>Week recap via Slack</small></div></div>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:28px;">
+      <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted-2);"><div style="width:10px;height:10px;border-radius:3px;background:#8b99ff;"></div>Team call</div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted-2);"><div style="width:10px;height:10px;border-radius:3px;background:#c4b5fd;"></div>Training</div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted-2);"><div style="width:10px;height:10px;border-radius:3px;background:#6ee7b7;"></div>Build</div>
+      <div style="display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted-2);"><div style="width:10px;height:10px;border-radius:3px;background:#fca5a5;"></div>Review (Loom or call)</div>
+    </div>
+  </div>
+</section>
+
+<section class="s" style="background:var(--black);">
+  <div class="wrap">
+    <div class="elias-grid">
+      <div>
+        <span class="label">The team grows</span>
+        <h2 class="s-title">Elias joins <em>the pod</em></h2>
+        <p style="font-size:16px;color:var(--muted);line-height:1.72;margin-bottom:28px;">Elias is joining as an AI Builder. He's ambitious, wants to become a Manager down the line. You welcome him, understand his pace, and help him level up.</p>
+        <p style="font-size:16px;color:var(--muted);line-height:1.72;">Jules trains both of you in parallel. Formation Calls every Monday and Wednesday afternoon. We move together, nobody gets left behind.</p>
+      </div>
+      <div>
+        <div class="elias-profile">
+          <div class="elias-head">
+            <div class="elias-av"><img id="elias-av-big" alt="Elias"/></div>
+            <div><div class="elias-name">Elias</div><div class="elias-role-text">AI Builder · Joining May 2026</div></div>
+          </div>
+          <div class="elias-items">
+            <div class="elias-item"><span class="elias-dot"></span>Trained directly by Jules</div>
+            <div class="elias-item"><span class="elias-dot"></span>Goal: become a Manager</div>
+            <div class="elias-item"><span class="elias-dot"></span>Client-facing in support mode</div>
+            <div class="elias-item"><span class="elias-dot"></span>100% build time to start</div>
+          </div>
+          <div class="elias-note">You're Elias's reference on the tools. Jules handles training. You lead by example.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="s s-dark2">
+  <div class="wrap">
+    <span class="label">Infrastructure</span>
+    <h2 class="s-title">Our <em>tool stack</em></h2>
+    <p class="s-sub">Four tools, one workflow. Everything is interconnected — and almost everything happens inside Claude.</p>
+    <div class="tools-grid">
+      <div class="tool-card dark" style="border-color:rgba(91,106,240,.3);background:rgba(91,106,240,.06);"><span class="tool-logo">🤖</span><div class="tool-name">Claude</div><p class="tool-desc">Our sensei. We work almost exclusively through Claude — building, reviewing, writing, thinking. It's the operating layer for the whole team.</p><span class="tool-tag">Primary · Everything</span></div>
+      <div class="tool-card dark"><span class="tool-logo">⚙️</span><div class="tool-name">n8n</div><p class="tool-desc">The automation backbone. Workflows, webhooks, integrations between tools. When something needs to be wired up, n8n does it.</p><span class="tool-tag">Automations</span></div>
+      <div class="tool-card light"><span class="tool-logo">✨</span><div class="tool-name">Lovable</div><p class="tool-desc">For building custom solutions and software. Client portals, internal tools, dashboards. When the client needs a real product, Lovable ships it fast.</p><span class="tool-tag">Custom builds · Portals</span></div>
+      <div class="tool-card light"><span class="tool-logo">🗂️</span><div class="tool-name">Notion</div><p class="tool-desc">Our backoffice. To-dos, production tracking, deliverables, SOPs, client roadmaps. The source of truth for everything operational.</p><span class="tool-tag">Backoffice · SOPs</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-s">
+  <div style="position:relative;z-index:1;">
+    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(91,106,240,.1);border:1px solid rgba(91,106,240,.25);border-radius:999px;padding:8px 18px;margin-bottom:36px;font-size:13px;font-weight:500;color:#8b99ff;">✦ The next chapter starts now</div>
+    <h2>We're building something <em>great</em> together</h2>
+    <p>Questions? We'll talk at the next Team Call. It kicks off May 2026.</p>
+    <div class="cta-stats">
+      <div class="cta-stat"><div class="cta-stat-num">May 2026</div><div class="cta-stat-label">Official start</div></div>
+      <div class="cta-stat"><div class="cta-stat-num">4 tools</div><div class="cta-stat-label">Claude · Lovable · n8n · Notion</div></div>
+      <div class="cta-stat"><div class="cta-stat-num">×1/month</div><div class="cta-stat-label">New Builder onboarded by you</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="ft-brand">
+    <svg class="logo-svg" width="24" height="24" viewBox="0 0 659 659" fill="none"><path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z"/></svg>
+    <span class="ft-brand-text">Out of Office</span>
+  </div>
+  <span class="ft-text">Internal document · For Rayen · May 2026</span>
+  <span class="ft-text" style="font-size:12px;">Built with Claude, of course ;)</span>
+</footer>
+
+<script>
+// Avatar sources injected at runtime from base64 data files
+// The full base64 images are loaded via the AVATAR_DATA object
+(function() {
+  // Globe setup
+  if (typeof THREE === 'undefined') return;
+  const mount = document.getElementById('globe-mount');
+  const overlay = document.getElementById('pin-overlay');
+  if (!mount) return;
+  const W = () => mount.clientWidth;
+  const H = () => mount.clientHeight;
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, W()/H(), 0.1, 100);
+  camera.position.z = 2.6;
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(W(), H());
+  renderer.setClearColor(0x000000, 0);
+  mount.appendChild(renderer.domElement);
+  renderer.domElement.style.cursor = 'grab';
+  const loader = new THREE.TextureLoader();
+  loader.crossOrigin = 'anonymous';
+  const texture = loader.load('https://unpkg.com/three-globe/example/img/earth-dark.jpg');
+  const geometry = new THREE.SphereGeometry(1.0, 64, 64);
+  const material = new THREE.MeshPhongMaterial({ map: texture, color: new THREE.Color(0x8899cc), emissive: new THREE.Color(0x0d1133), emissiveIntensity: 0.5, specular: new THREE.Color(0x334488), shininess: 15 });
+  const globe = new THREE.Mesh(geometry, material);
+  globe.rotation.x = 0.25; globe.rotation.y = -0.3;
+  scene.add(globe);
+  scene.add(new THREE.AmbientLight(0x223366, 1.5));
+  const d1 = new THREE.DirectionalLight(0xffffff, 2.0); d1.position.set(5,3,5); scene.add(d1);
+  const d2 = new THREE.DirectionalLight(0x5b6af0, 0.8); d2.position.set(-4,0,-2); scene.add(d2);
+  const MEMBERS = [
+    { name: 'Jules', lat: 42.0, lng: 9.0, tz: 'Europe/Paris', city: 'Corse', avatarId: 'jules-globe-av' },
+    { name: 'Rayen', lat: 36.8, lng: 10.2, tz: 'Africa/Tunis', city: 'Tunis', avatarId: 'rayen-globe-av' },
+    { name: 'Elias', lat: 47.2, lng: -1.5, tz: 'Europe/Paris', city: 'Nantes', avatarId: 'elias-globe-av' },
+  ];
+  const pinLocals = MEMBERS.map(m => {
+    const phi = ((90-m.lat)*Math.PI)/180;
+    const theta = ((m.lng+180)*Math.PI)/180;
+    return new THREE.Vector3(-(Math.sin(phi)*Math.cos(theta)), Math.cos(phi), Math.sin(phi)*Math.sin(theta));
+  });
+  const pinEls = MEMBERS.map((m, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'pin';
+    wrap.style.cssText = 'display:none;position:absolute;';
+    const ring = document.createElement('div'); ring.className = 'pin-ring'; wrap.appendChild(ring);
+    const av = document.createElement('div');
+    av.style.cssText = 'width:48px;height:48px;border-radius:50%;background:rgba(91,106,240,.2);border:2.5px solid #5b6af0;box-shadow:0 4px 20px rgba(91,106,240,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;';
+    const img = document.createElement('img');
+    img.id = m.avatarId;
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:center 12%;border-radius:50%;';
+    img.alt = m.name;
+    av.appendChild(img);
+    wrap.appendChild(av);
+    const lbl = document.createElement('div'); lbl.className = 'pin-label';
+    lbl.innerHTML = '<div class="pin-name">'+m.name+'</div><div class="pin-time" id="pt-'+i+'"> </div>';
+    wrap.appendChild(lbl);
+    overlay.appendChild(wrap);
+    return wrap;
+  });
+  const fmtTime = (tz) => { try { return new Intl.DateTimeFormat('fr-FR',{hour:'2-digit',minute:'2-digit',timeZone:tz}).format(new Date()); } catch { return '--:--'; } };
+  const updateTimes = () => MEMBERS.forEach((m,i) => { const el=document.getElementById('pt-'+i); if(el) el.textContent=fmtTime(m.tz)+' · '+m.city; });
+  updateTimes(); setInterval(updateTimes, 10000);
+  let isDragging=false,lastX=0,lastY=0,velX=0,velY=0;
+  const onDown=(x,y)=>{isDragging=true;lastX=x;lastY=y;velX=0;velY=0;renderer.domElement.style.cursor='grabbing';};
+  const onMove=(x,y)=>{if(!isDragging)return;const dx=x-lastX,dy=y-lastY;lastX=x;lastY=y;velX=dx*.005;velY=dy*.005;globe.rotation.y+=velX;globe.rotation.x+=velY;};
+  const onUp=()=>{isDragging=false;renderer.domElement.style.cursor='grab';};
+  renderer.domElement.addEventListener('mousedown',e=>onDown(e.clientX,e.clientY));
+  window.addEventListener('mousemove',e=>onMove(e.clientX,e.clientY));
+  window.addEventListener('mouseup',onUp);
+  renderer.domElement.addEventListener('touchstart',e=>{if(e.touches[0])onDown(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
+  window.addEventListener('touchmove',e=>{if(e.touches[0])onMove(e.touches[0].clientX,e.touches[0].clientY);},{passive:true});
+  window.addEventListener('touchend',onUp);
+  window.addEventListener('resize',()=>{camera.aspect=W()/H();camera.updateProjectionMatrix();renderer.setSize(W(),H());});
+  const tmpV=new THREE.Vector3(),camDir=new THREE.Vector3();
+  const animate=()=>{
+    requestAnimationFrame(animate);
+    if(!isDragging){if(Math.abs(velX)>.0001||Math.abs(velY)>.0001){globe.rotation.y+=velX;globe.rotation.x+=velY;velX*=.95;velY*=.95;}else{globe.rotation.y+=.0025;}}
+    camera.getWorldDirection(camDir);
+    const w=W(),h=H();
+    pinLocals.forEach((local,i)=>{
+      tmpV.copy(local).applyQuaternion(globe.quaternion);
+      const dot=tmpV.clone().normalize().dot(camDir.clone().negate());
+      const el=pinEls[i];
+      if(dot<=0.05){el.style.display='none';return;}
+      el.style.display='block';
+      const proj=tmpV.clone().project(camera);
+      el.style.left=(proj.x*.5+.5)*w+'px';
+      el.style.top=(-proj.y*.5+.5)*h+'px';
+    });
+    renderer.render(scene,camera);
+  };
+  animate();
+})();
+</script>
+
+<script id="avatar-loader">
+// Avatars are loaded from external files to keep this HTML lean
+// For the self-contained version, avatars are injected below as data URIs
+// This script assigns them to all img elements by ID
+(function(){
+  // Jules: curly brown hair, round glasses, grey shirt
+  // Rayen: slicked dark hair, pink shirt
+  // Elias: straight hair, round glasses, black shirt, watches
+  // All sourced from uploaded images, injected as data URIs
+  const AVATARS = {
+    jules: document.querySelector('#jules-av-pod')?.src || '',
+    rayen: document.querySelector('#rayen-av-pod')?.src || '',
+    elias: document.querySelector('#elias-av-pod')?.src || '',
+  };
+  // IDs to assign Jules avatar to
+  ['jules-av-pod', 'jules-globe-av'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el && window.__JULES_SRC__) el.src = window.__JULES_SRC__;
+  });
+  ['rayen-av-pod', 'rayen-globe-av'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el && window.__RAYEN_SRC__) el.src = window.__RAYEN_SRC__;
+  });
+  ['elias-av-pod', 'elias-av-big', 'elias-globe-av'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el && window.__ELIAS_SRC__) el.src = window.__ELIAS_SRC__;
+  });
+})();
+</script>
+
+</body>
 </html>
