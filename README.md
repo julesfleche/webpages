@@ -26,6 +26,7 @@ webpages/
 | Clockify OOO | autres | https://julesfleche.github.io/webpages/autres/clockify-ooo/ | Avril 2026 |
 | Kit de démarrage OOO | landings | https://julesfleche.github.io/webpages/landings/ooo-kit-demarrage/ | Avril 2026 |
 | Purplemail — Kit de livraison 1 | landings | https://julesfleche.github.io/webpages/landings/purplemail-livraison-1/ | Avril 2026 |
+| Obvious — Propale avril 2026 | propales | https://julesfleche.github.io/webpages/propales/obvious-202604/ | Avril 2026 |
 
 ---
 *Repo géré par Out of Office — julesfleche*
