@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Out of Office — Welcome Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --black-2: #111111;
+    --black-3: #1a1a1a;
+    --off-white: #f5f4f0;
+    --white: #ffffff;
+    --accent: #5b6af0;
+    --accent-light: #6b7fff;
+    --accent-violet: #a78bfa;
+    --accent-pink: #f472b6;
+    --muted: #888884;
+    --border-dark: rgba(255,255,255,0.08);
+    --border-light: rgba(0,0,0,0.08);
+    --gradient-accent: linear-gradient(135deg, #6b7fff, #a78bfa);
+    --gradient-cta: linear-gradient(135deg, #6b7fff, #a78bfa, #f472b6);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+    transition: background 0.4s ease, color 0.4s ease;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    line-height: 1.15;
+    padding-bottom: 0.15em;
+    padding-top: 0.05em;
+    overflow: visible;
+  }
+  em, .accent-em {
+    font-style: italic;
+    padding-right: 0.12em;
+    padding-left: 0.02em;
+    display: inline-block;
+    line-height: inherit;
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  [data-theme="light"] body { background: var(--off-white); color: var(--black); }
+  [data-theme="light"] .hero { background: var(--black) !important; }
+  [data-theme="light"] .modules-section { background: var(--off-white); }
+  [data-theme="light"] .module-card { background: var(--white); border-color: rgba(0,0,0,0.07); }
+  [data-theme="light"] .module-card:hover { border-color: var(--accent); }
+  [data-theme="light"] .module-num { color: var(--accent); }
+  [data-theme="light"] .module-title { color: var(--black); }
+  [data-theme="light"] .module-desc { color: rgba(8,8,8,0.6); }
+  [data-theme="light"] .module-meta { color: rgba(8,8,8,0.45); }
+  [data-theme="light"] .module-divider { background: rgba(0,0,0,0.08); }
+  [data-theme="light"] .progress-section { background: var(--white); border-color: var(--border-light); }
+  [data-theme="light"] .progress-label { color: var(--black); }
+  [data-theme="light"] .progress-track { background: rgba(0,0,0,0.08); }
+  [data-theme="light"] .step-dot.inactive { background: rgba(0,0,0,0.12); }
+  [data-theme="light"] .step-dot.inactive span { color: rgba(0,0,0,0.4); }
+  [data-theme="light"] .footer-bar { background: var(--black) !important; }
+  [data-theme="light"] .section-title { color: var(--black); }
+  [data-theme="light"] .section-eyebrow { color: var(--accent); }
+  [data-theme="light"] .section-sub { color: rgba(8,8,8,0.55); }
+
+  .theme-toggle {
+    position: fixed; top: 20px; right: 24px; z-index: 1000;
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 999px; padding: 6px 14px 6px 10px;
+    cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(12px);
+  }
+  .theme-toggle:hover { background: rgba(255,255,255,0.1); }
+  [data-theme="light"] .theme-toggle { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.1); }
+  [data-theme="light"] .theme-toggle:hover { background: rgba(0,0,0,0.08); }
+  .toggle-icon { font-size: 14px; }
+  .toggle-label { font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: var(--muted); }
+  [data-theme="light"] .toggle-label { color: rgba(8,8,8,0.5); }
+
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; padding: 0 40px; height: 64px;
+    background: rgba(8,8,8,0.9); border-bottom: 1px solid var(--border-dark);
+    backdrop-filter: blur(20px);
+  }
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo-text { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 600; color: var(--white); letter-spacing: -0.3px; }
+
+  .hero {
+    background: var(--black); min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 120px 40px 80px; text-align: center; position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 800px;
+    background: radial-gradient(ellipse, rgba(91,106,240,0.15) 0%, transparent 65%); pointer-events: none;
+  }
+  .hero::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(91,106,240,0.4), transparent);
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--accent-light); background: rgba(91,106,240,0.1); border: 1px solid rgba(91,106,240,0.2);
+    border-radius: 999px; padding: 6px 16px; margin-bottom: 32px;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-eyebrow::before { content: '✦'; font-size: 10px; }
+  .hero-logo { margin-bottom: 40px; animation: fadeUp 0.7s 0.1s ease both; }
+  .hero h1 { font-size: clamp(42px, 6vw, 80px); letter-spacing: -2px; color: var(--white); max-width: 820px; margin-bottom: 24px; animation: fadeUp 0.7s 0.2s ease both; }
+  .hero-sub { font-size: 18px; font-weight: 400; color: var(--muted); max-width: 520px; line-height: 1.7; margin-bottom: 48px; animation: fadeUp 0.7s 0.3s ease both; }
+  .hero-sub strong { color: rgba(255,255,255,0.8); font-weight: 600; }
+  .hero-cta-row { display: flex; align-items: center; gap: 16px; animation: fadeUp 0.7s 0.4s ease both; }
+
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px;
+    border-radius: 999px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600;
+    text-decoration: none; cursor: pointer; border: none; background: var(--white); color: var(--black);
+    position: relative; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary::before { content: ''; position: absolute; inset: 0; background: var(--gradient-cta); opacity: 0; transition: opacity 0.3s; }
+  .btn-primary:hover::before { opacity: 1; }
+  .btn-primary:hover { color: var(--white); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(107,127,255,0.35); }
+  .btn-primary span { position: relative; z-index: 1; }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 6px; padding: 14px 24px;
+    border-radius: 999px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+    text-decoration: none; cursor: pointer; border: 1px solid rgba(255,255,255,0.15);
+    background: transparent; color: rgba(255,255,255,0.7); transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.35); color: var(--white); }
+
+  .hero-scroll {
+    position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    animation: fadeUp 0.7s 0.6s ease both;
+  }
+  .scroll-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+  .scroll-line { width: 1px; height: 36px; background: linear-gradient(to bottom, var(--muted), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+
+  .progress-section {
+    background: var(--black-2); border-top: 1px solid var(--border-dark); border-bottom: 1px solid var(--border-dark);
+    padding: 24px 40px; display: flex; align-items: center; gap: 24px; transition: background 0.4s, border-color 0.4s;
+  }
+  .progress-label { font-size: 12px; font-weight: 600; color: var(--muted); white-space: nowrap; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s; }
+  .progress-track { flex: 1; height: 2px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; transition: background 0.4s; }
+  .progress-fill { height: 100%; width: 0%; background: var(--gradient-accent); border-radius: 999px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+  .progress-steps { display: flex; gap: 6px; }
+  .step-dot { width: 28px; height: 28px; border-radius: 999px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; transition: all 0.3s; }
+  .step-dot.completed { background: var(--gradient-accent); color: var(--white); }
+  .step-dot.inactive { background: rgba(255,255,255,0.06); color: var(--muted); transition: background 0.4s, color 0.4s; }
+  .step-dot span { display: block; }
+
+  .modules-section { background: var(--black); padding: 80px 40px; max-width: 900px; margin: 0 auto; transition: background 0.4s; }
+  .section-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent-light); margin-bottom: 12px; }
+  .section-title { font-size: clamp(28px, 3vw, 40px); letter-spacing: -1px; margin-bottom: 8px; color: var(--white); }
+  .section-sub { font-size: 16px; color: var(--muted); margin-bottom: 56px; line-height: 1.6; }
+  .modules-grid { display: flex; flex-direction: column; gap: 2px; }
+
+  .module-card {
+    background: var(--black-2); border: 1px solid var(--border-dark); border-radius: 20px;
+    padding: 28px 32px; display: flex; flex-direction: row; gap: 20px; align-items: flex-start;
+    cursor: pointer; transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s, background 0.4s;
+    position: relative; overflow: hidden; margin-bottom: 12px;
+  }
+  .module-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(91,106,240,0.04), transparent); opacity: 0; transition: opacity 0.3s; }
+  .module-card:hover { border-color: rgba(107,127,255,0.4); transform: translateY(-2px); box-shadow: 0 16px 48px rgba(0,0,0,0.3); }
+  .module-card:hover::before { opacity: 1; }
+  .module-card.active { border-color: rgba(107,127,255,0.5); }
+  .module-card.active::before { opacity: 1; }
+
+  .module-num-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; padding-top: 2px; }
+  .module-num {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: rgba(107,127,255,0.12); border: 1px solid rgba(107,127,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 600; color: var(--accent-light);
+    transition: background 0.3s, color 0.3s; flex-shrink: 0;
+  }
+  .module-card.completed .module-num { background: var(--gradient-accent); border-color: transparent; color: var(--white); }
+  .module-card.completed .module-num::after { content: '✓'; }
+  .module-connector { width: 1px; flex: 1; min-height: 20px; background: linear-gradient(to bottom, rgba(107,127,255,0.2), transparent); margin-top: 8px; }
+  .module-right { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0; }
+  .module-body { min-width: 0; width: 100%; }
+
+  .module-top-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+  .module-title { font-family: 'Poppins', sans-serif; font-size: 17px; font-weight: 600; color: var(--white); letter-spacing: -0.3px; line-height: 1.3; transition: color 0.3s; }
+  .module-tag { font-size: 10px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; }
+  .tag-start { background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.25); color: #34d399; }
+  .tag-setup { background: rgba(251,191,36,0.1); border: 1px solid rgba(251,191,36,0.25); color: #fbbf24; }
+  .tag-skill { background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.25); color: #a78bfa; }
+  .tag-platform { background: rgba(91,106,240,0.12); border: 1px solid rgba(91,106,240,0.25); color: var(--accent-light); }
+  .tag-resource { background: rgba(244,114,182,0.1); border: 1px solid rgba(244,114,182,0.25); color: #f472b6; }
+
+  .module-desc { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; transition: color 0.3s; }
+  .module-divider { width: 100%; height: 1px; background: rgba(255,255,255,0.06); margin-bottom: 20px; transition: background 0.4s; }
+  .module-meta { display: flex; align-items: center; gap: 16px; font-size: 12px; color: rgba(255,255,255,0.3); transition: color 0.3s; flex-wrap: wrap; }
+  .meta-item { display: flex; align-items: center; gap: 5px; }
+  .meta-icon { font-size: 13px; }
+
+  .module-action { display: flex; flex-direction: row; align-items: center; gap: 12px; padding-top: 16px; flex-shrink: 0; }
+  .btn-watch {
+    display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px;
+    border-radius: 999px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+    text-decoration: none; cursor: pointer; border: 1px solid rgba(107,127,255,0.3);
+    background: rgba(107,127,255,0.08); color: var(--accent-light); transition: all 0.2s; white-space: nowrap;
+  }
+  .btn-watch:hover { background: rgba(107,127,255,0.18); border-color: rgba(107,127,255,0.5); transform: scale(1.02); }
+  .btn-watch .play-icon {
+    width: 18px; height: 18px; border-radius: 50%; background: var(--gradient-accent);
+    display: flex; align-items: center; justify-content: center; font-size: 8px; color: white; flex-shrink: 0;
+  }
+  .module-optional-badge { font-size: 10px; font-weight: 500; color: rgba(255,255,255,0.25); letter-spacing: 0.5px; }
+  [data-theme="light"] .module-optional-badge { color: rgba(0,0,0,0.3); }
+
+  .footer-bar {
+    background: var(--black-2); border-top: 1px solid var(--border-dark); padding: 24px 40px;
+    display: flex; align-items: center; justify-content: space-between; transition: background 0.4s;
+  }
+  .footer-left { display: flex; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+  .footer-right { font-size: 12px; color: rgba(255,255,255,0.2); }
+  [data-theme="light"] .footer-right { color: rgba(0,0,0,0.3); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes scrollPulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+  .module-card { animation: fadeUp 0.5s ease both; }
+  .module-card:nth-child(1) { animation-delay: 0.05s; }
+  .module-card:nth-child(2) { animation-delay: 0.1s; }
+  .module-card:nth-child(3) { animation-delay: 0.15s; }
+  .module-card:nth-child(4) { animation-delay: 0.2s; }
+  .module-card:nth-child(5) { animation-delay: 0.25s; }
+
+  .n8n-form { background: rgba(107,127,255,0.05); border: 1px solid rgba(107,127,255,0.15); border-radius: 14px; padding: 20px; margin: 16px 0; cursor: default; }
+  .n8n-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .n8n-form-row:last-child { margin-bottom: 0; }
+  .n8n-form-group { display: flex; flex-direction: column; gap: 6px; }
+  .n8n-label { font-size: 11px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); }
+  [data-theme="light"] .n8n-label { color: rgba(8,8,8,0.45); }
+  .n8n-input { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 9px 12px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--white); outline: none; transition: border-color 0.2s, background 0.2s; width: 100%; }
+  [data-theme="light"] .n8n-input { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.1); color: var(--black); }
+  .n8n-input::placeholder { color: rgba(255,255,255,0.2); }
+  [data-theme="light"] .n8n-input::placeholder { color: rgba(0,0,0,0.25); }
+  .n8n-input:focus { border-color: rgba(107,127,255,0.5); background: rgba(107,127,255,0.05); }
+  .n8n-pw-wrap { position: relative; }
+  .n8n-eye { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 14px; padding: 0; line-height: 1; opacity: 0.5; transition: opacity 0.2s; }
+  .n8n-eye:hover { opacity: 1; }
+  .n8n-saved { font-size: 11px; color: #34d399; font-weight: 500; opacity: 0; transition: opacity 0.4s; align-self: flex-end; padding-bottom: 2px; }
+  .n8n-saved.visible { opacity: 1; }
+
+  .hype-section { background: var(--black); padding: 100px 40px; text-align: center; position: relative; overflow: hidden; border-top: 1px solid var(--border-dark); }
+  .hype-section::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 600px; height: 600px; background: radial-gradient(ellipse, rgba(91,106,240,0.1) 0%, transparent 65%); pointer-events: none; }
+  .hype-inner { max-width: 560px; margin: 0 auto; position: relative; }
+  .hype-emoji { font-size: 52px; margin-bottom: 28px; display: block; animation: hypeFloat 3s ease-in-out infinite; }
+  @keyframes hypeFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  .hype-section h2 { font-size: clamp(32px, 4vw, 52px); letter-spacing: -1.5px; color: var(--white); margin-bottom: 20px; }
+  .hype-section p { font-size: 16px; color: var(--muted); line-height: 1.75; margin-bottom: 40px; }
+  .hype-signature { display: inline-flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--border-dark); border-radius: 999px; padding: 10px 20px 10px 10px; }
+  .hype-sig-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, rgba(91,106,240,0.4), rgba(167,139,250,0.4)); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .hype-sig-text { display: flex; flex-direction: column; text-align: left; gap: 1px; }
+  .hype-sig-text strong { font-size: 14px; font-weight: 600; color: var(--white); }
+  .hype-sig-text span { font-size: 12px; color: var(--muted); }
+  [data-theme="light"] .hype-section { background: var(--black) !important; }
+
+  .skill-copy-block { background: rgba(107,127,255,0.06); border: 1px solid rgba(107,127,255,0.18); border-radius: 10px; padding: 12px 14px; margin: 14px 0; cursor: default; }
+  [data-theme="light"] .skill-copy-block { background: rgba(91,106,240,0.04); border-color: rgba(91,106,240,0.15); }
+  .skill-copy-label { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  [data-theme="light"] .skill-copy-label { color: rgba(8,8,8,0.4); }
+  .skill-copy-row { display: flex; align-items: center; gap: 10px; }
+  .skill-copy-code { flex: 1; font-family: 'SF Mono', 'Menlo', monospace; font-size: 14px; font-weight: 600; color: var(--accent-light); background: none; border: none; padding: 0; letter-spacing: 0.3px; }
+  [data-theme="light"] .skill-copy-code { color: var(--accent); }
+  .skill-copy-btn { flex-shrink: 0; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; padding: 5px 12px; border-radius: 999px; border: 1px solid rgba(107,127,255,0.3); background: rgba(107,127,255,0.1); color: var(--accent-light); cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .skill-copy-btn:hover { background: rgba(107,127,255,0.2); border-color: rgba(107,127,255,0.5); }
+  .skill-copy-btn.copied { background: rgba(52,211,153,0.12); border-color: rgba(52,211,153,0.3); color: #34d399; }
+  [data-theme="light"] .skill-copy-btn { color: var(--accent); border-color: rgba(91,106,240,0.25); background: rgba(91,106,240,0.06); }
+
+  @media (max-width: 640px) {
+    .nav { padding: 0 20px; } .hero { padding: 100px 20px 60px; } .modules-section { padding: 60px 20px; }
+    .module-card { padding: 24px 20px; flex-wrap: wrap; } .module-action { display: none; }
+    .progress-section { padding: 16px 20px; flex-wrap: wrap; } .progress-steps { display: none; }
+    .theme-toggle { top: 14px; right: 16px; } .hero-cta-row { flex-direction: column; }
+    .n8n-form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-toggle" onclick="toggleTheme()" id="themeToggle" aria-label="Changer de thème">
+  <span class="toggle-icon" id="toggleIcon">☀️</span>
+  <span class="toggle-label" id="toggleLabel">Mode clair</span>
+</button>
+
+<nav class="nav">
+  <a href="#" class="nav-logo">
+    <svg width="28" height="28" viewBox="0 0 659 659" fill="none"><path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" fill="#fff"/></svg>
+    <span class="nav-logo-text">Out of Office</span>
+  </a>
+</nav>
+
+<section class="hero" id="top">
+  <div class="hero-eyebrow">Kit de démarrage</div>
+  <div class="hero-logo">
+    <svg width="64" height="64" viewBox="0 0 659 659" fill="none"><path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" fill="#fff"/></svg>
+  </div>
+  <h1>Bienvenue chez<br><em>Out of Office</em></h1>
+  <p class="hero-sub">Ce kit te guide pas à pas pour démarrer dans les meilleures conditions. <strong>5 modules</strong>, chacun avec une vidéo tuto dédiée. Suis l'ordre, et en 30 minutes tu es opérationnel.</p>
+  <div class="hero-cta-row">
+    <a href="#modules" class="btn-primary"><span>Commencer le parcours →</span></a>
+    <a href="mailto:jules@agenceooo.com" class="btn-ghost">Contacter Jules</a>
+  </div>
+  <div class="hero-scroll"><span class="scroll-label">Défiler</span><div class="scroll-line"></div></div>
+</section>
+
+<div class="progress-section" id="progressBar">
+  <span class="progress-label">Progression</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-steps" id="progressSteps"></div>
+</div>
+
+<section class="modules-section" id="modules">
+  <div class="section-eyebrow">Les 5 modules</div>
+  <h2 class="section-title">Ton parcours <em>d'onboarding</em></h2>
+  <p class="section-sub">Chaque module = une vidéo courte et actionnable. Coche les modules au fur et à mesure.</p>
+
+  <div class="modules-grid" id="modulesGrid">
+
+    <div class="module-card" data-index="0" onclick="toggleComplete(0)">
+      <div class="module-num-wrap"><div class="module-num">1</div><div class="module-connector"></div></div>
+      <div class="module-right">
+        <div class="module-body">
+          <div class="module-top-row"><span class="module-title">Présentation du Portail client OOO</span><span class="module-tag tag-start">À faire en 1er</span></div>
+          <p class="module-desc">Tour complet de ton Portail client OOO : où trouver la roadmap, le suivi des automatisations, les livrables et comment lire le statut de chaque sprint.</p>
+          <div class="module-divider"></div>
+          <div class="module-meta">
+            <span class="meta-item"><span class="meta-icon">🎬</span> Vidéo tutoriel</span>
+            <span class="meta-item"><span class="meta-icon">⏱</span> ~5 min</span>
+          </div>
+        </div>
+        <div class="module-action">
+          <a href="https://www.tella.tv/video/acces-a-votre-portail-client-outofoffice-2ek8" target="_blank" class="btn-watch" onclick="event.stopPropagation()"><span class="play-icon">▶</span><span>Voir la vidéo</span></a>
+          <span class="module-optional-badge">Cliquer pour cocher</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card" data-index="1" onclick="toggleComplete(1)">
+      <div class="module-num-wrap"><div class="module-num">2</div><div class="module-connector"></div></div>
+      <div class="module-right">
+        <div class="module-body">
+          <div class="module-top-row"><span class="module-title">Télécharger Claude et prise en main de l'app</span><span class="module-tag tag-platform">Claude.ai</span></div>
+          <p class="module-desc">Télécharge Claude Desktop, crée ton compte, et fais le tour complet de la plateforme : Projects, mémoire, artifacts, models, Computer Use. Tout ce que tu vas utiliser au quotidien est couvert dans cette vidéo.</p>
+          <div class="module-divider"></div>
+          <div class="module-meta">
+            <span class="meta-item"><span class="meta-icon">🎬</span> Vidéo tutoriel</span>
+            <span class="meta-item"><span class="meta-icon">⏱</span> ~12 min</span>
+            <span class="meta-item"><span class="meta-icon">🔧</span> Claude Desktop</span>
+            <span class="meta-item"><a href="https://claude.ai/download" target="_blank" onclick="event.stopPropagation()" style="color:var(--accent-light);text-decoration:none;font-size:12px;font-weight:600;display:flex;align-items:center;gap:4px;"><span>↓</span> Télécharger Claude</a></span>
+          </div>
+        </div>
+        <div class="module-action">
+          <a href="https://www.tella.tv/video/installation-et-prise-en-main-de-cloud-9qs7" target="_blank" class="btn-watch" onclick="event.stopPropagation()"><span class="play-icon">▶</span><span>Voir la vidéo</span></a>
+          <span class="module-optional-badge">Cliquer pour cocher</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card" data-index="2" onclick="toggleComplete(2)">
+      <div class="module-num-wrap"><div class="module-num">3</div><div class="module-connector"></div></div>
+      <div class="module-right">
+        <div class="module-body">
+          <div class="module-top-row"><span class="module-title">Accès à ton n8n + set-up du MCP</span><span class="module-tag tag-setup">Set-up requis</span></div>
+          <p class="module-desc">Ton instance n8n est prête. Enregistre tes accès ci-dessous, puis suis la vidéo pour te connecter, naviguer dans tes workflows et connecter le MCP n8n à Claude Desktop.</p>
+          <div class="n8n-form" onclick="event.stopPropagation()">
+            <div class="n8n-form-row">
+              <div class="n8n-form-group"><label class="n8n-label">URL n8n</label><input class="n8n-input" type="url" placeholder="https://ton-instance.n8n.cloud" id="n8n-url" oninput="saveN8n()"></div>
+              <div class="n8n-form-group"><label class="n8n-label">Email</label><input class="n8n-input" type="email" placeholder="ton@email.com" id="n8n-email" oninput="saveN8n()"></div>
+            </div>
+            <div class="n8n-form-row">
+              <div class="n8n-form-group"><label class="n8n-label">Mot de passe</label><div class="n8n-pw-wrap"><input class="n8n-input" type="password" placeholder="••••••••••" id="n8n-password" oninput="saveN8n()"><button class="n8n-eye" onclick="togglePw()" type="button">👁</button></div></div>
+              <div class="n8n-form-group" style="display:flex;align-items:flex-end;"><span class="n8n-saved" id="n8n-saved">Sauvegardé localement ✓</span></div>
+            </div>
+          </div>
+          <div class="module-divider"></div>
+          <div class="module-meta">
+            <span class="meta-item"><span class="meta-icon">🎬</span> Vidéo tutoriel</span>
+            <span class="meta-item"><span class="meta-icon">⏱</span> ~5 min</span>
+            <span class="meta-item"><span class="meta-icon">🔧</span> n8n + MCP</span>
+          </div>
+        </div>
+        <div class="module-action">
+          <a href="https://www.tella.tv/video/connecter-n8n-a-cloud-guide-de-configuration-75zs" target="_blank" class="btn-watch" onclick="event.stopPropagation()"><span class="play-icon">▶</span><span>Voir la vidéo</span></a>
+          <span class="module-optional-badge">Cliquer pour cocher</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card" data-index="3" onclick="toggleComplete(3)">
+      <div class="module-num-wrap"><div class="module-num">4</div><div class="module-connector"></div></div>
+      <div class="module-right">
+        <div class="module-body">
+          <div class="module-top-row"><span class="module-title">Télécharger tes skills OOO et les mettre à jour</span><span class="module-tag tag-skill">Skills Claude</span></div>
+          <p class="module-desc">Lance la commande ci-dessous dans Claude pour récupérer tous tes skills OOO depuis GitHub et les installer en un coup.</p>
+          <div class="skill-copy-block" onclick="event.stopPropagation()">
+            <div class="skill-copy-label">Commande à coller dans Claude</div>
+            <div class="skill-copy-row"><code class="skill-copy-code" id="skill-cmd-4">/ooo-updateskills</code><button class="skill-copy-btn" onclick="copySkill('skill-cmd-4', this)">Copier</button></div>
+          </div>
+          <div class="module-divider"></div>
+          <div class="module-meta">
+            <span class="meta-item"><span class="meta-icon">🎬</span> Vidéo tutoriel</span>
+            <span class="meta-item"><span class="meta-icon">⏱</span> ~5 min</span>
+            <span class="meta-item"><span class="meta-icon">🔧</span> Claude Skills</span>
+          </div>
+        </div>
+        <div class="module-action">
+          <a href="https://www.tella.tv/video/configurer-votre-premier-skill-cloud-fet2" target="_blank" class="btn-watch" onclick="event.stopPropagation()"><span class="play-icon">▶</span><span>Voir la vidéo</span></a>
+          <span class="module-optional-badge">Cliquer pour cocher</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="module-card" data-index="4" onclick="toggleComplete(4)">
+      <div class="module-num-wrap"><div class="module-num">5</div></div>
+      <div class="module-right">
+        <div class="module-body">
+          <div class="module-top-row"><span class="module-title">Design system, templates et publier sur Netlify</span><span class="module-tag tag-resource">Ressources</span></div>
+          <p class="module-desc">Charge ton design system, accède aux templates qu'on va construire ensemble, et publie n'importe quelle page HTML en quelques secondes avec une URL partageable directement depuis Claude.</p>
+          <div class="skill-copy-block" onclick="event.stopPropagation()">
+            <div class="skill-copy-label">Design system</div>
+            <div class="skill-copy-row"><code class="skill-copy-code" id="skill-cmd-5a">/ooo-design</code><button class="skill-copy-btn" onclick="copySkill('skill-cmd-5a', this)">Copier</button></div>
+          </div>
+          <div class="skill-copy-block" onclick="event.stopPropagation()" style="margin-top:8px;">
+            <div class="skill-copy-label">Templates HTML</div>
+            <div class="skill-copy-row"><code class="skill-copy-code" id="skill-cmd-5b">/ooo-html-templates</code><button class="skill-copy-btn" onclick="copySkill('skill-cmd-5b', this)">Copier</button></div>
+          </div>
+          <div class="skill-copy-block" onclick="event.stopPropagation()" style="margin-top:8px;">
+            <div class="skill-copy-label">Publier sur Netlify</div>
+            <div class="skill-copy-row"><code class="skill-copy-code" id="skill-cmd-5c">/ooo-netlify</code><button class="skill-copy-btn" onclick="copySkill('skill-cmd-5c', this)">Copier</button></div>
+          </div>
+          <div class="module-divider"></div>
+          <div class="module-meta">
+            <span class="meta-item"><span class="meta-icon">🎬</span> Vidéo tutoriel</span>
+            <span class="meta-item"><span class="meta-icon">⏱</span> ~5 min</span>
+            <span class="meta-item"><span class="meta-icon">🔧</span> Design + Netlify</span>
+          </div>
+        </div>
+        <div class="module-action">
+          <a href="https://www.tella.tv/video/maitriser-les-skills-essentiels-pour-vos-projets-bvfk" target="_blank" class="btn-watch" onclick="event.stopPropagation()"><span class="play-icon">▶</span><span>Voir la vidéo</span></a>
+          <span class="module-optional-badge">Cliquer pour cocher</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="hype-section">
+  <div class="hype-inner">
+    <div class="hype-emoji">🌴</div>
+    <h2>Trop content de bosser<br>avec <em>toi</em></h2>
+    <p>C'est parti. T'as tout ce qu'il faut pour démarrer. On construit quelque chose de solide ensemble, et on va s'amuser en chemin. On est dispo sur Slack dès que t'as une question.</p>
+    <div class="hype-signature">
+      <div class="hype-sig-avatar"><svg width="32" height="32" viewBox="0 0 659 659" fill="none"><path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" fill="#fff"/></svg></div>
+      <div class="hype-sig-text"><strong>Jules</strong><span>Fondateur, Out of Office</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="footer-bar">
+  <div class="footer-left"><svg width="20" height="20" viewBox="0 0 659 659" fill="none"><path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" fill="#fff"/></svg><span>Out of Office — Welcome Kit v1.0</span></div>
+  <span class="footer-right">Fait avec Claude, of course ;)</span>
+</div>
+
+<script>
+  const TOTAL = 5;
+  let completed = new Set();
+
+  function copySkill(id, btn) {
+    const text = document.getElementById(id).textContent.trim();
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(() => flashCopied(btn)).catch(() => fallbackCopy(text, btn));
+    } else { fallbackCopy(text, btn); }
+  }
+  function fallbackCopy(text, btn) {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy'); flashCopied(btn); } catch(e) { btn.textContent = 'Erreur'; }
+    document.body.removeChild(ta);
+  }
+  function flashCopied(btn) {
+    btn.textContent = 'Copié ✓'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copier'; btn.classList.remove('copied'); }, 2000);
+  }
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    document.getElementById('toggleIcon').textContent = isDark ? '🌙' : '☀️';
+    document.getElementById('toggleLabel').textContent = isDark ? 'Mode sombre' : 'Mode clair';
+  }
+  function togglePw() {
+    const pw = document.getElementById('n8n-password');
+    pw.type = pw.type === 'password' ? 'text' : 'password';
+  }
+  let saveTimer;
+  function saveN8n() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      const saved = document.getElementById('n8n-saved');
+      saved.classList.add('visible');
+      setTimeout(() => saved.classList.remove('visible'), 2500);
+    }, 600);
+  }
+  function toggleComplete(index) {
+    if (completed.has(index)) { completed.delete(index); } else { completed.add(index); }
+    updateUI();
+  }
+  function updateUI() {
+    document.querySelectorAll('.module-card').forEach((card, i) => {
+      card.classList.toggle('completed', completed.has(i));
+    });
+    const pct = Math.round((completed.size / TOTAL) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    const stepsContainer = document.getElementById('progressSteps');
+    stepsContainer.innerHTML = '';
+    for (let i = 0; i < TOTAL; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'step-dot ' + (completed.has(i) ? 'completed' : 'inactive');
+      dot.innerHTML = completed.has(i) ? '<span>✓</span>' : '<span>' + (i+1) + '</span>';
+      stepsContainer.appendChild(dot);
+    }
+  }
+  updateUI();
+</script>
+</body>
+</html>
