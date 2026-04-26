@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding AI Builder — Partie 2 : Comment on bosse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#080808; --black-2:#111111;
+    --white:#ffffff; --off-white:#f5f4f0;
+    --muted:#888884; --muted-2:#555552;
+    --accent:#5b6af0; --accent-light:rgba(91,106,240,0.1);
+    --border-dark:rgba(255,255,255,0.08);
+    --border-light:rgba(0,0,0,0.08);
+    --font-display:'Poppins',sans-serif;
+    --font-body:'DM Sans',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--font-body);background:var(--off-white);color:var(--black);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;line-height:1.15;padding-bottom:0.15em;padding-top:0.05em;overflow:visible;}
+  em{font-style:italic;background:linear-gradient(135deg,#5b6af0,#8b5cf6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-right:0.12em;padding-left:0.02em;display:inline-block;line-height:inherit;}
+
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#6b7fff,#a78bfa);z-index:200;transition:width 0.1s;}
+
+  nav{position:sticky;top:0;z-index:100;padding:14px 48px;display:flex;align-items:center;justify-content:space-between;background:#080808;border-bottom:0.5px solid rgba(255,255,255,0.08);}
+  .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .nav-title{font-family:var(--font-display);font-size:14px;font-weight:600;color:#ffffff;letter-spacing:-0.3px;}
+  .nav-badge{font-size:11px;color:rgba(255,255,255,0.45);border:0.5px solid rgba(255,255,255,0.15);padding:4px 12px;border-radius:999px;letter-spacing:0.3px;}
+
+  .hero{padding:80px 48px 72px;background:#080808;border-bottom:0.5px solid rgba(255,255,255,0.08);}
+  .hero-inner{max-width:960px;margin:0 auto;}
+  .hero-eyebrow{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#7c8dff;margin-bottom:12px;}
+  .hero h1{font-size:clamp(36px,5vw,60px);letter-spacing:-2px;color:#ffffff;margin-bottom:16px;}
+  .hero-sub{font-size:17px;color:rgba(255,255,255,0.5);max-width:540px;line-height:1.7;}
+
+  section{padding:72px 48px;}
+  .section-inner{max-width:960px;margin:0 auto;}
+  .section-eyebrow{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+  .section-title{font-size:clamp(26px,3.5vw,40px);letter-spacing:-1px;color:var(--black);margin-bottom:14px;}
+  .section-sub{font-size:15px;color:var(--muted-2);max-width:560px;line-height:1.7;margin-bottom:48px;}
+  .section-white{background:#fff;border-top:0.5px solid var(--border-light);border-bottom:0.5px solid var(--border-light);}
+  .section-offwhite{background:var(--off-white);}
+
+  .card{background:#fff;border:0.5px solid var(--border-light);border-radius:16px;padding:24px 28px;}
+  .card h3{font-size:15px;letter-spacing:-0.3px;margin-bottom:6px;color:var(--black);}
+  .card p{font-size:13px;color:var(--muted-2);line-height:1.65;}
+  .card-icon{font-size:22px;margin-bottom:12px;display:block;}
+  .card-accent{border-color:rgba(91,106,240,0.25);background:rgba(91,106,240,0.02);}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+
+  .pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;padding:3px 10px;border-radius:999px;}
+  .pill-violet{background:rgba(139,92,246,0.08);border:0.5px solid rgba(139,92,246,0.2);color:#7c3aed;}
+  .pill-blue{background:rgba(59,130,246,0.08);border:0.5px solid rgba(59,130,246,0.2);color:#3b82f6;}
+  .pill-green{background:rgba(34,197,94,0.08);border:0.5px solid rgba(34,197,94,0.2);color:#16a34a;}
+  .pill-amber{background:rgba(245,158,11,0.08);border:0.5px solid rgba(245,158,11,0.2);color:#d97706;}
+
+  .rule-card{background:rgba(91,106,240,0.04);border:0.5px solid rgba(91,106,240,0.2);border-radius:12px;padding:16px 20px;display:flex;align-items:flex-start;gap:12px;}
+  .rule-icon{font-size:16px;flex-shrink:0;margin-top:2px;}
+  .rule-text{font-size:13px;color:var(--muted-2);line-height:1.65;}
+  .rule-text strong{color:var(--black);font-weight:600;}
+
+  /* ---- SPRINT TIMELINE 7J ---- */
+  .timeline-7j{margin-bottom:20px;}
+  .timeline-7j-header{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
+  .day-label{text-align:center;font-size:10px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;color:var(--muted);padding:4px 0;}
+  .timeline-7j-bars{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:16px;}
+  .day-cell{border-radius:8px;padding:10px 8px;min-height:72px;display:flex;flex-direction:column;gap:4px;}
+  .day-cell.brief{background:rgba(91,106,240,0.08);border:0.5px solid rgba(91,106,240,0.2);}
+  .day-cell.build{background:rgba(139,92,246,0.08);border:0.5px solid rgba(139,92,246,0.2);}
+  .day-cell.review{background:rgba(245,158,11,0.08);border:0.5px solid rgba(245,158,11,0.2);}
+  .day-cell.call{background:rgba(34,197,94,0.08);border:0.5px solid rgba(34,197,94,0.2);}
+  .day-cell.kit{background:rgba(16,185,129,0.08);border:0.5px solid rgba(16,185,129,0.2);}
+  .day-cell.empty{background:var(--off-white);border:0.5px solid var(--border-light);}
+  .day-cell-label{font-size:10px;font-weight:600;letter-spacing:0.3px;text-transform:uppercase;}
+  .day-cell.brief .day-cell-label{color:#5b6af0;}
+  .day-cell.build .day-cell-label{color:#7c3aed;}
+  .day-cell.review .day-cell-label{color:#d97706;}
+  .day-cell.call .day-cell-label{color:#16a34a;}
+  .day-cell.kit .day-cell-label{color:#059669;}
+  .day-cell-desc{font-size:11px;color:var(--muted-2);line-height:1.4;}
+  .timeline-legend{display:flex;gap:16px;flex-wrap:wrap;}
+  .legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted-2);}
+  .legend-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+
+  /* ---- CALL CLIENT CARD ---- */
+  .call-card{background:#fff;border:0.5px solid rgba(34,197,94,0.3);border-radius:16px;padding:24px 28px;display:flex;gap:20px;align-items:flex-start;}
+  .call-icon{font-size:28px;flex-shrink:0;}
+  .call-title{font-size:15px;font-family:var(--font-display);font-weight:600;letter-spacing:-0.3px;color:var(--black);margin-bottom:6px;}
+  .call-desc{font-size:13px;color:var(--muted-2);line-height:1.65;}
+  .call-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
+
+  /* ---- ROADMAP ---- */
+  .roadmap-visual{background:#fff;border:0.5px solid var(--border-light);border-radius:16px;overflow:hidden;margin-bottom:12px;}
+  .roadmap-header{padding:14px 20px;background:var(--off-white);border-bottom:0.5px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;}
+  .roadmap-header-title{font-size:13px;font-weight:600;color:var(--black);}
+  .roadmap-rows{padding:4px 0;}
+  .roadmap-row{display:grid;grid-template-columns:140px 1fr;border-bottom:0.5px solid var(--border-light);}
+  .roadmap-row:last-child{border-bottom:none;}
+  .roadmap-label{padding:12px 16px;font-size:12px;color:var(--muted-2);border-right:0.5px solid var(--border-light);display:flex;align-items:center;}
+  .roadmap-bar-area{padding:10px 12px;display:flex;align-items:center;gap:6px;}
+  .rbar{height:24px;border-radius:6px;display:flex;align-items:center;padding:0 10px;font-size:11px;font-weight:500;white-space:nowrap;}
+  .rbar-done{background:rgba(34,197,94,0.12);border:0.5px solid rgba(34,197,94,0.25);color:#16a34a;}
+  .rbar-current{background:rgba(91,106,240,0.12);border:0.5px solid rgba(91,106,240,0.3);color:#5b6af0;}
+  .rbar-next{background:rgba(0,0,0,0.04);border:0.5px dashed rgba(0,0,0,0.15);color:var(--muted);}
+  .rbar-call{background:rgba(34,197,94,0.08);border:0.5px solid rgba(34,197,94,0.2);color:#16a34a;width:28px;padding:0;justify-content:center;font-size:13px;}
+  .roadmap-rule{margin-top:0;}
+
+  /* ---- RÔLES ---- */
+  .role-card{background:#fff;border:0.5px solid var(--border-light);border-radius:16px;padding:28px 32px;}
+  .role-badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:500;padding:4px 12px;border-radius:999px;margin-bottom:14px;}
+  .role-badge-manager{background:rgba(34,197,94,0.08);border:0.5px solid rgba(34,197,94,0.2);color:#16a34a;}
+  .role-badge-builder{background:rgba(91,106,240,0.08);border:0.5px solid rgba(91,106,240,0.2);color:#5b6af0;}
+  .role-title{font-size:20px;font-family:var(--font-display);letter-spacing:-0.5px;margin-bottom:10px;color:var(--black);}
+  .role-list{list-style:none;margin-top:10px;}
+  .role-list li{font-size:13px;color:var(--muted-2);padding:6px 0;border-bottom:0.5px solid var(--border-light);display:flex;align-items:flex-start;gap:8px;line-height:1.5;}
+  .role-list li:last-child{border-bottom:none;}
+  .role-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px;}
+
+  /* ---- POD ---- */
+  .pod-visual{background:#fff;border:0.5px solid var(--border-light);border-radius:16px;padding:32px;margin-bottom:12px;}
+  .pod-title{font-size:13px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;}
+  .pod-structure{display:flex;align-items:flex-start;gap:0;}
+  .pod-manager-col{display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0;}
+  .pod-node{border-radius:12px;padding:14px 18px;text-align:center;min-width:110px;}
+  .pod-node-manager{background:rgba(34,197,94,0.08);border:0.5px solid rgba(34,197,94,0.25);}
+  .pod-node-builder{background:rgba(91,106,240,0.06);border:0.5px solid rgba(91,106,240,0.2);}
+  .pod-node-client{background:var(--off-white);border:0.5px solid var(--border-light);}
+  .pod-node-label{font-size:10px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:3px;}
+  .pod-node-label.green{color:#16a34a;}
+  .pod-node-label.violet{color:#7c3aed;}
+  .pod-node-label.gray{color:var(--muted);}
+  .pod-node-name{font-size:13px;font-weight:600;color:var(--black);}
+  .pod-connector-v{width:0.5px;background:rgba(91,106,240,0.3);height:20px;margin:0 auto;}
+  .pod-connector-h{display:flex;align-items:center;padding:0 8px;color:rgba(91,106,240,0.4);font-size:18px;align-self:center;}
+  .pod-right{display:flex;gap:16px;align-items:flex-start;padding-left:4px;}
+  .pod-builders-col{display:flex;flex-direction:column;gap:8px;}
+  .pod-clients-col{display:flex;flex-direction:column;gap:8px;margin-left:8px;}
+  .pod-bracket{display:flex;align-items:center;padding:0 4px;align-self:center;}
+  .pod-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;}
+  .pod-stat{background:var(--off-white);border-radius:10px;padding:14px 16px;}
+  .pod-stat-value{font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-0.5px;background:linear-gradient(135deg,#5b6af0,#8b5cf6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .pod-stat-label{font-size:12px;color:var(--muted-2);margin-top:2px;}
+
+  /* ---- STACK TABLE ---- */
+  .tool-table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;border:0.5px solid var(--border-light);}
+  .tool-table th{text-align:left;padding:12px 16px;font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:0.5px solid var(--border-light);background:var(--off-white);}
+  .tool-table td{padding:14px 16px;font-size:13px;border-bottom:0.5px solid var(--border-light);color:var(--black);vertical-align:top;}
+  .tool-table tr:last-child td{border-bottom:none;}
+  .tool-table td:nth-child(2){color:var(--muted-2);}
+  .tool-name{font-weight:600;}
+
+  /* ---- NOTION ---- */
+  .notion-table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;border:0.5px solid var(--border-light);margin-bottom:12px;}
+  .notion-table th{text-align:left;padding:12px 16px;font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:0.5px solid var(--border-light);background:var(--off-white);}
+  .notion-table td{padding:14px 16px;font-size:13px;border-bottom:0.5px solid var(--border-light);vertical-align:top;}
+  .notion-table tr:last-child td{border-bottom:none;}
+  .notion-table td:first-child{font-weight:600;color:var(--black);white-space:nowrap;}
+  .notion-table td:nth-child(2){color:var(--muted-2);}
+  .notion-note{background:rgba(91,106,240,0.03);border:0.5px solid rgba(91,106,240,0.15);border-radius:12px;padding:14px 18px;font-size:13px;color:var(--muted-2);line-height:1.65;}
+  .notion-note strong{color:var(--black);}
+
+  .sep{height:0.5px;background:var(--border-light);margin:0;}
+
+  .footer-nav{padding:32px 48px;display:flex;align-items:center;justify-content:space-between;border-top:0.5px solid rgba(255,255,255,0.08);background:#080808;}
+  .footer-label{font-size:13px;color:rgba(255,255,255,0.4);}
+  .footer-links{display:flex;align-items:center;gap:12px;}
+  .btn-prev{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;background:transparent;border:0.5px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-family:var(--font-body);font-size:13px;font-weight:500;text-decoration:none;transition:opacity 0.2s;}
+  .btn-next{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:999px;background:#ffffff;color:#080808;font-family:var(--font-body);font-size:13px;font-weight:600;text-decoration:none;transition:opacity 0.2s;}
+
+  @media(max-width:768px){
+    nav,section,.hero,.footer-nav{padding-left:20px;padding-right:20px;}
+    .grid-2,.grid-3{grid-template-columns:1fr;}
+    .timeline-7j-header,.timeline-7j-bars{grid-template-columns:repeat(4,1fr);}
+    .footer-nav{flex-direction:column;gap:16px;}
+    .pod-structure{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <svg width="22" height="22" viewBox="0 0 659 659" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" fill="#ffffff"/>
+    </svg>
+    <span class="nav-title">Out of Office</span>
+  </a>
+  <span class="nav-badge">Onboarding AI Builder · Partie 2 / 4</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Comment on bosse</div>
+    <h1>Partie 2 : Le <em>système</em><br>de production OOO</h1>
+    <p class="hero-sub">Les sprints, les rôles, les pods, les outils, le Notion. Tout ce que tu dois comprendre avant de toucher à ton premier projet.</p>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- LE SPRINT -->
+<section class="section-white">
+  <div class="section-inner">
+    <p class="section-eyebrow">01 — Le sprint</p>
+    <h2 class="section-title">1 sprint = 1 livraison.<br>Sur <em>7 jours</em>.</h2>
+    <p class="section-sub">Chaque sprint dure une semaine. Il produit un kit de livraison concret pour le client, et se termine toujours par un call de présentation.</p>
+
+    <!-- TIMELINE 7 JOURS -->
+    <div class="timeline-7j">
+      <div class="timeline-7j-header">
+        <div class="day-label">Lundi</div>
+        <div class="day-label">Mardi</div>
+        <div class="day-label">Mercredi</div>
+        <div class="day-label">Jeudi</div>
+        <div class="day-label">Vendredi</div>
+        <div class="day-label">Samedi</div>
+        <div class="day-label">Dimanche</div>
+      </div>
+      <div class="timeline-7j-bars">
+        <div class="day-cell call">
+          <div class="day-cell-label">Call + Brief</div>
+          <div class="day-cell-desc">Call de lancement avec le client. Puis brief du Builder par le Manager.</div>
+        </div>
+        <div class="day-cell build">
+          <div class="day-cell-label">Build</div>
+          <div class="day-cell-desc">Builder construit les automatisations.</div>
+        </div>
+        <div class="day-cell build">
+          <div class="day-cell-label">Build</div>
+          <div class="day-cell-desc">Suite du build. ~2J de temps homme total.</div>
+        </div>
+        <div class="day-cell review">
+          <div class="day-cell-label">Review</div>
+          <div class="day-cell-desc">Manager teste et valide. Ajustements si besoin.</div>
+        </div>
+        <div class="day-cell kit">
+          <div class="day-cell-label">Kit livraison</div>
+          <div class="day-cell-desc">Livraison packagée au client.</div>
+        </div>
+        <div class="day-cell empty"></div>
+        <div class="day-cell empty"></div>
+      </div>
+      <div class="timeline-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(34,197,94,0.4);"></div>Call + Brief</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(139,92,246,0.4);"></div>Build</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(245,158,11,0.4);"></div>Review</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(16,185,129,0.4);"></div>Kit livraison</div>
+      </div>
+    </div>
+
+    <!-- CALL CLIENT -->
+    <div class="call-card" style="margin:20px 0 12px;">
+      <div class="call-icon">📞</div>
+      <div>
+        <div class="call-title">Le call client — chaque fin de sprint</div>
+        <div class="call-desc">À la fin de chaque sprint, on présente le kit au client en call. C'est le moment où on montre ce qui a été construit, on valide que ça répond au besoin, et on brief le sprint suivant. Le Manager anime le call, le Builder peut être présent pour répondre aux questions techniques.</div>
+        <div class="call-chips">
+          <span class="pill pill-green">Présenter les livrables</span>
+          <span class="pill pill-green">Valider avec le client</span>
+          <span class="pill pill-green">Briefer le sprint suivant</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">📅</div>
+      <div class="rule-text"><strong>Règle absolue :</strong> la roadmap client est toujours en avance d'au moins 2 semaines. Si le prochain sprint n'est pas brief, tu le signales immédiatement. On n'attend jamais la dernière minute.</div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- LA ROADMAP -->
+<section class="section-offwhite">
+  <div class="section-inner">
+    <p class="section-eyebrow">02 — La roadmap</p>
+    <h2 class="section-title">La roadmap, c'est<br>la <em>loi</em>.</h2>
+    <p class="section-sub">Chaque client a une roadmap dans Notion. Elle liste tous les sprints passés, en cours, et futurs. C'est la référence absolue de ce qu'on fait et de ce qu'on a dit.</p>
+
+    <!-- VISUEL ROADMAP -->
+    <div class="roadmap-visual">
+      <div class="roadmap-header">
+        <div class="roadmap-header-title">Roadmap client — exemple</div>
+        <span class="pill pill-blue">Notion</span>
+      </div>
+      <div class="roadmap-rows">
+        <div class="roadmap-row">
+          <div class="roadmap-label">Sprint 1</div>
+          <div class="roadmap-bar-area">
+            <div class="rbar rbar-done">Onboarding Slack + Notion</div>
+            <div class="rbar rbar-call">📞</div>
+          </div>
+        </div>
+        <div class="roadmap-row">
+          <div class="roadmap-label">Sprint 2</div>
+          <div class="roadmap-bar-area">
+            <div class="rbar rbar-done">Flow contrat DocuSeal</div>
+            <div class="rbar rbar-call">📞</div>
+          </div>
+        </div>
+        <div class="roadmap-row">
+          <div class="roadmap-label">Sprint 3 — actuel</div>
+          <div class="roadmap-bar-area">
+            <div class="rbar rbar-current">Reporting automatique</div>
+          </div>
+        </div>
+        <div class="roadmap-row">
+          <div class="roadmap-label">Sprint 4 — planifié</div>
+          <div class="roadmap-bar-area">
+            <div class="rbar rbar-next">Agent relances clients</div>
+          </div>
+        </div>
+        <div class="roadmap-row">
+          <div class="roadmap-label">Sprint 5 — planifié</div>
+          <div class="roadmap-bar-area">
+            <div class="rbar rbar-next">Dashboard Notion custom</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-bottom:12px;">
+      <div class="card">
+        <span class="card-icon">✅</span>
+        <h3>Toujours 2 semaines d'avance</h3>
+        <p>Les sprints 4 et 5 sont déjà planifiés alors qu'on est au sprint 3. C'est la règle. Si la roadmap est vide après le sprint en cours, c'est un problème.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🔒</span>
+        <h3>Ce qui est dans la roadmap existe</h3>
+        <p>Si une demande client n'est pas dans la roadmap, elle n'est pas engagée. Chaque nouvelle demande passe d'abord par le Manager avant d'être ajoutée.</p>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">⚠️</div>
+      <div class="rule-text"><strong>Anticipe les goulets :</strong> si tu vois qu'un sprint va prendre plus de temps que prévu, tu le dis le plus tôt possible. Pas le vendredi à 17h. Le lundi matin quand tu vois le scope.</div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- LES RÔLES + LE POD -->
+<section class="section-white">
+  <div class="section-inner">
+    <p class="section-eyebrow">03 — Les rôles et le pod</p>
+    <h2 class="section-title">Deux rôles.<br>Un <em>pod</em>.</h2>
+    <p class="section-sub">On est organisés en pods de production. Chaque pod est une unité autonome avec un Manager et plusieurs Builders qui gèrent un portefeuille de clients.</p>
+
+    <!-- RÔLES -->
+    <div class="grid-2" style="margin-bottom:20px;">
+      <div class="role-card">
+        <div class="role-badge role-badge-manager">Manager</div>
+        <div class="role-title">Le facing client</div>
+        <p style="font-size:13px;color:var(--muted-2);line-height:1.65;margin-bottom:14px;">Point de contact principal avec le client. Il s'assure que tout avance et que les attentes sont alignées.</p>
+        <ul class="role-list">
+          <li><div class="role-dot"></div>Anime les calls clients chaque fin de sprint</li>
+          <li><div class="role-dot"></div>Brief et suit les Builders au quotidien</li>
+          <li><div class="role-dot"></div>Review et valide les livrables avant envoi</li>
+          <li><div class="role-dot"></div>Tient et anticipe la roadmap client</li>
+          <li><div class="role-dot"></div>Remonte et résout les blocages</li>
+        </ul>
+      </div>
+      <div class="role-card">
+        <div class="role-badge role-badge-builder">AI Builder</div>
+        <div class="role-title">Le moteur de prod</div>
+        <p style="font-size:13px;color:var(--muted-2);line-height:1.65;margin-bottom:14px;">Il construit. Autonome sur l'exécution, rigoureux sur la qualité, proactif sur les blocages.</p>
+        <ul class="role-list">
+          <li><div class="role-dot"></div>Build les automatisations et agents IA</li>
+          <li><div class="role-dot"></div>Crée les skills Claude et les flows n8n</li>
+          <li><div class="role-dot"></div>Structure les portails Notion clients</li>
+          <li><div class="role-dot"></div>Documente ce qu'il livre (SOPs, README)</li>
+          <li><div class="role-dot"></div>Signale les blocages sans attendre</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- LE POD -->
+    <div class="pod-visual">
+      <div class="pod-title">Structure d'un pod OOO</div>
+      <div class="pod-structure">
+        <!-- MANAGER -->
+        <div class="pod-manager-col">
+          <div class="pod-node pod-node-manager">
+            <div class="pod-node-label green">Manager</div>
+            <div class="pod-node-name">1 Manager</div>
+          </div>
+        </div>
+
+        <!-- FLÈCHE -->
+        <div style="display:flex;align-items:center;padding:0 12px;color:rgba(91,106,240,0.35);font-size:20px;align-self:center;">→</div>
+
+        <!-- BUILDERS -->
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="pod-node pod-node-builder" style="min-width:120px;">
+            <div class="pod-node-label violet">Builder</div>
+            <div class="pod-node-name">Builder 1</div>
+          </div>
+          <div class="pod-node pod-node-builder">
+            <div class="pod-node-label violet">Builder</div>
+            <div class="pod-node-name">Builder 2</div>
+          </div>
+          <div class="pod-node pod-node-builder" style="opacity:0.5;border-style:dashed;">
+            <div class="pod-node-label violet">Builder</div>
+            <div class="pod-node-name">+ jusqu'à 5</div>
+          </div>
+        </div>
+
+        <!-- FLÈCHE -->
+        <div style="display:flex;align-items:center;padding:0 12px;color:rgba(91,106,240,0.35);font-size:20px;align-self:center;">→</div>
+
+        <!-- CLIENTS -->
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div class="pod-node pod-node-client" style="min-width:110px;">
+            <div class="pod-node-label gray">Client</div>
+            <div class="pod-node-name">Client A</div>
+          </div>
+          <div class="pod-node pod-node-client">
+            <div class="pod-node-label gray">Client</div>
+            <div class="pod-node-name">Client B</div>
+          </div>
+          <div class="pod-node pod-node-client">
+            <div class="pod-node-label gray">Client</div>
+            <div class="pod-node-name">Client C</div>
+          </div>
+          <div class="pod-node pod-node-client" style="opacity:0.5;border-style:dashed;">
+            <div class="pod-node-label gray">Client</div>
+            <div class="pod-node-name">+ jusqu'à 10</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pod-stats">
+        <div class="pod-stat">
+          <div class="pod-stat-value">1 + 1→5</div>
+          <div class="pod-stat-label">1 Manager + 1 à 5 Builders par pod</div>
+        </div>
+        <div class="pod-stat">
+          <div class="pod-stat-value">3 → 10</div>
+          <div class="pod-stat-label">Clients gérés par pod simultanément</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">💬</div>
+      <div class="rule-text"><strong>Règle de com :</strong> si tu bloques depuis plus de 30 minutes sur quelque chose, tu le dis. On ne reste pas seul face à un mur. Ce n'est pas un aveu de faiblesse, c'est de l'efficacité.</div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- LA STACK -->
+<section class="section-offwhite">
+  <div class="section-inner">
+    <p class="section-eyebrow">04 — La stack</p>
+    <h2 class="section-title">Les outils.<br>Leur <em>rôle exact</em>.</h2>
+    <p class="section-sub">On utilise peu d'outils, mais on les maîtrise à fond. Chacun a un rôle précis — on ne les mélange pas.</p>
+
+    <table class="tool-table" style="margin-bottom:12px;">
+      <thead>
+        <tr><th>Outil</th><th>Rôle chez OOO</th><th>Type</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="tool-name">Claude</span></td><td>Le cerveau. Il comprend, rédige, analyse, décide. On lui donne des instructions précises via des skills.</td><td><span class="pill pill-violet">Delivery</span></td></tr>
+        <tr><td><span class="tool-name">n8n</span></td><td>Le chef d'orchestre. Il connecte les apps, déclenche les actions, gère les flows automatisés.</td><td><span class="pill pill-violet">Delivery</span></td></tr>
+        <tr><td><span class="tool-name">Notion</span></td><td>La mémoire opérationnelle. Roadmaps, suivi de prod, SOPs, Learning Hub.</td><td><span class="pill pill-violet">Delivery</span></td></tr>
+        <tr><td><span class="tool-name">Lovable</span></td><td>Les interfaces clients. Portails de livraison, apps web, dashboards accessibles par le client.</td><td><span class="pill pill-violet">Delivery</span></td></tr>
+        <tr><td><span class="tool-name">GitHub</span></td><td>Le versioning. Skills, templates HTML, code — tout ce qui doit être versionné passe par là.</td><td><span class="pill pill-violet">Delivery</span></td></tr>
+        <tr><td><span class="tool-name">Slack</span></td><td>La communication interne et les notifications automatisées en temps réel.</td><td><span class="pill pill-blue">Interne</span></td></tr>
+        <tr><td><span class="tool-name">Fathom</span></td><td>Enregistre et résume les calls. Les résumés sont poussés automatiquement dans Notion.</td><td><span class="pill pill-blue">Interne</span></td></tr>
+        <tr><td><span class="tool-name">Whimsical</span></td><td>Wireframes et schémas de flows. On dessine avant de builder.</td><td><span class="pill pill-blue">Interne</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="rule-card">
+      <div class="rule-icon">⚡</div>
+      <div class="rule-text"><strong>La règle des outils :</strong> avant de chercher un nouvel outil, demande-toi si Claude, n8n ou Notion peut faire le job. Dans 80% des cas, la réponse est oui.</div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- LE NOTION OOO -->
+<section class="section-white">
+  <div class="section-inner">
+    <p class="section-eyebrow">05 — Le Notion OOO</p>
+    <h2 class="section-title">Notre quartier<br>général <em>opérationnel</em>.</h2>
+    <p class="section-sub">Notion est l'endroit où tout est organisé, tracé et documenté. Tu travailleras dedans tous les jours. Voilà ce qu'il y a dedans et à quoi ça sert.</p>
+
+    <table class="notion-table">
+      <thead>
+        <tr><th>Section</th><th>Ce qu'on y trouve</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>☑️ To-do</td>
+          <td>Les tâches du moment pour chaque membre de l'équipe. Ce que tu as à faire aujourd'hui, cette semaine.</td>
+        </tr>
+        <tr>
+          <td>⚙️ Suivi automatisations</td>
+          <td>La liste de toutes les automatisations buildées, leur statut (en cours, live, en maintenance), le client associé.</td>
+        </tr>
+        <tr>
+          <td>🗺️ Roadmaps clients</td>
+          <td>Les sprints passés, en cours et planifiés pour chaque client. La référence absolue. Si c'est pas là, ça n'existe pas.</td>
+        </tr>
+        <tr>
+          <td>📦 Suivi kits livrables</td>
+          <td>Les kits de livraison produits à chaque sprint. Ce qui a été envoyé, validé, archivé.</td>
+        </tr>
+        <tr>
+          <td>🧠 Learning Hub</td>
+          <td>Tous les skills Claude, les SOPs, les tutos internes. Avant de demander comment faire quelque chose, cherche ici d'abord.</td>
+        </tr>
+        <tr>
+          <td>🎙️ Transcripts calls</td>
+          <td>Les résumés Fathom de tous les calls clients et internes, poussés automatiquement après chaque call.</td>
+        </tr>
+        <tr>
+          <td>📁 Autres</td>
+          <td>Admin, contacts clients, contrats, ressources diverses. Tout ce qui ne rentre pas dans les catégories ci-dessus.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="notion-note">
+      <strong>Attention :</strong> les portails clients ne sont pas dans Notion. Ils sont sur <strong>Lovable</strong> — c'est l'interface que le client voit. Notion c'est notre outil interne, Lovable c'est ce qu'on livre au client.
+    </div>
+  </div>
+</section>
+
+<div class="footer-nav">
+  <span class="footer-label">Partie 2 — Comment on bosse</span>
+  <div class="footer-links">
+    <a href="#" class="btn-prev">← Partie 1</a>
+    <a href="#" class="btn-next">Partie 3 : L'automatisation →</a>
+  </div>
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  const p = total > 0 ? (window.scrollY / total) * 100 : 0;
+  document.getElementById('progress').style.width = p + '%';
+});
+</script>
+</body>
+</html>

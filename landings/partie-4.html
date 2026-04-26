@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding AI Builder — Partie 4 : Les formations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#080808;--white:#ffffff;--off-white:#f5f4f0;
+    --muted:#888884;--muted-2:#555552;
+    --accent:#5b6af0;
+    --border-dark:rgba(255,255,255,0.08);
+    --border-light:rgba(0,0,0,0.08);
+    --font-display:'Poppins',sans-serif;
+    --font-body:'DM Sans',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--font-body);background:var(--off-white);color:var(--black);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;line-height:1.15;padding-bottom:0.15em;padding-top:0.05em;overflow:visible;}
+  em{font-style:italic;background:linear-gradient(135deg,#5b6af0,#8b5cf6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-right:0.12em;padding-left:0.02em;display:inline-block;line-height:inherit;}
+
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#6b7fff,#a78bfa);z-index:200;transition:width 0.1s;}
+
+  nav{position:sticky;top:0;z-index:100;padding:14px 48px;display:flex;align-items:center;justify-content:space-between;background:#080808;border-bottom:0.5px solid rgba(255,255,255,0.08);}
+  .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .nav-title{font-family:var(--font-display);font-size:14px;font-weight:600;color:#ffffff;letter-spacing:-0.3px;}
+  .nav-badge{font-size:11px;color:rgba(255,255,255,0.45);border:0.5px solid rgba(255,255,255,0.15);padding:4px 12px;border-radius:999px;letter-spacing:0.3px;}
+
+  .hero{padding:80px 48px 72px;background:#080808;border-bottom:0.5px solid rgba(255,255,255,0.08);}
+  .hero-inner{max-width:960px;margin:0 auto;}
+  .hero-eyebrow{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#7c8dff;margin-bottom:12px;}
+  .hero h1{font-size:clamp(36px,5vw,60px);letter-spacing:-2px;color:#ffffff;margin-bottom:16px;}
+  .hero-sub{font-size:17px;color:rgba(255,255,255,0.5);max-width:560px;line-height:1.7;}
+
+  section{padding:72px 48px;}
+  .section-inner{max-width:960px;margin:0 auto;}
+  .section-eyebrow{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+  .section-title{font-size:clamp(26px,3.5vw,40px);letter-spacing:-1px;color:var(--black);margin-bottom:14px;}
+  .section-sub{font-size:15px;color:var(--muted-2);max-width:560px;line-height:1.7;margin-bottom:48px;}
+  .section-white{background:#fff;border-top:0.5px solid var(--border-light);border-bottom:0.5px solid var(--border-light);}
+  .section-offwhite{background:var(--off-white);}
+  .sep{height:0.5px;background:var(--border-light);}
+
+  .pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;padding:3px 10px;border-radius:999px;}
+  .pill-violet{background:rgba(139,92,246,0.08);border:0.5px solid rgba(139,92,246,0.2);color:#7c3aed;}
+  .pill-blue{background:rgba(59,130,246,0.08);border:0.5px solid rgba(59,130,246,0.2);color:#3b82f6;}
+  .pill-green{background:rgba(34,197,94,0.08);border:0.5px solid rgba(34,197,94,0.2);color:#16a34a;}
+  .pill-amber{background:rgba(245,158,11,0.08);border:0.5px solid rgba(245,158,11,0.2);color:#d97706;}
+  .pill-gray{background:rgba(0,0,0,0.04);border:0.5px solid rgba(0,0,0,0.12);color:var(--muted-2);}
+
+  .rule-card{background:rgba(91,106,240,0.04);border:0.5px solid rgba(91,106,240,0.2);border-radius:12px;padding:16px 20px;display:flex;align-items:flex-start;gap:12px;}
+  .rule-icon{font-size:16px;flex-shrink:0;margin-top:2px;}
+  .rule-text{font-size:13px;color:var(--muted-2);line-height:1.65;}
+  .rule-text strong{color:var(--black);font-weight:600;}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  .card{background:#fff;border:0.5px solid var(--border-light);border-radius:16px;padding:24px 28px;}
+  .card h3{font-size:15px;letter-spacing:-0.3px;margin-bottom:6px;color:var(--black);}
+  .card p{font-size:13px;color:var(--muted-2);line-height:1.65;}
+  .card-icon{font-size:22px;margin-bottom:12px;display:block;}
+
+  /* FORMATION CARDS */
+  .formation{background:#fff;border:0.5px solid var(--border-light);border-radius:16px;overflow:hidden;margin-bottom:16px;}
+  .formation:last-child{margin-bottom:0;}
+  .formation-header{padding:20px 28px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid var(--border-light);}
+  .formation-header-left{display:flex;align-items:center;gap:14px;}
+  .formation-num{font-family:var(--font-display);font-size:11px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+  .formation-title{font-size:18px;font-family:var(--font-display);letter-spacing:-0.5px;color:var(--black);}
+  .formation-body{padding:24px 28px;}
+  .formation-intro{font-size:14px;color:var(--muted-2);line-height:1.7;margin-bottom:20px;}
+
+  /* MODULES LIST */
+  .modules-list{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+  .module-item{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--off-white);border-radius:10px;}
+  .module-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+  .module-text{font-size:13px;color:var(--muted-2);line-height:1.55;}
+  .module-text strong{color:var(--black);font-weight:500;}
+
+  /* CAS PRATIQUE */
+  .cas-pratique{background:rgba(91,106,240,0.03);border:0.5px solid rgba(91,106,240,0.2);border-radius:12px;padding:16px 20px;}
+  .cas-label{font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+  .cas-title{font-size:14px;font-weight:600;font-family:var(--font-display);letter-spacing:-0.3px;color:var(--black);margin-bottom:6px;}
+  .cas-desc{font-size:13px;color:var(--muted-2);line-height:1.6;}
+  .cas-steps{margin-top:12px;display:flex;flex-direction:column;gap:6px;}
+  .cas-step{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--muted-2);line-height:1.5;}
+  .cas-step-num{font-size:10px;font-weight:600;color:var(--white);background:var(--accent);border-radius:50%;width:16px;height:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+
+  /* ORDRE TIMELINE */
+  .order-timeline{display:flex;align-items:center;gap:0;margin-bottom:32px;}
+  .order-step{flex:1;background:#fff;border:0.5px solid var(--border-light);padding:16px 14px;text-align:center;}
+  .order-step:first-child{border-radius:12px 0 0 12px;}
+  .order-step:last-child{border-radius:0 12px 12px 0;}
+  .order-step+.order-step{border-left:none;}
+  .order-step.active{background:rgba(91,106,240,0.04);border-color:rgba(91,106,240,0.3);}
+  .order-step-num{font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+  .order-step.active .order-step-num{color:var(--accent);}
+  .order-step-name{font-size:13px;font-weight:600;font-family:var(--font-display);letter-spacing:-0.2px;color:var(--black);}
+  .order-step-reason{font-size:11px;color:var(--muted-2);margin-top:3px;line-height:1.4;}
+
+  .footer-nav{padding:32px 48px;display:flex;align-items:center;justify-content:space-between;border-top:0.5px solid rgba(255,255,255,0.08);background:#080808;}
+  .footer-label{font-size:13px;color:rgba(255,255,255,0.4);}
+  .footer-links{display:flex;align-items:center;gap:12px;}
+  .btn-prev{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;background:transparent;border:0.5px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-family:var(--font-body);font-size:13px;font-weight:500;text-decoration:none;}
+  .btn-done{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:999px;background:#ffffff;color:#080808;font-family:var(--font-body);font-size:13px;font-weight:600;text-decoration:none;}
+
+
+  /* SKOOL BUTTON */
+  .skool-btn{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:12px 20px;border-radius:999px;background:#1a1a1a;color:#fff;font-family:var(--font-body);font-size:13px;font-weight:600;text-decoration:none;transition:opacity 0.2s;}
+  .skool-btn:hover{opacity:0.8;}
+  .skool-btn-icon{font-size:15px;}
+  @media(max-width:768px){
+    nav,section,.hero,.footer-nav{padding-left:20px;padding-right:20px;}
+    .grid-2,.grid-3{grid-template-columns:1fr;}
+    .order-timeline{flex-direction:column;gap:4px;}
+    .order-step{border-radius:10px!important;border!important;width:100%;}
+    .order-step+.order-step{border-left:0.5px solid var(--border-light)!important;border-top:none;}
+    .footer-nav{flex-direction:column;gap:16px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <svg width="22" height="22" viewBox="0 0 659 659" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" fill="#ffffff"/>
+    </svg>
+    <span class="nav-title">Out of Office</span>
+  </a>
+  <span class="nav-badge">Onboarding AI Builder · Partie 4 / 4</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Les formations</div>
+    <h1>Partie 4 : Apprendre<br>en <em>faisant</em>.</h1>
+    <p class="hero-sub">4 formations dans l'ordre du plus simple au plus complexe. Chacune se termine par un cas pratique réel. Tu valides chaque étape avant de passer à la suivante.</p>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- L'ORDRE -->
+<section class="section-white">
+  <div class="section-inner">
+    <p class="section-eyebrow">L'ordre des formations</p>
+    <h2 class="section-title">Du plus simple<br>au plus <em>complexe</em>.</h2>
+    <p class="section-sub">Chaque formation est un prérequis pour la suivante. Ne saute pas les étapes — les fondations comptent autant que les outils.</p>
+
+    <div class="order-timeline">
+      <div class="order-step active">
+        <div class="order-step-num">01</div>
+        <div class="order-step-name">Claude</div>
+        <div class="order-step-reason">Le plus accessible. Tu apprends à travailler avec l'IA avant tout.</div>
+      </div>
+      <div class="order-step">
+        <div class="order-step-num">02</div>
+        <div class="order-step-name">Notion</div>
+        <div class="order-step-reason">La fondation. Toute la production OOO repose dessus.</div>
+      </div>
+      <div class="order-step">
+        <div class="order-step-num">03</div>
+        <div class="order-step-name">n8n</div>
+        <div class="order-step-reason">Le moteur. Plus technique, mais tu as les bases pour le comprendre.</div>
+      </div>
+      <div class="order-step">
+        <div class="order-step-num">04</div>
+        <div class="order-step-name">Lovable</div>
+        <div class="order-step-reason">Le niveau suivant. Tu combines tout pour builder des apps complètes.</div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">🔄</div>
+      <div class="rule-text"><strong>Comment ça se passe :</strong> les formations se font en asynchrone — tu avances à ton rythme. Les cas pratiques aussi. Jules review et valide chaque livrable avant que tu passes à l'outil suivant.</div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- FORMATION 1 : CLAUDE -->
+<section class="section-offwhite">
+  <div class="section-inner">
+    <p class="section-eyebrow">01 — Le plus accessible</p>
+    <h2 class="section-title">Claude</h2>
+    <p class="section-sub">Avant de builder quoi que ce soit, tu dois comprendre comment parler à une IA et comment lui donner des instructions précises. C'est la base de tout.</p>
+
+    <div class="formation">
+      <div class="formation-header">
+        <div class="formation-header-left">
+          <div class="formation-num">Formation 01</div>
+          <div class="formation-title">Claude — Travailler avec l'IA</div>
+        </div>
+        <span class="pill pill-violet">Asynchrone</span>
+      </div>
+      <div class="formation-body">
+        <div class="formation-intro">Claude c'est ton outil principal. Pas juste pour générer du texte — pour exécuter des process complexes, prendre des décisions, interagir avec des apps via MCP. Tu dois comprendre comment il fonctionne, comment le guider, et comment lui écrire des instructions béton.</div>
+
+        <div class="modules-list">
+          <div class="module-item">
+            <div class="module-dot" style="background:#7c3aed;"></div>
+            <div class="module-text"><strong>Comprendre un LLM</strong> — comment Claude raisonne, ce qu'il fait bien, ce qu'il fait mal, et pourquoi le contexte est crucial.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#7c3aed;"></div>
+            <div class="module-text"><strong>Prompt engineering</strong> — comment écrire un prompt précis, structuré, et reproductible. Les patterns qui fonctionnent, ceux à éviter.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#7c3aed;"></div>
+            <div class="module-text"><strong>Le système prompt et le contexte</strong> — comment configurer Claude pour une tâche donnée, lui donner le bon contexte, et lui donner un rôle.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#7c3aed;"></div>
+            <div class="module-text"><strong>L'anatomie d'un skill</strong> — structure d'un fichier SKILL.md, les sections obligatoires, comment le tester, comment l'améliorer.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#7c3aed;"></div>
+            <div class="module-text"><strong>Les MCPs</strong> — comment Claude se connecte à des outils externes (Notion, Slack, GitHub…) et agit dedans directement.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#7c3aed;"></div>
+            <div class="module-text"><strong>Skills vs Routines</strong> — la différence, quand utiliser quoi, comment enchaîner plusieurs skills avec du contexte partagé.</div>
+          </div>
+        </div>
+
+        <div class="cas-pratique">
+          <div class="cas-label">Cas pratique</div>
+          <div class="cas-title">Créer un skill OOO complet, de A à Z</div>
+          <div class="cas-desc">Le cas pratique est directement disponible sur Skool avec toutes les instructions détaillées.</div>
+        </div>
+        <a href="https://skool.com/out-of-office-5288" target="_blank" class="skool-btn">
+          <span class="skool-btn-icon">🎓</span> Accéder à la formation Claude sur Skool
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- FORMATION 2 : NOTION -->
+<section class="section-white">
+  <div class="section-inner">
+    <p class="section-eyebrow">02 — La fondation</p>
+    <h2 class="section-title">Notion</h2>
+    <p class="section-sub">Notion c'est le système nerveux de toute la production OOO. Tu dois le maîtriser pour comprendre comment on organise le travail, suit les clients et stocke la connaissance.</p>
+
+    <div class="formation">
+      <div class="formation-header">
+        <div class="formation-header-left">
+          <div class="formation-num">Formation 02</div>
+          <div class="formation-title">Notion — Organiser et structurer</div>
+        </div>
+        <span class="pill pill-blue">Asynchrone</span>
+      </div>
+      <div class="formation-body">
+        <div class="formation-intro">On utilise Notion comme base opérationnelle complète : roadmaps, suivi de prod, SOPs, transcripts, to-do. Tu dois être à l'aise pour naviguer dedans, créer des pages structurées, et comprendre comment nos automatisations lisent et écrivent dans Notion.</div>
+
+        <div class="modules-list">
+          <div class="module-item">
+            <div class="module-dot" style="background:#3b82f6;"></div>
+            <div class="module-text"><strong>Navigation dans le Notion OOO</strong> — comprendre l'arborescence, où est quoi, comment on organise les espaces clients et internes.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#3b82f6;"></div>
+            <div class="module-text"><strong>Pages et bases de données</strong> — la différence entre une page et une BDD, les types de propriétés, les vues (table, kanban, calendrier, timeline).</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#3b82f6;"></div>
+            <div class="module-text"><strong>Relations et rollups</strong> — comment relier des bases de données entre elles et faire remonter des infos d'une BDD à une autre.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#3b82f6;"></div>
+            <div class="module-text"><strong>Templates OOO</strong> — les templates de portail client, de roadmap, de SOP. Comment les utiliser, les dupliquer, les adapter.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#3b82f6;"></div>
+            <div class="module-text"><strong>Notion API et MCP</strong> — comment n8n et Claude lisent et écrivent dans Notion. Comprendre les IDs, les propriétés, les filtres.</div>
+          </div>
+        </div>
+
+        <div class="cas-pratique">
+          <div class="cas-label">Cas pratique</div>
+          <div class="cas-title">Construire un portail client complet sur cahier des charges</div>
+          <div class="cas-desc">Le cas pratique est directement disponible sur Skool avec toutes les instructions détaillées.</div>
+        </div>
+        <a href="https://skool.com/out-of-office-5288" target="_blank" class="skool-btn">
+          <span class="skool-btn-icon">🎓</span> Accéder à la formation Notion sur Skool
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- FORMATION 3 : N8N -->
+<section class="section-offwhite">
+  <div class="section-inner">
+    <p class="section-eyebrow">03 — Le moteur</p>
+    <h2 class="section-title">n8n</h2>
+    <p class="section-sub">n8n c'est là où tout s'assemble et tourne. La courbe d'apprentissage est plus raide, mais une fois que tu comprends la logique, tu peux builder n'importe quoi.</p>
+
+    <div class="formation">
+      <div class="formation-header">
+        <div class="formation-header-left">
+          <div class="formation-num">Formation 03</div>
+          <div class="formation-title">n8n — Automatiser et orchestrer</div>
+        </div>
+        <span class="pill pill-amber">Asynchrone</span>
+      </div>
+      <div class="formation-body">
+        <div class="formation-intro">n8n c'est le chef d'orchestre de tous nos agents. Tu vas apprendre à construire des flows robustes, à gérer les données entre les nœuds, et à connecter Claude, Notion, Slack, et toutes les APIs dont les clients ont besoin.</div>
+
+        <div class="modules-list">
+          <div class="module-item">
+            <div class="module-dot" style="background:#d97706;"></div>
+            <div class="module-text"><strong>Interface et navigation</strong> — l'éditeur de flows, les nœuds, le panneau d'exécution, les logs, les credentials.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#d97706;"></div>
+            <div class="module-text"><strong>Les nœuds essentiels</strong> — Webhook, HTTP Request, Set, If, Code (JS), Notion, Slack, Gmail. Ceux qu'on utilise dans 80% des flows OOO.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#d97706;"></div>
+            <div class="module-text"><strong>La gestion de la donnée</strong> — comment accéder aux données d'un nœud précédent, les transformer, les filtrer, les boucler.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#d97706;"></div>
+            <div class="module-text"><strong>Connecter Claude via API</strong> — appeler Claude depuis n8n, lui passer du contexte, récupérer sa réponse et la traiter.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#d97706;"></div>
+            <div class="module-text"><strong>Les patterns OOO</strong> — les structures de flows qu'on réutilise : webhook → traitement → Notion → Slack, ou cron → Claude → livraison.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#d97706;"></div>
+            <div class="module-text"><strong>Erreurs et debugging</strong> — lire les logs, identifier où ça casse, les erreurs classiques et comment les éviter.</div>
+          </div>
+        </div>
+
+        <div class="cas-pratique">
+          <div class="cas-label">Cas pratique</div>
+          <div class="cas-title">Reproduire un flow existant, puis en builder un nouveau</div>
+          <div class="cas-desc">Le cas pratique est directement disponible sur Skool avec toutes les instructions détaillées.</div>
+        </div>
+        <a href="https://skool.com/out-of-office-5288" target="_blank" class="skool-btn">
+          <span class="skool-btn-icon">🎓</span> Accéder à la formation n8n sur Skool
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- FORMATION 4 : LOVABLE -->
+<section class="section-white">
+  <div class="section-inner">
+    <p class="section-eyebrow">04 — Le niveau suivant</p>
+    <h2 class="section-title">Lovable</h2>
+    <p class="section-sub">Lovable c'est là où on passe du système opérationnel au produit. Tu combines tout ce que tu as appris pour builder des apps complètes et les livrer à des clients.</p>
+
+    <div class="formation">
+      <div class="formation-header">
+        <div class="formation-header-left">
+          <div class="formation-num">Formation 04</div>
+          <div class="formation-title">Lovable — Builder des interfaces</div>
+        </div>
+        <span class="pill pill-green">Asynchrone</span>
+      </div>
+      <div class="formation-body">
+        <div class="formation-intro">Lovable génère des apps React à partir de prompts. La compétence clé c'est de savoir comment le briefer précisément pour qu'il produise quelque chose de propre, fonctionnel, et branchable sur Supabase. Un builder OOO maîtrise Lovable parce que c'est ce qu'on livre aux clients qui ont besoin d'une interface.</div>
+
+        <div class="modules-list">
+          <div class="module-item">
+            <div class="module-dot" style="background:#059669;"></div>
+            <div class="module-text"><strong>Comprendre Lovable</strong> — comment il fonctionne, ce qu'il génère (React), ses limites, pourquoi on l'utilise chez OOO.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#059669;"></div>
+            <div class="module-text"><strong>Prompter Lovable efficacement</strong> — la structure d'un bon prompt Lovable, comment décrire une interface sans ambiguïté, comment itérer proprement.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#059669;"></div>
+            <div class="module-text"><strong>Supabase — auth et BDD</strong> — connecter Lovable à Supabase, créer les tables, configurer l'authentification, gérer les Row Level Security (RLS).</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#059669;"></div>
+            <div class="module-text"><strong>Brancher n8n en backend</strong> — utiliser n8n pour synchroniser les données Notion → Supabase, déclencher des actions depuis l'app Lovable.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#059669;"></div>
+            <div class="module-text"><strong>Intégrer Claude dans l'app</strong> — ajouter un assistant IA contextuel dans le portail, appeler l'API Claude depuis l'interface Lovable.</div>
+          </div>
+          <div class="module-item">
+            <div class="module-dot" style="background:#059669;"></div>
+            <div class="module-text"><strong>Déployer et livrer</strong> — publier l'app, configurer le domaine custom, tester en conditions réelles, packager le livrable pour le client.</div>
+          </div>
+        </div>
+
+        <div class="cas-pratique">
+          <div class="cas-label">Cas pratique</div>
+          <div class="cas-title">Builder un portail client complet avec login et données live</div>
+          <div class="cas-desc">Le cas pratique est directement disponible sur Skool avec toutes les instructions détaillées.</div>
+        </div>
+        <a href="https://skool.com/out-of-office-5288" target="_blank" class="skool-btn">
+          <span class="skool-btn-icon">🎓</span> Accéder à la formation Lovable sur Skool
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- CE QUI VIENT APRÈS -->
+<section class="section-offwhite">
+  <div class="section-inner">
+    <p class="section-eyebrow">Et après ?</p>
+    <h2 class="section-title">Tu as les bases.<br>La suite c'est du <em>terrain</em>.</h2>
+    <p class="section-sub">Une fois les 4 formations validées, tu es opérationnel. Ce qui fait la différence ensuite c'est la pratique, la curiosité, et la capacité à aller chercher ce qu'on ne t'a pas encore appris.</p>
+
+    <!-- TIMELINE NEXT STEPS -->
+    <div style="background:#fff;border:0.5px solid var(--border-light);border-radius:16px;overflow:hidden;margin-bottom:12px;">
+      <div style="padding:14px 20px;background:var(--off-white);border-bottom:0.5px solid var(--border-light);">
+        <div style="font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);">Ta semaine de lancement</div>
+      </div>
+      <div style="padding:0;">
+
+        <div style="display:grid;grid-template-columns:110px 1fr;border-bottom:0.5px solid var(--border-light);">
+          <div style="padding:16px;background:rgba(34,197,94,0.04);border-right:0.5px solid var(--border-light);display:flex;align-items:center;">
+            <div>
+              <div style="font-size:10px;font-weight:600;color:#16a34a;letter-spacing:1px;text-transform:uppercase;">Lundi</div>
+              <div style="font-size:13px;font-weight:600;color:var(--black);margin-top:2px;">Onboarding</div>
+            </div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-size:13px;color:var(--muted-2);line-height:1.65;">Tu lis les 4 parties. On fait un call de lancement ensemble. Tu accèdes à Skool et tu commences les formations dans l'ordre.</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:110px 1fr;border-bottom:0.5px solid var(--border-light);">
+          <div style="padding:16px;background:rgba(91,106,240,0.04);border-right:0.5px solid var(--border-light);display:flex;align-items:center;">
+            <div>
+              <div style="font-size:10px;font-weight:600;color:#5b6af0;letter-spacing:1px;text-transform:uppercase;">Lundi → Mardi</div>
+              <div style="font-size:13px;font-weight:600;color:var(--black);margin-top:2px;">Formations</div>
+            </div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-size:13px;color:var(--muted-2);line-height:1.65;">Tu fais les formations et les cas pratiques en asynchrone sur Skool. Dès que tu termines une formation + son cas pratique, tu fais un <strong style="color:var(--black);">quick call avec Jules</strong> — on check ensemble avant de passer à la suite.</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:110px 1fr;">
+          <div style="padding:16px;background:rgba(139,92,246,0.04);border-right:0.5px solid var(--border-light);display:flex;align-items:center;">
+            <div>
+              <div style="font-size:10px;font-weight:600;color:#7c3aed;letter-spacing:1px;text-transform:uppercase;">Mercredi</div>
+              <div style="font-size:13px;font-weight:600;color:var(--black);margin-top:2px;">1er vrai client</div>
+            </div>
+          </div>
+          <div style="padding:16px;">
+            <div style="font-size:13px;color:var(--muted-2);line-height:1.65;">Tu commences à builder pour de vrais clients. Sous supervision du Manager. Objectif : livrer ton premier sprint dès la fin de semaine.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">💬</div>
+      <div class="rule-text"><strong>Une question, un blocage, une idée ?</strong> Slack d'abord. On est là. Le but c'est que tu progresses vite — et pour ça, tu dois poser tes questions et partager ce que tu découvres. La team apprend avec toi.</div>
+    </div>
+  </div>
+</section>
+
+<div class="footer-nav">
+  <span class="footer-label">Partie 4 — Les formations · Fin de l'onboarding</span>
+  <div class="footer-links">
+    <a href="#" class="btn-prev">← Partie 3</a>
+    <a href="#" class="btn-done">✅ C'est parti</a>
+  </div>
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  const p = total > 0 ? (window.scrollY / total) * 100 : 0;
+  document.getElementById('progress').style.width = p + '%';
+});
+</script>
+</body>
+</html>

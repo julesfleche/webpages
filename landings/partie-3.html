@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding AI Builder — Partie 3 : L'automatisation pour les nuls</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#080808;--white:#ffffff;--off-white:#f5f4f0;
+    --muted:#888884;--muted-2:#555552;
+    --accent:#5b6af0;
+    --border-dark:rgba(255,255,255,0.08);
+    --border-light:rgba(0,0,0,0.08);
+    --font-display:'Poppins',sans-serif;
+    --font-body:'DM Sans',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--font-body);background:var(--off-white);color:var(--black);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  h1,h2,h3,h4{font-family:var(--font-display);font-weight:600;line-height:1.15;padding-bottom:0.15em;padding-top:0.05em;overflow:visible;}
+  em{font-style:italic;background:linear-gradient(135deg,#5b6af0,#8b5cf6);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding-right:0.12em;padding-left:0.02em;display:inline-block;line-height:inherit;}
+
+  .progress-bar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#6b7fff,#a78bfa);z-index:200;transition:width 0.1s;}
+
+  /* NAV dark */
+  nav{position:sticky;top:0;z-index:100;padding:14px 48px;display:flex;align-items:center;justify-content:space-between;background:#080808;border-bottom:0.5px solid rgba(255,255,255,0.08);}
+  .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .nav-title{font-family:var(--font-display);font-size:14px;font-weight:600;color:#ffffff;letter-spacing:-0.3px;}
+  .nav-badge{font-size:11px;color:rgba(255,255,255,0.45);border:0.5px solid rgba(255,255,255,0.15);padding:4px 12px;border-radius:999px;letter-spacing:0.3px;}
+
+  /* HERO dark */
+  .hero{padding:80px 48px 72px;background:#080808;border-bottom:0.5px solid rgba(255,255,255,0.08);}
+  .hero-inner{max-width:960px;margin:0 auto;}
+  .hero-eyebrow{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#7c8dff;margin-bottom:12px;}
+  .hero h1{font-size:clamp(36px,5vw,60px);letter-spacing:-2px;color:#ffffff;margin-bottom:16px;}
+  .hero-sub{font-size:17px;color:rgba(255,255,255,0.5);max-width:560px;line-height:1.7;}
+
+  /* SECTIONS */
+  section{padding:72px 48px;}
+  .section-inner{max-width:960px;margin:0 auto;}
+  .section-eyebrow{font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+  .section-title{font-size:clamp(26px,3.5vw,40px);letter-spacing:-1px;color:var(--black);margin-bottom:14px;}
+  .section-sub{font-size:15px;color:var(--muted-2);max-width:560px;line-height:1.7;margin-bottom:48px;}
+  .section-white{background:#fff;border-top:0.5px solid var(--border-light);border-bottom:0.5px solid var(--border-light);}
+  .section-offwhite{background:var(--off-white);}
+
+  .sep{height:0.5px;background:var(--border-light);}
+
+  /* PILLS */
+  .pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;padding:3px 10px;border-radius:999px;}
+  .pill-violet{background:rgba(139,92,246,0.08);border:0.5px solid rgba(139,92,246,0.2);color:#7c3aed;}
+  .pill-blue{background:rgba(59,130,246,0.08);border:0.5px solid rgba(59,130,246,0.2);color:#3b82f6;}
+  .pill-green{background:rgba(34,197,94,0.08);border:0.5px solid rgba(34,197,94,0.2);color:#16a34a;}
+  .pill-amber{background:rgba(245,158,11,0.08);border:0.5px solid rgba(245,158,11,0.2);color:#d97706;}
+  .pill-red{background:rgba(239,68,68,0.08);border:0.5px solid rgba(239,68,68,0.2);color:#dc2626;}
+
+  /* RULE CARD */
+  .rule-card{background:rgba(91,106,240,0.04);border:0.5px solid rgba(91,106,240,0.2);border-radius:12px;padding:16px 20px;display:flex;align-items:flex-start;gap:12px;}
+  .rule-icon{font-size:16px;flex-shrink:0;margin-top:2px;}
+  .rule-text{font-size:13px;color:var(--muted-2);line-height:1.65;}
+  .rule-text strong{color:var(--black);font-weight:600;}
+
+  /* GRIDS */
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+
+  /* BASE CARD */
+  .card{background:#fff;border:0.5px solid var(--border-light);border-radius:16px;padding:24px 28px;}
+  .card h3{font-size:15px;letter-spacing:-0.3px;margin-bottom:6px;color:var(--black);}
+  .card p{font-size:13px;color:var(--muted-2);line-height:1.65;}
+  .card-icon{font-size:22px;margin-bottom:12px;display:block;}
+
+  /* ---- C'EST QUOI UNE AUTOMATISATION ---- */
+  .def-block{background:#fff;border:0.5px solid var(--border-light);border-radius:16px;padding:36px;margin-bottom:12px;}
+  .def-quote{font-size:clamp(18px,2.5vw,26px);font-family:var(--font-display);font-weight:600;letter-spacing:-0.8px;color:var(--black);line-height:1.3;margin-bottom:20px;}
+  .def-quote em{font-size:inherit;}
+  .def-example{background:var(--off-white);border-radius:12px;padding:16px 20px;font-size:13px;color:var(--muted-2);line-height:1.7;}
+  .def-example strong{color:var(--black);}
+
+  /* ---- AVANT / APRÈS ---- */
+  .before-after{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin-bottom:12px;}
+  .ba-col{background:#fff;border:0.5px solid var(--border-light);border-radius:16px;padding:24px;}
+  .ba-col.after{border-color:rgba(91,106,240,0.25);background:rgba(91,106,240,0.02);}
+  .ba-label{font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+  .ba-label.before{color:var(--muted);}
+  .ba-label.after{color:var(--accent);}
+  .ba-step{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--border-light);font-size:13px;color:var(--muted-2);}
+  .ba-step:last-child{border-bottom:none;}
+  .ba-step-icon{font-size:14px;flex-shrink:0;margin-top:1px;}
+  .ba-arrow{font-size:24px;color:rgba(91,106,240,0.4);text-align:center;}
+
+  /* ---- LES CONCEPTS ---- */
+  .concept-card{background:#fff;border:0.5px solid var(--border-light);border-radius:16px;padding:24px 28px;}
+  .concept-emoji{font-size:28px;margin-bottom:14px;display:block;}
+  .concept-title{font-size:16px;font-family:var(--font-display);letter-spacing:-0.3px;margin-bottom:4px;color:var(--black);}
+  .concept-subtitle{font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+  .concept-desc{font-size:13px;color:var(--muted-2);line-height:1.7;}
+  .concept-example{margin-top:12px;padding:10px 14px;background:var(--off-white);border-radius:8px;font-size:12px;color:var(--muted-2);line-height:1.6;font-style:italic;}
+
+  /* ---- OUTIL = RÔLE ---- */
+  .tool-role-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px;}
+  .tool-role-card{border-radius:16px;padding:22px 20px;}
+  .tool-role-card.n8n{background:rgba(234,88,12,0.05);border:0.5px solid rgba(234,88,12,0.2);}
+  .tool-role-card.claude{background:rgba(139,92,246,0.05);border:0.5px solid rgba(139,92,246,0.2);}
+  .tool-role-card.notion{background:rgba(0,0,0,0.04);border:0.5px solid rgba(0,0,0,0.1);}
+  .tool-role-card.lovable{background:rgba(91,106,240,0.05);border:0.5px solid rgba(91,106,240,0.2);}
+  .tool-role-name{font-size:15px;font-family:var(--font-display);font-weight:600;letter-spacing:-0.3px;margin-bottom:4px;}
+  .tool-role-card.n8n .tool-role-name{color:#ea580c;}
+  .tool-role-card.claude .tool-role-name{color:#7c3aed;}
+  .tool-role-card.notion .tool-role-name{color:#111;}
+  .tool-role-card.lovable .tool-role-name{color:#5b6af0;}
+  .tool-role-metaphor{font-size:11px;font-weight:500;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;}
+  .tool-role-card.n8n .tool-role-metaphor{color:#ea580c;}
+  .tool-role-card.claude .tool-role-metaphor{color:#7c3aed;}
+  .tool-role-card.notion .tool-role-metaphor{color:#555;}
+  .tool-role-card.lovable .tool-role-metaphor{color:#5b6af0;}
+  .tool-role-desc{font-size:12px;color:var(--muted-2);line-height:1.65;}
+  .tool-role-use{margin-top:12px;padding-top:10px;border-top:0.5px solid rgba(0,0,0,0.06);}
+  .tool-role-use-label{font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .tool-role-use-item{font-size:11px;color:var(--muted-2);padding:3px 0;display:flex;align-items:flex-start;gap:6px;line-height:1.4;}
+  .tool-role-use-dot{width:3px;height:3px;border-radius:50%;background:var(--muted);flex-shrink:0;margin-top:5px;}
+
+  /* ---- QUAND UTILISER QUOI ---- */
+  .when-table{width:100%;border-collapse:collapse;background:#fff;border-radius:16px;overflow:hidden;border:0.5px solid var(--border-light);}
+  .when-table th{text-align:left;padding:12px 16px;font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:0.5px solid var(--border-light);background:var(--off-white);}
+  .when-table td{padding:13px 16px;font-size:13px;border-bottom:0.5px solid var(--border-light);vertical-align:top;color:var(--muted-2);}
+  .when-table tr:last-child td{border-bottom:none;}
+  .when-table td:first-child{color:var(--black);font-style:italic;}
+
+  /* ---- EXEMPLE BOUT EN BOUT ---- */
+  .flow-example{background:#fff;border:0.5px solid var(--border-light);border-radius:16px;overflow:hidden;}
+  .flow-header{padding:16px 24px;background:var(--off-white);border-bottom:0.5px solid var(--border-light);display:flex;align-items:center;justify-content:space-between;}
+  .flow-header-title{font-size:13px;font-weight:600;color:var(--black);}
+  .flow-steps{padding:20px 24px;display:flex;flex-direction:column;gap:0;}
+  .flow-step{display:flex;align-items:flex-start;gap:16px;padding:14px 0;border-bottom:0.5px solid var(--border-light);}
+  .flow-step:last-child{border-bottom:none;}
+  .flow-step-left{display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0;width:40px;}
+  .flow-step-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+  .flow-step-line{width:1px;height:100%;min-height:20px;background:var(--border-light);margin-top:4px;flex:1;}
+  .flow-step-body{}
+  .flow-step-actor{font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;margin-bottom:3px;}
+  .flow-step-title{font-size:14px;font-weight:600;font-family:var(--font-display);letter-spacing:-0.3px;color:var(--black);margin-bottom:3px;}
+  .flow-step-desc{font-size:12px;color:var(--muted-2);line-height:1.55;}
+
+  /* FOOTER dark */
+  .footer-nav{padding:32px 48px;display:flex;align-items:center;justify-content:space-between;border-top:0.5px solid rgba(255,255,255,0.08);background:#080808;}
+  .footer-label{font-size:13px;color:rgba(255,255,255,0.4);}
+  .footer-links{display:flex;align-items:center;gap:12px;}
+  .btn-prev{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;background:transparent;border:0.5px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);font-family:var(--font-body);font-size:13px;font-weight:500;text-decoration:none;}
+  .btn-next{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;border-radius:999px;background:#ffffff;color:#080808;font-family:var(--font-body);font-size:13px;font-weight:600;text-decoration:none;}
+
+  @media(max-width:768px){
+    nav,section,.hero,.footer-nav{padding-left:20px;padding-right:20px;}
+    .grid-2,.grid-3,.grid-4,.tool-role-grid{grid-template-columns:1fr;}
+    .before-after{grid-template-columns:1fr;gap:8px;}
+    .ba-arrow{transform:rotate(90deg);}
+    .footer-nav{flex-direction:column;gap:16px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+
+<nav>
+  <a href="#" class="nav-logo">
+    <svg width="22" height="22" viewBox="0 0 659 659" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M329.5 0C511.478 0 659 147.522 659 329.5C659 511.478 511.478 659 329.5 659C147.522 659 0 511.478 0 329.5C0 147.522 147.522 0 329.5 0ZM582.136 345.891C541.922 306.732 456.442 329.11 393.471 393.777C330.499 458.445 306.588 542.321 346.802 581.479C386.93 615.955 465.819 599.237 528.79 534.569C591.762 469.902 619.656 390.066 582.136 345.891ZM405.8 94.9512C344.07 30.8939 224.183 42.3891 136.209 127.166C50.5743 209.689 27.4365 339.467 89.166 403.524C150.896 467.582 276.646 445.368 362.28 362.846C447.915 280.323 467.529 159.009 405.8 94.9512ZM585.206 195.57C567.294 161.225 531.765 144.339 505.85 157.854C479.935 171.37 473.447 210.169 491.359 244.515C509.272 278.86 544.801 295.745 570.716 282.229C596.631 268.714 603.118 229.915 585.206 195.57Z" fill="#ffffff"/>
+    </svg>
+    <span class="nav-title">Out of Office</span>
+  </a>
+  <span class="nav-badge">Onboarding AI Builder · Partie 3 / 4</span>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">L'automatisation pour les nuls</div>
+    <h1>Partie 3 : Comment<br>tout ça <em>fonctionne</em>.</h1>
+    <p class="hero-sub">Avant de builder quoi que ce soit, tu dois comprendre les concepts de base. Expliqués simplement. Sans jargon inutile.</p>
+  </div>
+</div>
+
+<div class="sep"></div>
+
+<!-- C'EST QUOI UNE AUTOMATISATION -->
+<section class="section-white">
+  <div class="section-inner">
+    <p class="section-eyebrow">01 — La base</p>
+    <h2 class="section-title">C'est quoi une<br><em>automatisation</em> ?</h2>
+    <p class="section-sub">Une seule phrase pour comprendre le principe, et un exemple concret pour l'ancrer.</p>
+
+    <div class="def-block">
+      <div class="def-quote">
+        C'est une tâche que tu fais à la main,<br>qu'on <em>apprend à une machine</em> à faire à ta place — pour toujours.
+      </div>
+      <div class="def-example">
+        <strong>Exemple :</strong> chaque semaine, tu recopies les chiffres d'un tableau Excel dans un email, tu l'envoies à ton client, et tu le notes dans ton CRM. C'est 20 minutes de travail répétitif. Une automatisation fait exactement ça — mais en 3 secondes, sans erreur, même quand tu dors.
+      </div>
+    </div>
+
+    <!-- AVANT / APRÈS -->
+    <div class="before-after">
+      <div class="ba-col">
+        <div class="ba-label before">Sans automatisation</div>
+        <div class="ba-step"><div class="ba-step-icon">😮‍💨</div>Tu ouvres le tableau Excel manuellement</div>
+        <div class="ba-step"><div class="ba-step-icon">📋</div>Tu copies les chiffres</div>
+        <div class="ba-step"><div class="ba-step-icon">✍️</div>Tu rédiges l'email</div>
+        <div class="ba-step"><div class="ba-step-icon">📤</div>Tu envoies</div>
+        <div class="ba-step"><div class="ba-step-icon">📝</div>Tu notes dans le CRM</div>
+        <div class="ba-step"><div class="ba-step-icon">🔁</div>Tu recommences la semaine prochaine</div>
+      </div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-col after">
+        <div class="ba-label after">Avec automatisation</div>
+        <div class="ba-step"><div class="ba-step-icon">⚡</div>Chaque lundi à 9h : n8n se déclenche</div>
+        <div class="ba-step"><div class="ba-step-icon">📊</div>Il récupère les données automatiquement</div>
+        <div class="ba-step"><div class="ba-step-icon">🤖</div>Claude rédige l'email en 2 secondes</div>
+        <div class="ba-step"><div class="ba-step-icon">📤</div>L'email est envoyé</div>
+        <div class="ba-step"><div class="ba-step-icon">✅</div>Le CRM est mis à jour</div>
+        <div class="ba-step"><div class="ba-step-icon">😎</div>Toi tu fais autre chose</div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">💡</div>
+      <div class="rule-text"><strong>À retenir :</strong> une automatisation ne remplace pas la réflexion humaine. Elle remplace les tâches répétitives et sans valeur ajoutée. Ce qu'on fait chez OOO, c'est identifier ces tâches et les automatiser.</div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- LES OUTILS ET LEUR RÔLE -->
+<section class="section-white">
+  <div class="section-inner">
+    <p class="section-eyebrow">02 — Les outils</p>
+    <h2 class="section-title">Pourquoi on a besoin<br>de <em>tous ces outils</em> ?</h2>
+    <p class="section-sub">Chaque outil a un rôle précis. Ils ne se remplacent pas — ils se complètent. Comprendre ça, c'est comprendre comment on builder chez OOO.</p>
+
+    <div class="tool-role-grid">
+      <div class="tool-role-card n8n">
+        <div class="tool-role-name">n8n</div>
+        <div class="tool-role-metaphor">Le chef d'orchestre</div>
+        <div class="tool-role-desc">Il connecte tout. Il décide quand quoi faire. Il passe les données d'une étape à l'autre. Sans lui, rien ne s'enchaîne.</div>
+        <div class="tool-role-use">
+          <div class="tool-role-use-label">Utilise-le pour</div>
+          <div class="tool-role-use-item"><div class="tool-role-use-dot"></div>Connecter deux apps entre elles</div>
+          <div class="tool-role-use-item"><div class="tool-role-use-dot"></div>Déclencher des actions automatiquement</div>
+          <div class="tool-role-use-item"><div class="tool-role-use-dot"></div>Orchestrer les étapes d'un flow</div>
+        </div>
+      </div>
+
+      <div class="tool-role-card claude">
+        <div class="tool-role-name">Claude</div>
+        <div class="tool-role-metaphor">Le cerveau</div>
+        <div class="tool-role-desc">Il comprend le langage humain, rédige, analyse, prend des décisions. C'est lui qui apporte l'intelligence dans l'automatisation.</div>
+        <div class="tool-role-use">
+          <div class="tool-role-use-label">Utilise-le pour</div>
+          <div class="tool-role-use-item"><div class="tool-role-use-dot"></div>Rédiger, résumer, analyser du texte</div>
+          <div class="tool-role-use-item"><div class="tool-role-use-dot"></div>Prendre des décisions contextuelles</div>
+          <div class="tool-role-use-item"><div class="tool-role-use-dot"></div>Exécuter des skills complexes</div>
+        </div>
+      </div>
+
+      <div class="tool-role-card notion">
+        <div class="tool-role-name">Notion</div>
+        <div class="tool-role-metaphor">La mémoire</div>
+        <div class="tool-role-desc">Il stocke, structure et affiche l'information. C'est la base de données lisible par les humains et manipulable par les automatisations.</div>
+        <div class="tool-role-use">
+          <div class="tool-role-use-label">Utilise-le pour</div>
+          <div class="tool-role-use-item"><div class="tool-role-use-dot"></div>Stocker des données structurées</div>
+          <div class="tool-role-use-item"><div class="tool-role-use-dot"></div>Afficher des infos aux équipes</div>
+          <div class="tool-role-use-item"><div class="tool-role-use-dot"></div>Lire/écrire depuis n8n</div>
+        </div>
+      </div>
+
+      <div class="tool-role-card lovable">
+        <div class="tool-role-name">Lovable</div>
+        <div class="tool-role-metaphor">La vitrine</div>
+        <div class="tool-role-desc">Il génère des interfaces web. C'est ce que le client voit et utilise. On builder les portails clients et les dashboards avec lui.</div>
+        <div class="tool-role-use">
+          <div class="tool-role-use-label">Utilise-le pour</div>
+          <div class="tool-role-use-item"><div class="tool-role-use-dot"></div>Builder un portail client</div>
+          <div class="tool-role-use-item"><div class="tool-role-use-dot"></div>Créer une interface utilisateur</div>
+          <div class="tool-role-use-item"><div class="tool-role-use-dot"></div>Déployer une app web rapidement</div>
+        </div>
+      </div>
+
+      <div class="tool-role-card" style="background:rgba(0,0,0,0.03);border:0.5px solid rgba(0,0,0,0.12);">
+        <div class="tool-role-name" style="color:#24292f;">GitHub</div>
+        <div class="tool-role-metaphor" style="color:#57606a;">Le coffre-fort</div>
+        <div class="tool-role-desc" style="color:var(--muted-2);">Il stocke et versionne tout ce qui est un peu lourd ou important : skills Claude, templates HTML, scripts n8n, code custom. Si c'est critique, ça va sur GitHub.</div>
+        <div class="tool-role-use">
+          <div class="tool-role-use-label">Utilise-le pour</div>
+          <div class="tool-role-use-item"><div class="tool-role-use-dot"></div>Stocker les skills et templates</div>
+          <div class="tool-role-use-item"><div class="tool-role-use-dot"></div>Versionner le code et les configs</div>
+          <div class="tool-role-use-item"><div class="tool-role-use-dot"></div>Publier des pages HTML via GitHub Pages</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUAND UTILISER QUOI -->
+    <table class="when-table" style="margin-bottom:12px;">
+      <thead>
+        <tr>
+          <th>Si tu veux…</th>
+          <th>Tu utilises</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Connecter deux apps et automatiser des étapes</td><td><span class="pill pill-amber">n8n</span></td></tr>
+        <tr><td>Comprendre ou générer du texte / prendre une décision</td><td><span class="pill pill-violet">Claude</span></td></tr>
+        <tr><td>Stocker ou afficher de l'information structurée</td><td><span class="pill pill-blue">Notion</span></td></tr>
+        <tr><td>Builder une interface que le client va utiliser</td><td><span class="pill pill-blue" style="background:rgba(91,106,240,0.08);border-color:rgba(91,106,240,0.2);color:#5b6af0;">Lovable</span></td></tr>
+        <tr><td>Faire tout ça ensemble, de bout en bout</td><td><span class="pill pill-green">Les 4 ensemble = un agent IA complet</span></td></tr>
+      </tbody>
+    </table>
+
+    <div class="rule-card">
+      <div class="rule-icon">⚡</div>
+      <div class="rule-text"><strong>La règle d'or :</strong> avant de chercher un nouvel outil, demande-toi si n8n, Claude, Notion ou Lovable peut faire le job. Dans 90% des cas, la réponse est oui.</div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- LES 3 TYPES DE LIVRABLES -->
+<section class="section-white">
+  <div class="section-inner">
+    <p class="section-eyebrow">03 — Ce qu'on build</p>
+    <h2 class="section-title">5 types de livrables.<br><em>5 façons de builder.</em></h2>
+    <p class="section-sub">Chez OOO on ne fait pas que des "automatisations". On distingue 5 types de livrables. Savoir les différencier, c'est savoir quoi utiliser et quand.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px;" id="types-grid">
+
+      <!-- AUTOMATISATION N8N -->
+      <div class="concept-card" style="border-color:rgba(234,88,12,0.2);background:rgba(234,88,12,0.02);">
+        <span class="concept-emoji">🔗</span>
+        <div class="concept-subtitle" style="color:#ea580c;">Type 1</div>
+        <div class="concept-title">L'automatisation n8n</div>
+        <div class="concept-desc">Un flow qui tourne automatiquement sans intervention humaine. Il connecte des apps, traite de la donnée, déclenche des actions. <strong style="color:var(--black);">Zéro Claude dedans</strong> — que de la logique et des connecteurs.</div>
+        <div class="concept-example">
+          Exemples : envoyer un email quand un formulaire est soumis · synchroniser deux bases de données · créer une ligne Notion quand une facture est payée · notifier Slack quand un fichier arrive.
+        </div>
+        <div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="pill pill-amber">n8n uniquement</span>
+          <span class="pill pill-green">Logique pure</span>
+        </div>
+      </div>
+
+      <!-- SKILL CLAUDE -->
+      <div class="concept-card" style="border-color:rgba(139,92,246,0.2);background:rgba(139,92,246,0.02);">
+        <span class="concept-emoji">📋</span>
+        <div class="concept-subtitle" style="color:#7c3aed;">Type 2</div>
+        <div class="concept-title">Le skill Claude</div>
+        <div class="concept-desc">Une instruction précise donnée à Claude pour qu'il sache exactement comment se comporter dans <strong style="color:var(--black);">une situation donnée</strong>. C'est une fiche de poste pour l'IA — elle définit le rôle, le ton, les règles, le format.</div>
+        <div class="concept-example">
+          Exemples : un skill "rédiger un email de relance commercial" · un skill "analyser un transcript de call et en extraire les actions" · un skill "générer une propale à partir d'un brief".
+        </div>
+        <div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="pill pill-violet">Claude uniquement</span>
+          <span class="pill pill-green">Intelligence</span>
+        </div>
+      </div>
+
+      <!-- ROUTINE CLAUDE -->
+      <div class="concept-card" style="border-color:rgba(91,106,240,0.25);background:rgba(91,106,240,0.02);">
+        <span class="concept-emoji">🔄</span>
+        <div class="concept-subtitle" style="color:#5b6af0;">Type 3</div>
+        <div class="concept-title">La routine Claude</div>
+        <div class="concept-desc">Une séquence de skills enchaînés que Claude exécute dans l'ordre pour accomplir une <strong style="color:var(--black);">mission complexe de bout en bout</strong>. Là où un skill fait une chose, une routine en fait plusieurs — avec du contexte partagé entre chaque étape.</div>
+        <div class="concept-example">
+          Exemples : analyser un call → rédiger le compte-rendu → mettre à jour la roadmap → notifier le Manager · ou encore : lire les leads → qualifier → rédiger un email personnalisé pour chacun.
+        </div>
+        <div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="pill pill-violet">Claude</span>
+          <span class="pill pill-amber">+ n8n pour déclencher</span>
+        </div>
+      </div>
+
+      <!-- CLAUDE + N8N -->
+      <div class="concept-card" style="border-color:rgba(59,130,246,0.2);background:rgba(59,130,246,0.02);">
+        <span class="concept-emoji">🔀</span>
+        <div class="concept-subtitle" style="color:#3b82f6;">Type 4</div>
+        <div class="concept-title">Claude + n8n</div>
+        <div class="concept-desc">Claude a besoin de données externes ou doit déclencher des actions concrètes dans le monde. Il appelle n8n pour fetcher, créer, envoyer — puis reprend la main pour analyser ou rédiger. <strong style="color:var(--black);">Intelligence + action combinées.</strong></div>
+        <div class="concept-example">
+          Exemples : générer un reporting en fetchant les données Klaviyo · créer un document et l'uploader sur Drive · récupérer les leads du CRM et rédiger un email personnalisé pour chacun.
+        </div>
+        <div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="pill pill-violet">Claude réfléchit</span>
+          <span class="pill pill-amber">n8n agit</span>
+        </div>
+      </div>
+
+      <!-- CLAUDE + LOVABLE + SUPABASE -->
+      <div class="concept-card" style="border-color:rgba(16,185,129,0.2);background:rgba(16,185,129,0.02);">
+        <span class="concept-emoji">🌐</span>
+        <div class="concept-subtitle" style="color:#059669;">Type 5</div>
+        <div class="concept-title">Claude + Lovable + Supabase</div>
+        <div class="concept-desc">On builder une vraie application web avec interface, base de données, authentification et intelligence IA intégrée. Le niveau le plus avancé — pour des livrables produit complets, pas juste des automatisations.</div>
+        <div class="concept-example">
+          Exemples : portail client avec login · dashboard intelligent qui analyse les données en temps réel · app interne avec rôles et permissions · outil SaaS sur mesure pour un client.
+        </div>
+        <div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="pill pill-violet">Claude</span>
+          <span class="pill pill-blue" style="background:rgba(91,106,240,0.08);border-color:rgba(91,106,240,0.2);color:#5b6af0;">Lovable</span>
+          <span class="pill pill-green">Supabase</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLEAU COMPARATIF -->
+    <table class="when-table" style="margin-bottom:12px;">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Ce que c'est</th>
+          <th>Outil principal</th>
+          <th>Quand l'utiliser</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Automatisation n8n</strong></td>
+          <td style="color:var(--muted-2);">Flow logique, connecteurs, aucune IA</td>
+          <td><span class="pill pill-amber">n8n</span></td>
+          <td style="color:var(--muted-2);">Tâches répétitives, transferts de données, notifications</td>
+        </tr>
+        <tr>
+          <td><strong>Skill Claude</strong></td>
+          <td style="color:var(--muted-2);">Instruction précise pour Claude, une seule mission</td>
+          <td><span class="pill pill-violet">Claude</span></td>
+          <td style="color:var(--muted-2);">Générer, analyser, rédiger, décider sur une tâche ciblée</td>
+        </tr>
+        <tr>
+          <td><strong>Routine Claude</strong></td>
+          <td style="color:var(--muted-2);">Plusieurs skills enchaînés, mission complexe</td>
+          <td><span class="pill pill-violet">Claude</span> + <span class="pill pill-amber">n8n</span></td>
+          <td style="color:var(--muted-2);">Process multi-étapes avec contexte partagé entre chaque étape</td>
+        </tr>
+        <tr>
+          <td><strong>Claude + n8n</strong></td>
+          <td style="color:var(--muted-2);">Claude appelle n8n pour agir, puis reprend la main</td>
+          <td><span class="pill pill-violet">Claude</span> + <span class="pill pill-amber">n8n</span></td>
+          <td style="color:var(--muted-2);">Reporting, génération de fichiers, actions externes déclenchées par l'IA</td>
+        </tr>
+        <tr>
+          <td><strong>Claude + Lovable + Supabase</strong></td>
+          <td style="color:var(--muted-2);">App web complète avec auth, BDD, IA intégrée</td>
+          <td><span class="pill pill-violet">Claude</span> + <span class="pill pill-blue" style="background:rgba(91,106,240,0.08);border-color:rgba(91,106,240,0.2);color:#5b6af0;">Lovable</span> + <span class="pill pill-green">Supabase</span></td>
+          <td style="color:var(--muted-2);">Portails clients, dashboards, outils SaaS sur mesure</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="background:#fff;border:0.5px solid var(--border-light);border-radius:16px;padding:24px 28px;margin-bottom:12px;">
+      <p style="font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Comment ils se complètent</p>
+      <div class="grid-2">
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--black);margin-bottom:6px;">🔗 Le skill appelle n8n</div>
+          <div style="font-size:13px;color:var(--muted-2);line-height:1.7;">Quand Claude exécute un skill, il a souvent besoin d'actions concrètes : extraire des données depuis une API, créer un fichier, écrire dans Notion, envoyer un message. Il délègue ces actions à n8n via des appels. Claude réfléchit, n8n agit.</div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--black);margin-bottom:6px;">⚙️ n8n déclenche Claude</div>
+          <div style="font-size:13px;color:var(--muted-2);line-height:1.7;">Inversement, n8n peut passer la main à Claude en cours de flow : il collecte les données, les nettoie, puis appelle Claude pour qu'il les analyse ou rédige quelque chose. n8n orchestre, Claude apporte l'intelligence au bon moment.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">🧭</div>
+      <div class="rule-text"><strong>La question à se poser :</strong> est-ce que j'ai besoin d'intelligence (comprendre, rédiger, décider) ? Si oui → Claude. Est-ce que j'ai besoin de connecter des apps ou déclencher des actions ? Si oui → n8n. La plupart du temps, on a besoin des deux — et ils s'appellent mutuellement.</div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- DATA ET ORCHESTRATION -->
+<section class="section-offwhite">
+  <div class="section-inner">
+    <p class="section-eyebrow">04 — La data et l'orchestration</p>
+    <h2 class="section-title">Pourquoi on a besoin<br>de <em>Notion aussi</em> ?</h2>
+    <p class="section-sub">n8n fait tourner les flows. Claude apporte l'intelligence. Mais sans un endroit pour centraliser et lire la donnée, tout ça reste dans le vide. C'est là que Notion entre en jeu.</p>
+
+    <!-- SCHÉMA DATA FLOW -->
+    <div style="background:#fff;border:0.5px solid var(--border-light);border-radius:16px;padding:32px;margin-bottom:12px;">
+      <p style="font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;">Comment la donnée circule dans un agent OOO</p>
+
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <!-- Source -->
+        <div style="border:0.5px solid var(--border-light);border-radius:12px;padding:14px 18px;text-align:center;min-width:110px;">
+          <div style="font-size:18px;margin-bottom:4px;">📥</div>
+          <div style="font-size:12px;font-weight:600;color:var(--black);">Source</div>
+          <div style="font-size:11px;color:var(--muted-2);">Formulaire, email,<br>webhook, CSV…</div>
+        </div>
+
+        <div style="color:rgba(91,106,240,0.4);font-size:20px;flex-shrink:0;">→</div>
+
+        <!-- n8n -->
+        <div style="background:rgba(234,88,12,0.05);border:0.5px solid rgba(234,88,12,0.2);border-radius:12px;padding:14px 18px;text-align:center;min-width:110px;">
+          <div style="font-size:18px;margin-bottom:4px;">⚙️</div>
+          <div style="font-size:12px;font-weight:600;color:#ea580c;">n8n</div>
+          <div style="font-size:11px;color:var(--muted-2);">Récupère,<br>transforme, route</div>
+        </div>
+
+        <div style="color:rgba(91,106,240,0.4);font-size:20px;flex-shrink:0;">→</div>
+
+        <!-- Claude -->
+        <div style="background:rgba(139,92,246,0.05);border:0.5px solid rgba(139,92,246,0.2);border-radius:12px;padding:14px 18px;text-align:center;min-width:110px;">
+          <div style="font-size:18px;margin-bottom:4px;">🤖</div>
+          <div style="font-size:12px;font-weight:600;color:#7c3aed;">Claude</div>
+          <div style="font-size:11px;color:var(--muted-2);">Analyse, génère,<br>décide</div>
+        </div>
+
+        <div style="color:rgba(91,106,240,0.4);font-size:20px;flex-shrink:0;">→</div>
+
+        <!-- Notion -->
+        <div style="background:rgba(91,106,240,0.05);border:0.5px solid rgba(91,106,240,0.25);border-radius:12px;padding:14px 18px;text-align:center;min-width:110px;">
+          <div style="font-size:18px;margin-bottom:4px;">🗂</div>
+          <div style="font-size:12px;font-weight:600;color:#5b6af0;">Notion</div>
+          <div style="font-size:11px;color:var(--muted-2);">Stocke, centralise,<br>rend lisible</div>
+        </div>
+
+        <div style="color:rgba(91,106,240,0.4);font-size:20px;flex-shrink:0;">→</div>
+
+        <!-- Humain -->
+        <div style="background:rgba(34,197,94,0.05);border:0.5px solid rgba(34,197,94,0.2);border-radius:12px;padding:14px 18px;text-align:center;min-width:110px;">
+          <div style="font-size:18px;margin-bottom:4px;">👤</div>
+          <div style="font-size:12px;font-weight:600;color:#16a34a;">L'humain</div>
+          <div style="font-size:11px;color:var(--muted-2);">Consulte, décide,<br>agit si besoin</div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;padding-top:20px;border-top:0.5px solid var(--border-light);">
+        <div style="font-size:12px;color:var(--muted-2);line-height:1.7;">
+          <strong style="color:var(--black);">La donnée a toujours besoin d'un endroit où atterrir.</strong> n8n la traite, Claude la comprend, mais quelqu'un doit pouvoir la <em>lire, la consulter, la corriger</em>. Notion est cet endroit. C'est la seule source de vérité que tout le monde peut ouvrir sans savoir coder.
+        </div>
+      </div>
+    </div>
+
+    <!-- LES 2 RÔLES DE NOTION -->
+    <div class="grid-2" style="margin-bottom:12px;">
+      <div class="concept-card">
+        <span class="concept-emoji">🗄</span>
+        <div class="concept-subtitle">Rôle 1</div>
+        <div class="concept-title">Centraliser la donnée</div>
+        <div class="concept-desc">Tous les automatisations écrivent dans Notion. Les leads, les clients, les statuts, les roadmaps, les comptes-rendus de calls. Tout est au même endroit, structuré, consultable.</div>
+        <div class="concept-example">
+          Sans ça : les données sont éparpillées dans des emails, des Slack, des fichiers Excel, des Google Sheets. Personne ne sait où est la bonne version.
+        </div>
+      </div>
+
+      <div class="concept-card">
+        <span class="concept-emoji">🖥</span>
+        <div class="concept-subtitle">Rôle 2</div>
+        <div class="concept-title">L'interface d'utilisation</div>
+        <div class="concept-desc">Notion, c'est aussi ce que l'équipe utilise au quotidien pour piloter la production. Voir les roadmaps, cocher les tâches, consulter les transcripts. C'est l'interface humaine de tout le système.</div>
+        <div class="concept-example">
+          n8n et Claude fonctionnent dans le noir. Notion, c'est la fenêtre qui permet à l'équipe de voir ce qui se passe et d'intervenir si besoin.
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTION VS LOVABLE -->
+    <div style="background:#fff;border:0.5px solid var(--border-light);border-radius:16px;padding:24px 28px;margin-bottom:12px;">
+      <p style="font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Notion vs Lovable — qui fait quoi ?</p>
+      <div class="grid-2">
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--black);margin-bottom:8px;">Notion → usage interne</div>
+          <div style="font-size:13px;color:var(--muted-2);line-height:1.7;">C'est l'outil de l'équipe OOO. On y gère la production, les roadmaps, les SOPs. Le client n'y a pas accès.</div>
+        </div>
+        <div>
+          <div style="font-size:14px;font-weight:600;color:var(--black);margin-bottom:8px;">Lovable → interface client</div>
+          <div style="font-size:13px;color:var(--muted-2);line-height:1.7;">C'est ce qu'on livre au client. Un portail web propre et accessible, branché sur les données Notion via n8n. Le client voit ses livrables, son avancement — sans jamais toucher à Notion.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="rule-icon">🗂</div>
+      <div class="rule-text"><strong>À retenir :</strong> quand tu builds une automatisation, pense toujours à où va atterrir la donnée. La plupart du temps, la réponse est Notion. Si le client doit voir quelque chose, la réponse est Lovable — qui lit depuis Notion.</div>
+    </div>
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- 4 EXEMPLES CONCRETS -->
+<section class="section-offwhite">
+  <div class="section-inner">
+    <p class="section-eyebrow">05 — Exemples concrets</p>
+    <h2 class="section-title">Un exemple<br>par <em>type</em>.</h2>
+    <p class="section-sub">Voilà ce que ça donne en vrai, pour chaque type de livrable qu'on build chez OOO.</p>
+
+    <!-- TYPE 1 : N8N PUR -->
+    <div class="flow-example" style="margin-bottom:16px;">
+      <div class="flow-header">
+        <div class="flow-header-title">Exemple 1 — Automatisation n8n pure</div>
+        <span class="pill pill-amber">n8n uniquement</span>
+      </div>
+      <div style="padding:16px 24px;background:rgba(234,88,12,0.03);border-bottom:0.5px solid var(--border-light);">
+        <div style="font-size:13px;color:var(--muted-2);font-style:italic;">Un prospect booké un rendez-vous → création du groupe WhatsApp, création dans le CRM, premier message automatique</div>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(234,88,12,0.1);">⚡</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#ea580c;">Déclencheur n8n</div>
+            <div class="flow-step-title">Le prospect réserve un créneau (Calendly, Cal.com…)</div>
+            <div class="flow-step-desc">n8n reçoit le webhook de réservation. Il récupère le nom, l'email, le téléphone du prospect.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(234,88,12,0.1);">💬</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#ea580c;">n8n — Étape 1</div>
+            <div class="flow-step-title">Création du groupe WhatsApp</div>
+            <div class="flow-step-desc">n8n appelle l'API WhatsApp pour créer un groupe, y ajoute le prospect et le commercial, et envoie un premier message de bienvenue.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(234,88,12,0.1);">🗂</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#ea580c;">n8n — Étape 2</div>
+            <div class="flow-step-title">Création de la fiche dans le CRM</div>
+            <div class="flow-step-desc">n8n crée automatiquement le contact dans le CRM avec toutes les infos, le tag "RDV booké" et la date du call.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(16,185,129,0.1);">✅</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#059669;">Résultat</div>
+            <div class="flow-step-title">0 action manuelle. Tout est prêt avant même le call.</div>
+            <div class="flow-step-desc">Pas une ligne de Claude. Que de la logique, des connecteurs et des données. C'est ça une automatisation n8n pure.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TYPE 2 : SKILL CLAUDE PUR -->
+    <div class="flow-example" style="margin-bottom:16px;">
+      <div class="flow-header">
+        <div class="flow-header-title">Exemple 2 — Skill Claude pur</div>
+        <span class="pill pill-violet">Claude uniquement</span>
+      </div>
+      <div style="padding:16px 24px;background:rgba(139,92,246,0.03);border-bottom:0.5px solid var(--border-light);">
+        <div style="font-size:13px;color:var(--muted-2);font-style:italic;">Taper "/propale" → Claude génère une proposition commerciale complète et prête à envoyer</div>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(139,92,246,0.1);">⌨️</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#7c3aed;">Déclencheur</div>
+            <div class="flow-step-title">Le Manager tape "/propale" dans Claude</div>
+            <div class="flow-step-desc">Il donne le nom du client, le besoin, quelques infos contextuelles. C'est tout.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(139,92,246,0.1);">📋</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#7c3aed;">Claude — Skill "propale"</div>
+            <div class="flow-step-title">Claude sait déjà tout ce qu'il faut</div>
+            <div class="flow-step-desc">Le skill lui dit : la structure d'une propale OOO, le ton, les sections à inclure, le format, les formules qu'on utilise. Claude n'a pas à improviser — il suit la fiche de poste.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(16,185,129,0.1);">✅</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#059669;">Résultat</div>
+            <div class="flow-step-title">Une propale complète en 30 secondes</div>
+            <div class="flow-step-desc">Pas de n8n, pas de connexion externe. Juste Claude et son skill. Le Manager n'a plus qu'à relire et envoyer.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TYPE 3 : CLAUDE + N8N -->
+    <div class="flow-example" style="margin-bottom:16px;">
+      <div class="flow-header">
+        <div class="flow-header-title">Exemple 3 — Skill Claude + n8n</div>
+        <div style="display:flex;gap:6px;">
+          <span class="pill pill-violet">Claude</span>
+          <span class="pill pill-amber">+ n8n</span>
+        </div>
+      </div>
+      <div style="padding:16px 24px;background:rgba(91,106,240,0.03);border-bottom:0.5px solid var(--border-light);">
+        <div style="font-size:13px;color:var(--muted-2);font-style:italic;">Taper "/reporting" → Claude demande à n8n de récupérer les données campagnes, puis génère le reporting complet</div>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(139,92,246,0.1);">⌨️</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#7c3aed;">Déclencheur</div>
+            <div class="flow-step-title">Le Manager tape "/reporting [client]" dans Claude</div>
+            <div class="flow-step-desc">Claude active le skill "reporting". Il sait ce qu'il doit produire — mais il a besoin des données pour le faire.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(234,88,12,0.1);">📡</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#ea580c;">Claude appelle n8n</div>
+            <div class="flow-step-title">n8n extrait les données campagnes</div>
+            <div class="flow-step-desc">Claude délègue à n8n : "récupère les stats Klaviyo des 30 derniers jours pour ce client". n8n interroge l'API, formate les données et les renvoie à Claude.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(139,92,246,0.1);">📊</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#7c3aed;">Claude — Skill "reporting"</div>
+            <div class="flow-step-title">Claude génère le reporting complet</div>
+            <div class="flow-step-desc">Avec les données fraîches de n8n, Claude produit le reporting structuré : analyse des performances, insights, recommandations — au format HTML prêt à partager.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(16,185,129,0.1);">✅</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#059669;">Résultat</div>
+            <div class="flow-step-title">Un reporting complet en 2 minutes</div>
+            <div class="flow-step-desc">Claude réfléchit et rédige. n8n fetch et agit. Ensemble, ils font en 2 minutes ce qui prendrait 2h à la main.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- TYPE 4 : CLAUDE + N8N -->
+    <div class="flow-example" style="margin-bottom:16px;">
+      <div class="flow-header">
+        <div class="flow-header-title">Exemple 4 — Claude + n8n</div>
+        <div style="display:flex;gap:6px;">
+          <span class="pill pill-violet">Claude</span>
+          <span class="pill pill-amber">+ n8n</span>
+        </div>
+      </div>
+      <div style="padding:16px 24px;background:rgba(59,130,246,0.03);border-bottom:0.5px solid var(--border-light);">
+        <div style="font-size:13px;color:var(--muted-2);font-style:italic;">Taper "/reporting [client]" → Claude demande à n8n de récupérer les données campagnes, puis génère le reporting complet</div>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(139,92,246,0.1);">⌨️</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#7c3aed;">Déclencheur</div>
+            <div class="flow-step-title">Le Manager tape "/reporting [client]" dans Claude</div>
+            <div class="flow-step-desc">Claude active le skill "reporting". Il sait ce qu'il doit produire — mais il a besoin des données pour le faire.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(234,88,12,0.1);">📡</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#ea580c;">Claude appelle n8n</div>
+            <div class="flow-step-title">n8n fetche les données campagnes Klaviyo</div>
+            <div class="flow-step-desc">Claude délègue : "récupère les stats des 30 derniers jours pour ce client". n8n interroge l'API, formate et renvoie à Claude.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(139,92,246,0.1);">📊</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#7c3aed;">Claude — Skill "reporting"</div>
+            <div class="flow-step-title">Claude génère le reporting complet</div>
+            <div class="flow-step-desc">Avec les données fraîches, Claude produit analyse, insights et recommandations au format HTML prêt à partager.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(16,185,129,0.1);">✅</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#059669;">Résultat</div>
+            <div class="flow-step-title">Un reporting complet en 2 minutes</div>
+            <div class="flow-step-desc">Claude réfléchit et rédige. n8n fetch et agit. Ce qui prendrait 2h à la main se fait en 2 minutes.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TYPE 5 : CLAUDE + LOVABLE + SUPABASE -->
+    <div class="flow-example" style="margin-bottom:12px;">
+      <div class="flow-header">
+        <div class="flow-header-title">Exemple 5 — Claude + Lovable + Supabase</div>
+        <span class="pill pill-green">Custom app</span>
+      </div>
+      <div style="padding:16px 24px;background:rgba(16,185,129,0.03);border-bottom:0.5px solid var(--border-light);">
+        <div style="font-size:13px;color:var(--muted-2);font-style:italic;">App de portail client intelligent — accès via identifiants, données branchées sur Notion en backend via Supabase</div>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(91,106,240,0.1);">🎨</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#5b6af0;">Lovable — Interface</div>
+            <div class="flow-step-title">On builder l'interface du portail dans Lovable</div>
+            <div class="flow-step-desc">Page de login, dashboard client, espace livrables, roadmap. Lovable génère le front en React en quelques prompts.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(34,197,94,0.1);">🔐</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#16a34a;">Supabase — Auth + BDD</div>
+            <div class="flow-step-title">Supabase gère les identifiants et la base de données</div>
+            <div class="flow-step-desc">Chaque client a ses propres identifiants. Supabase stocke les données du portail et gère les accès. n8n synchronise les données depuis Notion vers Supabase automatiquement.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(139,92,246,0.1);">🤖</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#7c3aed;">Claude — Intelligence dans l'app</div>
+            <div class="flow-step-title">Claude répond aux questions du client dans le portail</div>
+            <div class="flow-step-desc">Le client peut poser des questions sur son projet directement dans le portail. Claude a accès au contexte Supabase et répond de façon personnalisée.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(16,185,129,0.1);">✅</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#059669;">Résultat</div>
+            <div class="flow-step-title">Un vrai produit livré au client</div>
+            <div class="flow-step-desc">Pas juste une automatisation. Une app complète avec login, données en temps réel, IA intégrée. Le client se connecte, voit son avancement, interagit. C'est le niveau le plus avancé de ce qu'on livre chez OOO.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- TYPE 4 (ancien) : ROUTINE (N8N + CLAUDE) — devient TYPE 5 dans le texte mais on garde le flow-->
+    <!-- TYPE 5 dans la numérotation des exemples : ROUTINE -->
+    <div class="flow-example" style="margin-bottom:12px;">
+      <div class="flow-header">
+        <div class="flow-header-title">Exemple 5 — Routine Claude (n8n + Claude enchaînés)</div>
+        <span class="pill pill-blue">Agent autonome</span>
+      </div>
+      <div style="padding:16px 24px;background:rgba(59,130,246,0.03);border-bottom:0.5px solid var(--border-light);">
+        <div style="font-size:13px;color:var(--muted-2);font-style:italic;">Chaque lundi matin, Claude analyse tout le Notion, identifie les goulets d'étranglement et envoie un brief priorisé à toute la team sur Slack</div>
+      </div>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(234,88,12,0.1);">⏰</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#ea580c;">Déclencheur n8n</div>
+            <div class="flow-step-title">Chaque lundi à 8h, n8n se déclenche automatiquement</div>
+            <div class="flow-step-desc">Pas d'action humaine. n8n lance la routine et récupère toutes les données Notion : roadmaps clients, tâches en cours, statuts des sprints.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(139,92,246,0.1);">🔍</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#7c3aed;">Claude — Skill "analyse roadmaps"</div>
+            <div class="flow-step-title">Claude lit et analyse l'état de tous les clients</div>
+            <div class="flow-step-desc">Il identifie : quels sprints sont en retard, quels clients n'ont pas de sprint planifié, quelles tâches sont bloquées depuis trop longtemps.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(139,92,246,0.1);">📝</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#7c3aed;">Claude — Skill "weekly brief"</div>
+            <div class="flow-step-title">Claude rédige le brief de la semaine</div>
+            <div class="flow-step-desc">Il priorise les actions, suggère comment s'organiser, signale les urgences. Contexte partagé entre les deux skills — il se souvient de ce qu'il a analysé à l'étape précédente.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(234,88,12,0.1);">📤</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#ea580c;">n8n — Envoi Slack</div>
+            <div class="flow-step-title">n8n publie le brief dans le canal Slack de la team</div>
+            <div class="flow-step-desc">Le message est formaté, posté dans le bon canal, avec les bonnes mentions. La team arrive le lundi matin avec son brief déjà prêt.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-step-left"><div class="flow-step-icon" style="background:rgba(16,185,129,0.1);">✅</div></div>
+          <div class="flow-step-body">
+            <div class="flow-step-actor" style="color:#059669;">Résultat</div>
+            <div class="flow-step-title">La semaine est organisée avant même que tout le monde se lève</div>
+            <div class="flow-step-desc">C'est ça une routine. Plusieurs skills enchaînés, avec du contexte partagé, déclenchés automatiquement. Un agent qui bosse pour toi pendant que tu dors.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="sep"></div>
+
+<!-- LEXIQUE -->
+<section class="section-white">
+  <div class="section-inner">
+    <p class="section-eyebrow">Lexique</p>
+    <h2 class="section-title">Les mots qu'on utilise.<br><em>Expliqués simplement.</em></h2>
+    <p class="section-sub">Pas de jargon inutile. Voilà ce que ça veut dire en vrai, pour de vrai.</p>
+
+    <div style="display:flex;flex-direction:column;gap:2px;">
+
+      <div style="background:#fff;border:0.5px solid var(--border-light);border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:start;">
+        <div style="font-size:13px;font-weight:600;color:var(--black);">LLM</div>
+        <div style="font-size:13px;color:var(--muted-2);line-height:1.7;">Large Language Model. C'est le type de modèle d'IA derrière Claude, GPT, Gemini… En gros : une IA entraînée sur des milliards de textes, capable de comprendre et de générer du langage humain. Quand on dit "IA" chez OOO, on parle souvent d'un LLM.</div>
+      </div>
+
+      <div style="background:#fff;border:0.5px solid var(--border-light);border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:start;">
+        <div style="font-size:13px;font-weight:600;color:var(--black);">Agent IA</div>
+        <div style="font-size:13px;color:var(--muted-2);line-height:1.7;">Un système complet qui reçoit un déclencheur, exécute un flow, utilise un LLM pour réfléchir, et accomplit une mission de bout en bout — sans intervention humaine. C'est la combinaison de n8n + Claude + Notion qui tourne tout seul.</div>
+      </div>
+
+      <div style="background:#fff;border:0.5px solid var(--border-light);border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:start;">
+        <div style="font-size:13px;font-weight:600;color:var(--black);">Skill</div>
+        <div style="font-size:13px;color:var(--muted-2);line-height:1.7;">Une instruction précise qu'on donne à Claude pour lui dire comment se comporter dans une situation donnée. C'est écrit dans un fichier SKILL.md. Le skill définit le rôle, le ton, les règles, le format de sortie attendu. Sans skill, Claude improvise. Avec un skill, il suit la procédure.</div>
+      </div>
+
+      <div style="background:#fff;border:0.5px solid var(--border-light);border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:start;">
+        <div style="font-size:13px;font-weight:600;color:var(--black);">Flow</div>
+        <div style="font-size:13px;color:var(--muted-2);line-height:1.7;">La séquence d'étapes qu'une automatisation exécute dans l'ordre. Dans n8n, un flow c'est une série de nœuds connectés : chaque nœud fait une action, passe le résultat au suivant. Comme une chaîne de montage.</div>
+      </div>
+
+      <div style="background:#fff;border:0.5px solid var(--border-light);border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:start;">
+        <div style="font-size:13px;font-weight:600;color:var(--black);">Déclencheur</div>
+        <div style="font-size:13px;color:var(--muted-2);line-height:1.7;">L'événement qui lance un flow automatiquement. Sans déclencheur, rien ne démarre. Ça peut être : un formulaire soumis, un email reçu, une heure précise, un webhook entrant, un nouveau fichier, un clic sur un bouton.</div>
+      </div>
+
+      <div style="background:#fff;border:0.5px solid var(--border-light);border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:start;">
+        <div style="font-size:13px;font-weight:600;color:var(--black);">API</div>
+        <div style="font-size:13px;color:var(--muted-2);line-height:1.7;">Application Programming Interface. C'est la "porte d'entrée" d'un logiciel pour parler à d'autres logiciels. Quand n8n récupère des données depuis Klaviyo ou crée un canal Slack, il passe par leur API. Toutes les apps modernes en ont une.</div>
+      </div>
+
+      <div style="background:#fff;border:0.5px solid var(--border-light);border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:start;">
+        <div style="font-size:13px;font-weight:600;color:var(--black);">MCP</div>
+        <div style="font-size:13px;color:var(--muted-2);line-height:1.7;">Model Context Protocol. Un standard qui permet à Claude de se connecter directement à des outils externes (Notion, Slack, GitHub…) et d'agir dedans sans passer par n8n. C'est comme donner à Claude des "mains" pour interagir avec les apps directement depuis son interface.</div>
+      </div>
+
+      <div style="background:#fff;border:0.5px solid var(--border-light);border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:start;">
+        <div style="font-size:13px;font-weight:600;color:var(--black);">RAG</div>
+        <div style="font-size:13px;color:var(--muted-2);line-height:1.7;">Retrieval-Augmented Generation. Une technique qui consiste à donner à Claude des documents ou une base de connaissance spécifique avant de lui poser une question — pour qu'il réponde en s'appuyant sur ces sources plutôt que sur ses données d'entraînement. En clair : on lui donne le contexte dont il a besoin.</div>
+      </div>
+
+      <div style="background:#fff;border:0.5px solid var(--border-light);border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:start;">
+        <div style="font-size:13px;font-weight:600;color:var(--black);">Requête HTTP</div>
+        <div style="font-size:13px;color:var(--muted-2);line-height:1.7;">C'est la façon dont les apps s'envoient des messages sur internet. Quand n8n appelle une API, il envoie une requête HTTP. Il y a plusieurs types : GET pour récupérer des données, POST pour en envoyer, PUT pour modifier, DELETE pour supprimer. Tu vas en croiser beaucoup dans n8n.</div>
+      </div>
+
+      <div style="background:rgba(91,106,240,0.02);border:0.5px solid rgba(91,106,240,0.2);border-radius:12px;padding:20px 24px;display:grid;grid-template-columns:160px 1fr;gap:16px;align-items:start;">
+        <div style="font-size:13px;font-weight:600;color:var(--black);">CLI</div>
+        <div style="font-size:13px;color:var(--muted-2);line-height:1.7;">Command Line Interface. C'est le terminal — la fenêtre noire avec du texte blanc où on tape des commandes. Pas d'interface graphique, juste du texte. On s'en sert pour déployer des apps, gérer des serveurs, lancer des scripts. Ça fait peur au début, mais c'est juste une autre façon d'interagir avec un ordinateur.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="footer-nav">
+  <span class="footer-label">Partie 3 — L'automatisation pour les nuls</span>
+  <div class="footer-links">
+    <a href="#" class="btn-prev">← Partie 2</a>
+    <a href="#" class="btn-next">Partie 4 : Les formations →</a>
+  </div>
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  const p = total > 0 ? (window.scrollY / total) * 100 : 0;
+  document.getElementById('progress').style.width = p + '%';
+});
+</script>
+</body>
+</html>
