@@ -30,6 +30,7 @@ webpages/
 | OOO Welcome Kit v1.0 | landings | https://julesfleche.github.io/webpages/landings/ooo-welcome-kit/ | Avril 2026 |
 | Test Deploy — Workflow OOO | autres | https://julesfleche.github.io/webpages/autres/test-deploy-202604/ | avril 2026 |
 | Agence OOO — Reporting Avril 2026 | reportings | https://julesfleche.github.io/webpages/reportings/agenceooo-202604/ | avril 2026 |
+| PBYweb × Agence OOO — Reporting Avril 2026 | reportings | https://julesfleche.github.io/webpages/reportings/pbyweb-agenceooo-202604/ | avril 2026 |
 
 ---
 *Repo géré par Out of Office — julesfleche*
