@@ -28,9 +28,10 @@ webpages/
 | Purplemail — Kit de livraison 1 | landings | https://julesfleche.github.io/webpages/landings/purplemail-livraison-1/ | Avril 2026 |
 | Obvious — Propale avril 2026 | propales | https://julesfleche.github.io/webpages/propales/obvious-202604/ | Avril 2026 |
 | OOO Welcome Kit v1.0 | landings | https://julesfleche.github.io/webpages/landings/ooo-welcome-kit/ | Avril 2026 |
-| Test Deploy — Workflow OOO | autres | https://julesfleche.github.io/webpages/autres/test-deploy-202604/ | avril 2026 |
-| Agence OOO — Reporting Avril 2026 | reportings | https://julesfleche.github.io/webpages/reportings/agenceooo-202604/ | avril 2026 |
-| PBYweb × Agence OOO — Reporting Avril 2026 | reportings | https://julesfleche.github.io/webpages/reportings/pbyweb-agenceooo-202604/ | avril 2026 |
+| Test Deploy — Workflow OOO | autres | https://julesfleche.github.io/webpages/autres/test-deploy-202604/ | Avril 2026 |
+| Agence OOO — Reporting Avril 2026 | reportings | https://julesfleche.github.io/webpages/reportings/agenceooo-202604/ | Avril 2026 |
+| PBYweb × Agence OOO — Reporting Avril 2026 | reportings | https://julesfleche.github.io/webpages/reportings/pbyweb-agenceooo-202604/ | Avril 2026 |
+| Supernovads — Roadmap OOO × Supernovads | propales | https://julesfleche.github.io/webpages/propales/supernovads-202604/ | Avril 2026 |
 
 ---
 *Repo géré par Out of Office — julesfleche*
