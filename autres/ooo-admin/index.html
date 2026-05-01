@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OOO Admin · Pilotage de l'agence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --black: #080808;
+    --black-2: #111111;
+    --black-3: #1a1a1a;
+    --off-white: #f5f4f0;
+    --accent: #5b6af0;
+    --accent-2: #a78bfa;
+    --accent-3: #f472b6;
+    --muted: #888884;
+    --muted-2: #5a5a56;
+    --border: rgba(255,255,255,0.08);
+    --border-2: rgba(255,255,255,0.14);
+    --green: #34d399;
+    --red: #f87171;
+    --amber: #fbbf24;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--black);
+    color: var(--off-white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    padding-bottom: 0.15em;
+    padding-top: 0.05em;
+    overflow: visible;
+  }
+
+  em, .accent-em {
+    font-style: italic;
+    background: linear-gradient(135deg, #6b7fff, #a78bfa);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    padding-right: 0.12em;
+    padding-left: 0.02em;
+    display: inline-block;
+    line-height: inherit;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 48px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo-mark {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+
+  .header-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .header h1 {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .header .tagline {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .month-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .month-selector select {
+    background: var(--black-2);
+    border: 1px solid var(--border-2);
+    color: var(--off-white);
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .month-selector select:hover {
+    border-color: var(--accent);
+  }
+
+  .hero-section {
+    margin-bottom: 48px;
+  }
+
+  .hero-title {
+    font-size: 48px;
+    margin-bottom: 8px;
+  }
+
+  .hero-subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .kpi-card {
+    background: var(--black-2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    transition: border-color 0.2s ease;
+  }
+
+  .kpi-card:hover {
+    border-color: var(--border-2);
+  }
+
+  .kpi-card.accent {
+    border-color: rgba(91, 106, 240, 0.3);
+    background: linear-gradient(135deg, rgba(91, 106, 240, 0.08), rgba(167, 139, 250, 0.04));
+  }
+
+  .kpi-label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+
+  .kpi-value {
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    line-height: 1;
+  }
+
+  .kpi-detail {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .kpi-detail.green { color: var(--green); }
+  .kpi-detail.red { color: var(--red); }
+  .kpi-detail.amber { color: var(--amber); }
+
+  .section {
+    margin-bottom: 48px;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  .section-subtitle {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  @media (max-width: 900px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    background: var(--black-2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--off-white);
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  th {
+    text-align: left;
+    padding: 12px 16px;
+    color: var(--muted);
+    font-weight: 500;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--off-white);
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  tr:hover td {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+
+  .pill.green { background: rgba(52, 211, 153, 0.12); color: #6ee7b7; border: 1px solid rgba(52, 211, 153, 0.25); }
+  .pill.red { background: rgba(248, 113, 113, 0.12); color: #fca5a5; border: 1px solid rgba(248, 113, 113, 0.25); }
+  .pill.amber { background: rgba(251, 191, 36, 0.12); color: #fcd34d; border: 1px solid rgba(251, 191, 36, 0.25); }
+  .pill.blue { background: rgba(91, 106, 240, 0.12); color: #a5b4fc; border: 1px solid rgba(91, 106, 240, 0.25); }
+  .pill.violet { background: rgba(167, 139, 250, 0.12); color: #c4b5fd; border: 1px solid rgba(167, 139, 250, 0.25); }
+  .pill.gray { background: rgba(136, 136, 132, 0.12); color: var(--muted); border: 1px solid rgba(136, 136, 132, 0.25); }
+
+  .chart-container {
+    position: relative;
+    height: 280px;
+    margin-top: 12px;
+  }
+
+  .loading {
+    text-align: center;
+    color: var(--muted);
+    padding: 48px;
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 12px;
+    vertical-align: middle;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .empty {
+    text-align: center;
+    padding: 32px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .notes-block {
+    background: linear-gradient(135deg, rgba(91, 106, 240, 0.04), rgba(167, 139, 250, 0.02));
+    border: 1px solid rgba(91, 106, 240, 0.15);
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .notes-block strong { color: var(--off-white); }
+
+  .footer {
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--muted-2);
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+
+    <header class="header">
+      <div class="header-left">
+        <svg class="logo-mark" viewBox="0 0 659 659" xmlns="http://www.w3.org/2000/svg" aria-label="OOO logo">
+          <circle cx="329.5" cy="329.5" r="329.5" fill="#ffffff"/>
+          <circle cx="329.5" cy="329.5" r="220" fill="#080808"/>
+          <circle cx="329.5" cy="329.5" r="100" fill="#ffffff"/>
+        </svg>
+        <div class="header-titles">
+          <h1>OOO Admin</h1>
+          <span class="tagline">Pilotage de l'agence</span>
+        </div>
+      </div>
+      <div class="month-selector">
+        <select id="monthSelect"></select>
+      </div>
+    </header>
+
+    <section class="hero-section">
+      <h2 class="hero-title">Vue <em>du mois</em></h2>
+      <p class="hero-subtitle" id="heroSubtitle">Chargement des données…</p>
+    </section>
+
+    <div id="loading" class="loading">
+      <span class="spinner"></span> On charge tes chiffres
+    </div>
+
+    <div id="content" style="display:none;">
+
+      <div class="kpi-grid" id="kpiGrid"></div>
+
+      <div class="section">
+        <div class="notes-block" id="notesBlock"></div>
+      </div>
+
+      <div class="section">
+        <div class="two-col">
+          <div class="card">
+            <h3 class="card-title">Revenus par type</h3>
+            <div class="chart-container">
+              <canvas id="revenueChart"></canvas>
+            </div>
+          </div>
+          <div class="card">
+            <h3 class="card-title">Charges par catégorie</h3>
+            <div class="chart-container">
+              <canvas id="expensesChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h3 class="section-title">Cash <em>en attente</em></h3>
+          <span class="section-subtitle">Les paiements à relancer en priorité</span>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table id="pendingTable">
+              <thead>
+                <tr>
+                  <th>Client</th>
+                  <th>Type</th>
+                  <th class="num">En attente</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h3 class="section-title">Pipeline <em>commercial</em></h3>
+          <span class="section-subtitle">Tous les leads et leur statut</span>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table id="leadsTable">
+              <thead>
+                <tr>
+                  <th>Lead</th>
+                  <th>Source</th>
+                  <th>Statut</th>
+                  <th>Date RDV</th>
+                  <th class="num">Montant</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h3 class="section-title">Revenus <em>par client</em></h3>
+          <span class="section-subtitle">Détail client par client pour le mois sélectionné</span>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table id="clientsTable">
+              <thead>
+                <tr>
+                  <th>Client</th>
+                  <th>Type</th>
+                  <th class="num">Contracté</th>
+                  <th class="num">Encaissé</th>
+                  <th class="num">En attente</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h3 class="section-title">Détail <em>des charges</em></h3>
+          <span class="section-subtitle">Chaque ligne, ligne par ligne</span>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table id="expensesTable">
+              <thead>
+                <tr>
+                  <th>Catégorie</th>
+                  <th>Fournisseur</th>
+                  <th>Description</th>
+                  <th class="num">Montant</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="footer">
+      OOO Admin · Fait avec Claude, of course ;)
+    </footer>
+
+  </div>
+
+<script>
+const SUPABASE_URL = 'https://natsjpqjqdogcmrpvxuk.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5hdHNqcHFqcWRvZ2NtcnB2eHVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc2NDYwNjQsImV4cCI6MjA5MzIyMjA2NH0.5SBcEJ10XY5G1WaxHAtPjdz88DqVvj0MIkfNwkh-kvU';
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const fmtEur = (n) => {
+  if (n == null || isNaN(n)) return '—';
+  return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(n);
+};
+
+const fmtNum = (n) => {
+  if (n == null || isNaN(n)) return '—';
+  return new Intl.NumberFormat('fr-FR').format(n);
+};
+
+const fmtPct = (n) => {
+  if (n == null || isNaN(n)) return '—';
+  return n + '%';
+};
+
+const fmtDate = (d) => {
+  if (!d) return '—';
+  return new Date(d).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
+};
+
+const fmtMonthYear = (d) => {
+  return new Date(d).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+};
+
+const sourceColors = {
+  'LinkedIn': 'blue', 'YouTube': 'red', 'Outbound': 'violet',
+  'Referral': 'gray', 'Lead Magnet': 'amber', 'Ads': 'green',
+  'Instagram': 'amber', 'Autre': 'gray'
+};
+
+const statusLabels = {
+  'rdv_pris': { label: 'RDV pris', color: 'blue' },
+  'rdv_honore': { label: 'RDV honoré', color: 'blue' },
+  'no_show': { label: 'No-show', color: 'red' },
+  'r2': { label: 'R2', color: 'amber' },
+  'signe': { label: 'Signé', color: 'green' },
+  'perdu': { label: 'Perdu', color: 'red' },
+  'non_qualifie': { label: 'Non qualifié', color: 'gray' },
+  'relance': { label: 'Relance', color: 'amber' }
+};
+
+let currentMonth = null;
+let charts = {};
+
+async function loadAvailableMonths() {
+  const { data, error } = await supabase
+    .from('monthly_snapshots')
+    .select('month')
+    .order('month', { ascending: false });
+
+  if (error) {
+    console.error(error);
+    return [];
+  }
+  return data.map(d => d.month);
+}
+
+async function loadDashboard(month) {
+  const { data: dash } = await supabase
+    .from('v_dashboard_monthly')
+    .select('*')
+    .eq('month', month)
+    .single();
+
+  const { data: revenues } = await supabase
+    .from('client_revenues')
+    .select('*, clients(name)')
+    .eq('month', month);
+
+  const { data: leads } = await supabase
+    .from('leads')
+    .select('*')
+    .order('date_rdv', { ascending: false });
+
+  const { data: expenses } = await supabase
+    .from('expenses')
+    .select('*')
+    .eq('month', month)
+    .order('amount', { ascending: false });
+
+  return { dash, revenues: revenues || [], leads: leads || [], expenses: expenses || [] };
+}
+
+function renderHeroSubtitle(month) {
+  const monthName = fmtMonthYear(month);
+  document.getElementById('heroSubtitle').textContent = 
+    'Snapshot de ' + monthName + " — ce qui s'est passé, ce qui rentre, ce qui sort.";
+}
+
+function renderKPIs(d) {
+  const grid = document.getElementById('kpiGrid');
+
+  const margeClass = d.marge_brute >= 0 ? 'green' : 'red';
+  const margeSign = d.marge_brute >= 0 ? '+' : '';
+
+  let runwayClass = 'green';
+  if (d.runway_mois != null) {
+    if (d.runway_mois < 3) runwayClass = 'red';
+    else if (d.runway_mois < 6) runwayClass = 'amber';
+  }
+
+  grid.innerHTML = `
+    <div class="kpi-card accent">
+      <div class="kpi-label">CA encaissé</div>
+      <div class="kpi-value">${fmtEur(d.total_collected)}</div>
+      <div class="kpi-detail">${fmtEur(d.recurring_collected)} recurring · ${fmtEur(d.project_collected)} project</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Cash en attente</div>
+      <div class="kpi-value">${fmtEur(d.total_pending)}</div>
+      <div class="kpi-detail amber">À relancer en priorité</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Marge brute</div>
+      <div class="kpi-value" style="color: var(--${margeClass});">
+        ${margeSign}${fmtEur(d.marge_brute).replace('+', '')}
+      </div>
+      <div class="kpi-detail">Charges : ${fmtEur(d.total_charges)}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Solde banque</div>
+      <div class="kpi-value">${fmtEur(d.solde_banque)}</div>
+      <div class="kpi-detail ${runwayClass}">Runway : ${d.runway_mois ?? '—'} mois</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">RDV pris</div>
+      <div class="kpi-value">${fmtNum(d.rdv_pris)}</div>
+      <div class="kpi-detail">${d.no_shows} no-show · ${fmtPct(d.taux_no_show_pct)}</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Signatures</div>
+      <div class="kpi-value">${fmtNum(d.signatures)}</div>
+      <div class="kpi-detail green">Closing : ${fmtPct(d.taux_closing_pct)}</div>
+    </div>
+  `;
+}
+
+function renderNotes(d) {
+  const block = document.getElementById('notesBlock');
+  if (!d.notes) {
+    block.style.display = 'none';
+    return;
+  }
+  block.innerHTML = '<strong>📝 Note du mois</strong><br>' + d.notes;
+}
+
+function renderRevenueChart(d) {
+  if (charts.revenue) charts.revenue.destroy();
+  const ctx = document.getElementById('revenueChart');
+  charts.revenue = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Recurring encaissé', 'Recurring en attente', 'Project encaissé', 'Project en attente'],
+      datasets: [{
+        data: [d.recurring_collected, d.recurring_pending, d.project_collected, d.project_pending],
+        backgroundColor: ['#5b6af0', 'rgba(91, 106, 240, 0.35)', '#a78bfa', 'rgba(167, 139, 250, 0.35)'],
+        borderColor: '#111111',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '65%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: '#f5f4f0', font: { family: 'DM Sans', size: 12 }, padding: 16, usePointStyle: true, pointStyle: 'circle' }
+        },
+        tooltip: {
+          callbacks: { label: (c) => c.label + ': ' + fmtEur(c.raw) }
+        }
+      }
+    }
+  });
+}
+
+function renderExpensesChart(d) {
+  if (charts.expenses) charts.expenses.destroy();
+  const ctx = document.getElementById('expensesChart');
+  const data = [
+    { label: 'Logiciels', value: d.charges_logiciels, color: '#5b6af0' },
+    { label: 'Token IA', value: d.charges_token_ia, color: '#a78bfa' },
+    { label: 'Coaching', value: d.charges_coaching, color: '#f472b6' },
+    { label: 'Salaires', value: d.charges_salaires, color: '#fbbf24' }
+  ].filter(x => x.value > 0);
+
+  charts.expenses = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: data.map(x => x.label),
+      datasets: [{
+        data: data.map(x => x.value),
+        backgroundColor: data.map(x => x.color),
+        borderColor: '#111111',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '65%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: '#f5f4f0', font: { family: 'DM Sans', size: 12 }, padding: 16, usePointStyle: true, pointStyle: 'circle' }
+        },
+        tooltip: {
+          callbacks: { label: (c) => c.label + ': ' + fmtEur(c.raw) }
+        }
+      }
+    }
+  });
+}
+
+function renderPendingTable(revenues) {
+  const tbody = document.querySelector('#pendingTable tbody');
+  const pending = revenues.filter(r => r.amount_pending > 0)
+    .sort((a, b) => b.amount_pending - a.amount_pending);
+
+  if (pending.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" class="empty">Aucun paiement en attente. Bien joué.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = pending.map(r => `
+    <tr>
+      <td><strong>${r.clients?.name || '—'}</strong></td>
+      <td><span class="pill ${r.revenue_type === 'recurring' ? 'blue' : 'violet'}">${r.revenue_type === 'recurring' ? 'Recurring' : 'Project'}</span></td>
+      <td class="num"><strong>${fmtEur(r.amount_pending)}</strong></td>
+      <td>${r.notes || '—'}</td>
+    </tr>
+  `).join('');
+}
+
+function renderLeadsTable(leads) {
+  const tbody = document.querySelector('#leadsTable tbody');
+  if (leads.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty">Aucun lead enregistré.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = leads.map(l => {
+    const status = statusLabels[l.status] || { label: l.status, color: 'gray' };
+    const sourceColor = sourceColors[l.source] || 'gray';
+    const montant = l.montant_signe || l.montant_potentiel;
+    return `
+      <tr>
+        <td><strong>${l.name}</strong>${l.company ? '<br><span style="color:var(--muted);font-size:12px;">' + l.company + '</span>' : ''}</td>
+        <td><span class="pill ${sourceColor}">${l.source}</span></td>
+        <td><span class="pill ${status.color}">${status.label}</span></td>
+        <td>${fmtDate(l.date_rdv)}</td>
+        <td class="num">${montant ? fmtEur(montant) : '—'}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderClientsTable(revenues) {
+  const tbody = document.querySelector('#clientsTable tbody');
+  const sorted = [...revenues].sort((a, b) => b.amount_collected - a.amount_collected);
+
+  if (sorted.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty">Aucun revenu enregistré pour ce mois.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = sorted.map(r => `
+    <tr>
+      <td><strong>${r.clients?.name || '—'}</strong></td>
+      <td><span class="pill ${r.revenue_type === 'recurring' ? 'blue' : 'violet'}">${r.revenue_type === 'recurring' ? 'Recurring' : 'Project'}</span></td>
+      <td class="num">${fmtEur(r.amount_contracted)}</td>
+      <td class="num"><strong style="color:var(--green);">${fmtEur(r.amount_collected)}</strong></td>
+      <td class="num">${r.amount_pending > 0 ? '<span style="color:var(--amber);">' + fmtEur(r.amount_pending) + '</span>' : '—'}</td>
+    </tr>
+  `).join('');
+}
+
+function renderExpensesTable(expenses) {
+  const tbody = document.querySelector('#expensesTable tbody');
+  if (expenses.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" class="empty">Aucune charge enregistrée pour ce mois.</td></tr>';
+    return;
+  }
+
+  const catColors = {
+    'Logiciels': 'blue', 'Token IA': 'violet', 'Coaching': 'amber', 'Salaire': 'green', 'Autre': 'gray'
+  };
+
+  tbody.innerHTML = expenses.map(e => `
+    <tr>
+      <td><span class="pill ${catColors[e.category] || 'gray'}">${e.category}</span></td>
+      <td><strong>${e.vendor || '—'}</strong></td>
+      <td style="color:var(--muted);">${e.description || '—'}</td>
+      <td class="num"><strong>${fmtEur(e.amount)}</strong></td>
+    </tr>
+  `).join('');
+}
+
+async function init() {
+  const months = await loadAvailableMonths();
+
+  if (months.length === 0) {
+    document.getElementById('loading').innerHTML = '⚠️ Aucune donnée disponible.';
+    return;
+  }
+
+  const select = document.getElementById('monthSelect');
+  select.innerHTML = months.map(m => '<option value="' + m + '">' + fmtMonthYear(m) + '</option>').join('');
+  select.addEventListener('change', (e) => loadAndRender(e.target.value));
+
+  await loadAndRender(months[0]);
+}
+
+async function loadAndRender(month) {
+  currentMonth = month;
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('content').style.display = 'none';
+
+  const { dash, revenues, leads, expenses } = await loadDashboard(month);
+
+  renderHeroSubtitle(month);
+  if (dash) {
+    renderKPIs(dash);
+    renderNotes(dash);
+    renderRevenueChart(dash);
+    renderExpensesChart(dash);
+  }
+  renderPendingTable(revenues);
+  renderLeadsTable(leads);
+  renderClientsTable(revenues);
+  renderExpensesTable(expenses);
+
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+}
+
+init();
+</script>
+</body>
+</html>
