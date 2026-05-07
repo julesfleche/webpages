@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OOO × Show me the REX — Proposition Commerciale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#080808;--black-2:#111111;--black-3:#1a1a1a;
+  --white:#ffffff;--off-white:#f5f4f0;
+  --muted:#888884;--muted-2:#555552;
+  --accent:#5b6af0;--accent-2:#a78bfa;--green:#3ddc6e;
+  --border-dark:rgba(255,255,255,0.08);--border-med:rgba(255,255,255,0.14);
+  --font-display:"Poppins",sans-serif;--font-body:"DM Sans",sans-serif;
+  --grad:linear-gradient(135deg,#6b7fff,#a78bfa,#f472b6);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--black);color:var(--white);line-height:1.6;-webkit-font-smoothing:antialiased}
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(8,8,8,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border-dark)}
+.topbar-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.topbar-logo img{height:28px;width:auto}
+.topbar-center{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted-2)}
+.topbar-sep{color:var(--border-med)}
+.topbar-client{color:var(--muted);font-weight:500}
+.topbar-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(61,220,110,.1);border:1px solid rgba(61,220,110,.2);border-radius:999px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--green);letter-spacing:.06em;text-transform:uppercase}
+.topbar-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero{min-height:92vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;padding:100px 80px 80px;position:relative;overflow:hidden;border-bottom:1px solid var(--border-dark)}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 55% 70% at 5% 50%,rgba(91,106,240,.13) 0%,transparent 65%),radial-gradient(ellipse 35% 35% at 85% 25%,rgba(167,139,250,.07) 0%,transparent 60%);pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border-dark) 1px,transparent 1px),linear-gradient(90deg,var(--border-dark) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 90% 80% at 10% 50%,black 0%,transparent 75%);pointer-events:none}
+.hero-left{position:relative;display:flex;flex-direction:column;justify-content:center;padding-right:56px}
+.hero-eyebrow{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.hero-eyebrow::before{content:"";display:block;width:28px;height:1px;background:var(--accent)}
+.hero h1{font-family:var(--font-display);font-size:clamp(38px,4.5vw,68px);font-weight:600;letter-spacing:-2.5px;line-height:1.0;color:var(--white);margin-bottom:24px}
+.hero h1 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:17px;color:var(--muted);max-width:460px;line-height:1.7;margin-bottom:36px}
+.hero-pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:7px 14px;font-size:12px;font-weight:500;border:1px solid}
+.pill-blue{background:rgba(59,130,246,.1);border-color:rgba(59,130,246,.2);color:#93c5fd}
+.pill-violet{background:rgba(139,92,246,.1);border-color:rgba(139,92,246,.2);color:#c4b5fd}
+.pill-green{background:rgba(34,197,94,.08);border-color:rgba(34,197,94,.18);color:#86efac}
+.hero-right{position:relative;display:flex;flex-direction:column;gap:12px;padding-left:56px;border-left:1px solid var(--border-dark)}
+.info-card{background:rgba(255,255,255,.03);border:1px solid var(--border-dark);border-radius:16px;padding:20px 24px}
+.info-card-label{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2);margin-bottom:6px}
+.info-card-value{font-family:var(--font-display);font-size:17px;font-weight:600;letter-spacing:-.3px;color:var(--white)}
+.info-card-value.accent{color:var(--accent)}
+.info-card-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.hero-ref{font-size:11px;color:var(--muted-2);padding:0 4px}
+.section{padding:88px 80px;border-bottom:1px solid var(--border-dark)}
+.section.light{background:var(--off-white);color:var(--black)}
+.section.dark{background:var(--black-2)}
+.section-label{display:block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+.section-title{font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:600;letter-spacing:-1px;line-height:1.05;margin-bottom:20px}
+.section.light .section-title{color:var(--black)}
+.section-intro{font-size:17px;color:var(--muted);max-width:560px;line-height:1.7;margin-bottom:48px}
+.section.light .section-intro{color:#666660}
+/* 01 CONTEXTE */
+.client-card{background:rgba(255,255,255,.03);border:1px solid var(--border-dark);border-radius:20px;padding:32px;margin-bottom:32px;display:flex;align-items:flex-start;gap:24px}
+.client-icon{width:52px;height:52px;border-radius:14px;background:rgba(91,106,240,.12);border:1px solid rgba(91,106,240,.2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.client-text h3{font-family:var(--font-display);font-size:20px;font-weight:600;letter-spacing:-.5px;color:var(--white);margin-bottom:8px}
+.client-text p{font-size:15px;color:var(--muted);line-height:1.7}
+.client-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.ctag{font-size:11px;font-weight:500;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.05);color:var(--muted);border:1px solid var(--border-dark)}
+.pb-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pb-card{background:rgba(255,255,255,.03);border:1px solid var(--border-dark);border-radius:20px;padding:28px;position:relative;overflow:hidden;transition:border-color .2s}
+.pb-card:hover{border-color:var(--border-med)}
+.pb-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);opacity:0;transition:opacity .2s}
+.pb-card:hover::before{opacity:1}
+.pb-num{font-family:var(--font-display);font-size:44px;font-weight:600;letter-spacing:-2px;line-height:1;color:rgba(255,255,255,.05);margin-bottom:14px}
+.pb-card h3{font-family:var(--font-display);font-size:18px;font-weight:600;letter-spacing:-.4px;color:var(--white);margin-bottom:8px}
+.pb-card p{font-size:14px;color:var(--muted);line-height:1.7}
+/* 02 CODE IA */
+.vibe-hero{background:rgba(91,106,240,.06);border:1px solid rgba(91,106,240,.2);border-radius:24px;padding:40px;margin-bottom:40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.vibe-text h3{font-family:var(--font-display);font-size:28px;font-weight:600;letter-spacing:-.8px;color:var(--white);margin-bottom:16px;line-height:1.1}
+.vibe-text h3 em{font-style:normal;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.vibe-text p{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:12px}
+.vibe-stack{display:flex;flex-direction:column;gap:12px}
+.vs-item{background:rgba(255,255,255,.04);border:1px solid var(--border-dark);border-radius:14px;padding:18px 20px;display:flex;align-items:flex-start;gap:14px;transition:border-color .2s}
+.vs-item:hover{border-color:var(--border-med)}
+.vs-ico{font-size:20px;flex-shrink:0;margin-top:2px}
+.vs-text h4{font-size:14px;font-weight:600;color:var(--white);margin-bottom:3px}
+.vs-text p{font-size:12px;color:var(--muted);line-height:1.5}
+.vs-badge{display:inline-flex;margin-top:6px;font-size:10px;font-weight:600;letter-spacing:.06em;border-radius:999px;padding:3px 8px}
+.vb-blue{background:rgba(59,130,246,.15);color:#93c5fd}
+.vb-violet{background:rgba(139,92,246,.15);color:#c4b5fd}
+.vb-green{background:rgba(34,197,94,.12);color:#86efac}
+.not-lovable{background:rgba(255,255,255,.02);border:1px solid var(--border-dark);border-radius:20px;padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:0}
+.nl-col{padding:0 28px}
+.nl-col:first-child{border-right:1px solid var(--border-dark);padding-left:0}
+.nl-col:last-child{padding-right:0}
+.nl-head{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.nl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.nl-dot.rouge{background:#ef4444}.nl-dot.verte{background:var(--green)}
+.nl-title{font-family:var(--font-display);font-size:14px;font-weight:600}
+.nl-title.rouge{color:#f87171}.nl-title.verte{color:var(--green)}
+.nl-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.nl-list li{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--muted);line-height:1.5}
+/* 03 ROADMAP */
+.tl-wrap{display:flex;flex-direction:column;gap:0}
+.tl-item{display:grid;grid-template-columns:72px 1fr;align-items:stretch}
+.tl-spine{display:flex;flex-direction:column;align-items:center}
+.tl-circle{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:13px;font-weight:600;flex-shrink:0;z-index:1;margin-top:16px;background:rgba(255,255,255,.06);border:1px solid var(--border-dark);color:var(--muted)}
+.tl-line{flex:1;width:1px;background:var(--border-dark);margin:6px 0}
+.tl-card{margin:8px 0 8px 16px;background:rgba(255,255,255,.025);border:1px solid var(--border-dark);border-radius:18px;padding:20px 24px;transition:border-color .2s}
+.tl-card:hover{border-color:var(--border-med)}
+.tl-card-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.tl-theme{font-family:var(--font-display);font-size:15px;font-weight:600;letter-spacing:-.3px;color:var(--white)}
+.tl-badge{font-size:11px;padding:3px 10px;border-radius:999px;font-weight:600;white-space:nowrap}
+.tb-i{background:rgba(59,130,246,.15);color:#93c5fd}
+.tb-f{background:rgba(139,92,246,.15);color:#c4b5fd}
+.tb-p{background:rgba(245,158,11,.12);color:#fcd34d}
+.tb-b{background:rgba(239,68,68,.12);color:#fca5a5}
+.tb-q{background:rgba(255,255,255,.07);color:var(--muted)}
+.tb-g{background:rgba(61,220,110,.12);color:#86efac}
+.tl-tasks{display:flex;flex-direction:column;gap:6px}
+.tl-task{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:var(--muted);line-height:1.55}
+.td{width:4px;height:4px;border-radius:50%;margin-top:6px;flex-shrink:0}
+.td-i{background:#3b82f6}.td-f{background:#8b5cf6}.td-p{background:#f59e0b}.td-b{background:#ef4444}.td-q{background:#888884}.td-g{background:#3ddc6e}
+/* 04 AVANT/APRES */
+.avap-wrap{border:1px solid var(--border-dark);border-radius:20px;overflow:hidden;margin-bottom:48px}
+.avap-row{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border-dark)}
+.avap-row:last-child{border-bottom:none}
+.avap-header-row{background:rgba(255,255,255,.02)}
+.avap-cell{padding:18px 28px;border-right:1px solid var(--border-dark)}
+.avap-cell:last-child{border-right:none}
+.avap-cell.avant-head,.avap-cell.apres-head{display:flex;align-items:center;gap:10px}
+.avap-head-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.avap-head-dot.r{background:#ef4444}.avap-head-dot.v{background:var(--green)}
+.avap-head-label{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+.avap-head-label.r{color:#f87171}.avap-head-label.v{color:var(--green)}
+.avap-cell.avant-bg{background:rgba(239,68,68,.03)}
+.avap-cell.apres-bg{background:rgba(61,220,110,.03)}
+.avap-situation{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2);margin-bottom:6px}
+.avap-text{font-size:13px;color:var(--muted);line-height:1.55}
+.avap-text.rouge{color:#fca5a5}.avap-text.verte{color:#86efac}
+.kpi-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.kpi-card{background:rgba(61,220,110,.06);border:1px solid rgba(61,220,110,.18);border-radius:16px;padding:24px;text-align:center}
+.kpi-num{font-family:var(--font-display);font-size:40px;font-weight:600;letter-spacing:-1.5px;color:var(--green);line-height:1}
+.kpi-label{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.4}
+/* 05 MISSION — section LIGHT, textes noirs */
+.section.light .ms-body h4{color:var(--black)}
+.section.light .ms-body p{color:#666660}
+.section.light .ms-num{color:rgba(0,0,0,.07)}
+.ms-list{display:flex;flex-direction:column;gap:0}
+.ms-item{display:flex;gap:20px;padding:24px 0;border-bottom:1px solid rgba(0,0,0,.08)}
+.ms-item:last-child{border-bottom:none}
+.ms-num{font-family:var(--font-display);font-size:30px;font-weight:600;letter-spacing:-1px;flex-shrink:0;width:36px;line-height:1;margin-top:4px}
+.ms-body h4{font-family:var(--font-display);font-size:15px;font-weight:600;letter-spacing:-.3px;margin-bottom:5px}
+.ms-body p{font-size:13px;line-height:1.6}
+.ms-card{background:var(--white);border:1px solid rgba(0,0,0,.08);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.msc-item{display:flex;align-items:flex-start;gap:14px}
+.msc-ico{width:36px;height:36px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.msc-ico.blue{background:#EEF2FF;border:1px solid #C7D2FE}
+.msc-ico.green{background:#F0FDF4;border:1px solid #BBF7D0}
+.msc-ico.violet{background:#F5F3FF;border:1px solid #DDD6FE}
+.msc-ico.amber{background:#FFFBEB;border:1px solid #FDE68A}
+.msc-body h5{font-size:13px;font-weight:600;color:var(--black);margin-bottom:3px}
+.msc-body p{font-size:12px;color:#666660;line-height:1.5}
+/* 06 POURQUOI OOO */
+.ps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border-dark);border:1px solid var(--border-dark);border-radius:20px;overflow:hidden;margin-bottom:40px}
+.ps-stat{background:var(--black-2);padding:28px 24px}
+.ps-num{font-family:var(--font-display);font-size:38px;font-weight:600;letter-spacing:-1.5px;line-height:1;margin-bottom:8px}
+.ps-num.a{color:var(--accent)}.ps-num.g{color:var(--green)}.ps-num.w{color:var(--white)}.ps-num.v{color:var(--accent-2)}
+.ps-label{font-size:12px;color:var(--muted);line-height:1.4}
+.about-grid{display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:start}
+.jules-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;min-width:140px}
+.jules-photo{width:100px;height:100px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,.1)}
+.jules-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.jules-name{font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--white);text-align:center}
+.jules-role{font-size:12px;color:var(--muted);text-align:center}
+.about-text p{font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:14px}
+.about-text p:last-child{margin-bottom:0}
+/* 07 PRICING */
+.price-card{border-radius:20px;padding:36px;display:flex;flex-direction:column}
+.price-card.main{background:rgba(91,106,240,.08);border:1px solid rgba(91,106,240,.3)}
+.pc-badge{display:inline-flex;font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border-radius:999px;padding:4px 10px;margin-bottom:20px;width:fit-content;background:rgba(91,106,240,.2);color:#a5b4fc}
+.pc-name{font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-.5px;color:var(--white);margin-bottom:8px}
+.pc-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:28px}
+.pc-amount{font-family:var(--font-display);font-size:56px;font-weight:600;letter-spacing:-2px;line-height:1;color:var(--white);margin-bottom:4px}
+.pc-freq{font-size:13px;color:var(--muted-2);margin-bottom:24px}
+.pc-split{background:rgba(255,255,255,.04);border-radius:12px;padding:16px;margin-bottom:24px;display:flex;flex-direction:column;gap:10px}
+.pc-split-row{display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.pc-split-label{color:var(--muted);display:flex;align-items:center;gap:8px}
+.pc-split-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.pc-split-dot.e{background:var(--accent)}
+.pc-split-amount{font-weight:600;color:var(--white)}
+.pc-divider{height:1px;background:rgba(255,255,255,.06)}
+.pc-features{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.pc-features li{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--muted)}
+.pc-check{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;font-weight:700;background:rgba(61,220,110,.15);color:var(--green)}
+.price-retainer{margin-top:16px;padding:16px 20px;background:rgba(61,220,110,.06);border:1px solid rgba(61,220,110,.2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.pr-left{font-size:13px;color:var(--muted)}
+.pr-left strong{color:var(--white);display:block;margin-bottom:2px}
+.pr-price{font-family:var(--font-display);font-size:22px;font-weight:600;color:var(--green);white-space:nowrap}
+.pr-freq{font-size:11px;color:var(--muted-2);margin-top:2px;text-align:right}
+/* 08 ENGAGEMENT */
+.engage-wrap{max-width:640px;margin:0 auto}
+.ec-single{display:flex;align-items:flex-start;gap:16px;padding:24px;background:rgba(255,255,255,.025);border:1.5px solid var(--border-dark);border-radius:16px;cursor:pointer;transition:all .2s;user-select:none;margin-bottom:32px}
+.ec-single:hover{border-color:var(--border-med)}
+.ec-single.on{border-color:rgba(61,220,110,.4);background:rgba(61,220,110,.06)}
+.ec-box{width:24px;height:24px;border-radius:8px;border:1.5px solid var(--border-med);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;transition:all .2s;background:transparent;font-size:13px;font-weight:700;color:transparent}
+.ec-single.on .ec-box{background:var(--green);border-color:var(--green);color:var(--black)}
+.ec-body h4{font-size:16px;font-weight:600;color:var(--white);margin-bottom:5px}
+.ec-body p{font-size:13px;color:var(--muted);line-height:1.5}
+/* CANVAS SIGNATURE */
+.sig-wrap{background:rgba(255,255,255,.025);border:1px solid var(--border-dark);border-radius:20px;padding:32px}
+.sig-info-row{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:28px}
+.sig-info h5{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);margin-bottom:10px}
+.sig-info p{font-size:14px;color:var(--muted);line-height:1.6}
+.sig-info p strong{color:var(--white)}
+.sig-canvas-zone{border-top:1px solid var(--border-dark);padding-top:24px}
+.sig-canvas-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);margin-bottom:6px}
+.sig-canvas-name{font-size:14px;font-weight:600;color:var(--white);margin-bottom:12px}
+canvas#sigCanvas{background:rgba(255,255,255,.04);border:1px solid var(--border-med);border-radius:12px;cursor:crosshair;display:block;width:100%;touch-action:none}
+.sig-canvas-actions{display:flex;gap:10px;margin-top:10px}
+.sig-clear{font-size:12px;color:var(--muted-2);background:rgba(255,255,255,.05);border:1px solid var(--border-dark);border-radius:999px;padding:5px 14px;cursor:pointer;transition:all .2s;font-family:var(--font-body)}
+.sig-clear:hover{border-color:var(--border-med);color:var(--muted)}
+.sig-date{font-size:11px;color:var(--muted-2);margin-left:auto;display:flex;align-items:center}
+/* CTA */
+.cta-section{background:var(--black);padding:100px 80px;text-align:center;position:relative;overflow:hidden}
+.cta-section::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% 50%,rgba(91,106,240,.15) 0%,transparent 65%);pointer-events:none}
+.cta-grid-bg{position:absolute;inset:0;background-image:linear-gradient(var(--border-dark) 1px,transparent 1px),linear-gradient(90deg,var(--border-dark) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 60% 70% at 50% 50%,black 0%,transparent 80%);pointer-events:none}
+.cta-inner{position:relative;max-width:520px;margin:0 auto}
+.cta-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid var(--border-dark);border-radius:999px;padding:6px 16px 6px 10px;font-size:12px;color:#b0b0a8;margin-bottom:28px}
+.cta-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s ease-in-out infinite}
+.cta-title{font-family:var(--font-display);font-size:clamp(36px,4.5vw,56px);font-weight:600;letter-spacing:-2px;line-height:1;color:var(--white);margin-bottom:16px}
+.cta-title em{font-style:normal;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.cta-sub{font-size:16px;color:var(--muted);line-height:1.65;margin-bottom:44px}
+.cta-btns{display:flex;flex-direction:column;gap:12px;max-width:380px;margin:0 auto}
+.btn-kickoff{display:flex;align-items:center;justify-content:center;gap:12px;background:var(--white);color:var(--black);border:none;border-radius:999px;padding:18px 36px;font-family:var(--font-body);font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;isolation:isolate}
+.btn-kickoff::after{content:"";position:absolute;inset:0;border-radius:999px;background:var(--grad);opacity:0;transition:opacity .3s;z-index:-1}
+.btn-kickoff:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(107,127,255,.4)}
+.btn-kickoff:hover::after{opacity:1}
+.btn-kickoff:hover,.btn-kickoff:hover span{color:#fff}
+.btn-kickoff span{position:relative;z-index:1}
+.btn-kickoff-ico{width:28px;height:28px;border-radius:50%;background:rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;font-size:13px;position:relative;z-index:1;flex-shrink:0}
+.btn-wa{display:flex;align-items:center;justify-content:center;gap:10px;background:rgba(37,211,102,.1);color:#4ade80;border:1px solid rgba(37,211,102,.25);border-radius:999px;padding:15px 36px;font-family:var(--font-body);font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;transition:all .2s}
+.btn-wa:hover{background:rgba(37,211,102,.16);border-color:rgba(37,211,102,.4);transform:translateY(-1px)}
+.cta-trust{margin-top:24px;font-size:12px;color:var(--muted-2);display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+.cta-trust span{display:flex;align-items:center;gap:5px}
+.footer{padding:28px 80px;border-top:1px solid var(--border-dark);display:flex;align-items:center;justify-content:space-between}
+.footer-logo{display:flex;align-items:center;gap:8px;text-decoration:none}
+.footer-logo img{height:22px;width:auto;opacity:.85}
+.footer-right{font-size:12px;color:var(--muted-2);display:flex;align-items:center;gap:20px}
+.footer-right a{color:var(--muted-2);text-decoration:none;transition:color .2s}
+.footer-right a:hover{color:var(--muted)}
+.mission-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+.fade-in{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="topbar-logo" href="#">
+    <img src="https://lh3.googleusercontent.com/d/1t8DOJoFuukd5qkhbgioJyxpZEiIUI0Qc" alt="Out of Office">
+  </a>
+  <div class="topbar-center">
+    <span>Proposition pour</span>
+    <span class="topbar-sep">&mdash;</span>
+    <span class="topbar-client">Show me the REX</span>
+  </div>
+  <div class="topbar-badge">
+    <span class="topbar-badge-dot"></span>
+    Confidentiel
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-left fade-in">
+    <div class="hero-eyebrow">Proposition commerciale</div>
+    <h1>Show me the REX,<br>reconstruit en 8 semaines.<br><em>Sans dépendance à une équipe dev.</em></h1>
+    <p class="hero-sub">On reconstruit Show me the REX de zéro sur une architecture moderne que vous pilotez vous-même — sans dépendre d'un développeur pour la moindre modification.</p>
+    <div class="hero-pills">
+      <span class="pill pill-violet">&#9889; Code généré par IA — Claude Code + Vercel</span>
+      <span class="pill pill-blue">&#x1F3AF; 8 semaines, une livraison par semaine</span>
+      <span class="pill pill-green">&#x2713; Autonomie totale à la livraison</span>
+    </div>
+  </div>
+  <div class="hero-right fade-in" style="transition-delay:.15s">
+    <div class="hero-ref">REF &middot; OOO-2026-048 &middot; Mai 2026</div>
+    <div class="info-card">
+      <div class="info-card-label">Client</div>
+      <div class="info-card-value">Show me the REX</div>
+      <div class="info-card-sub">Eric Mattern &middot; Fondateur</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">Démarrage estimé</div>
+      <div class="info-card-value accent">Semaine 21 — Mai 2026</div>
+      <div class="info-card-sub">Sous réserve de signature</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">Durée du projet</div>
+      <div class="info-card-value">8 semaines</div>
+      <div class="info-card-sub">1 semaine = 1 livraison testable &middot; 1 appel de 30 min</div>
+    </div>
+    <div class="info-card">
+      <div class="info-card-label">Interlocuteur</div>
+      <div class="info-card-value">Jules Fléchet</div>
+      <div class="info-card-sub">Fondateur &middot; jules@agenceooo.com</div>
+    </div>
+  </div>
+</section>
+
+<!-- 01 CE QU'ON A COMPRIS -->
+<section class="section fade-in">
+  <span class="section-label">01 &mdash; Ce qu&rsquo;on a compris</span>
+  <h2 class="section-title">On a écouté avant<br>de proposer quoi que ce soit.</h2>
+  <p class="section-intro">Lors de notre échange du 29 avril, Eric nous a présenté Show me the REX dans le détail — la vision, la V1 en pré-production, toutes les fonctionnalités. Et surtout, ce qui bloque vraiment.</p>
+  <div class="client-card">
+    <div class="client-icon">🦁</div>
+    <div class="client-text">
+      <h3>Show me the REX</h3>
+      <p>Un portail de partage de retours d'expérience pour les acteurs de la tech, de la data et de l'IA française. L'idée : permettre aux décideurs (DSI, CDO, directeurs innovation) d'identifier les bons partenaires au travers de cas d'usage concrets et documentés — pas de la théorie, du vécu. Un nouveau canal de visibilité pour les acteurs tech, un outil de veille pour les porteurs de projets.</p>
+      <div class="client-tags">
+        <span class="ctag">Logiciel en ligne B2B</span>
+        <span class="ctag">Tech / Data / IA</span>
+        <span class="ctag">Lancement France</span>
+        <span class="ctag">Abonnement mensuel</span>
+        <span class="ctag">12 acteurs en pré-lancement</span>
+      </div>
+    </div>
+  </div>
+  <div class="pb-grid">
+    <div class="pb-card">
+      <div class="pb-num">01</div>
+      <h3>Dépendance totale à un directeur technique</h3>
+      <p>La plateforme fonctionne, mais Eric n'a aucune prise dessus. Chaque modification passe par son CTO. Pas de réactivité, pas d'autonomie pour piloter sa propre boîte.</p>
+    </div>
+    <div class="pb-card">
+      <div class="pb-num">02</div>
+      <h3>Architecture difficile à faire évoluer</h3>
+      <p>Symfony sans gestionnaire de contenu, hébergé sur OVH. Modifier une page, ajouter un champ, changer un texte — c'est un chantier de développement à chaque fois.</p>
+    </div>
+    <div class="pb-card">
+      <div class="pb-num">03</div>
+      <h3>Zéro propriété sur le code</h3>
+      <p>Le code appartient au CTO, pas à Show me the REX. Un départ ou un désaccord et toute la plateforme est bloquée. Un risque majeur avant même le lancement commercial.</p>
+    </div>
+    <div class="pb-card">
+      <div class="pb-num">04</div>
+      <h3>Le bon moment, c'est maintenant</h3>
+      <p>La V1 en pré-lancement est la spécification fonctionnelle parfaite pour la reconstruction. On construit la V2 en parallèle et on bascule quand c'est validé.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 02 CODE IA & ARCHITECTURE -->
+<section class="section dark fade-in">
+  <span class="section-label">02 &mdash; L&rsquo;approche &amp; l&rsquo;architecture</span>
+  <h2 class="section-title">Du code généré par IA.<br>Construire vite, construire bien,<br><em style="font-style:normal;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">sans armée de développeurs.</em></h2>
+  <p class="section-intro" style="margin-bottom:36px">On n'utilise pas les mêmes méthodes qu'en 2015. On pilote Claude Code pour construire à la vitesse d'une jeune pousse et livrer du code prêt pour la production — sans dix développeurs ni six mois de délais.</p>
+  <div class="vibe-hero">
+    <div class="vibe-text">
+      <h3>Le code généré par IA,<br>c'est quoi <em>concrètement</em>&nbsp;?</h3>
+      <p>On décrit ce qu'on veut construire en langage naturel. Claude Code génère le code, on dirige, on corrige, on affine. C'est comme avoir un développeur senior qui exécute en temps réel pendant qu'on pilote la direction.</p>
+      <p>Résultat : on livre en 8 semaines ce qu'une agence classique mettrait 4 à 6 mois à produire. Et vous, Eric, vous n'avez pas besoin de savoir coder — on vous montre ce qui avance à chaque appel hebdomadaire.</p>
+    </div>
+    <div class="vibe-stack">
+      <div class="vs-item">
+        <div class="vs-ico">⚡</div>
+        <div class="vs-text">
+          <h4>Claude Code</h4>
+          <p>Notre outil de développement par intelligence artificielle. Il génère, corrige et optimise le code pendant qu'on pilote. Trois fois plus rapide qu'un développeur classique, qualité production garantie.</p>
+          <span class="vs-badge vb-violet">Méthode OOO</span>
+        </div>
+      </div>
+      <div class="vs-item">
+        <div class="vs-ico">🚀</div>
+        <div class="vs-text">
+          <h4>Vercel</h4>
+          <p>Déploiement automatique depuis GitHub. Chaque semaine génère une adresse de prévisualisation — vous voyez et testez la vraie plateforme avant qu'elle parte en production.</p>
+          <span class="vs-badge vb-blue">Hébergement + déploiement automatique</span>
+        </div>
+      </div>
+      <div class="vs-item">
+        <div class="vs-ico">🗄️</div>
+        <div class="vs-text">
+          <h4>Next.js + Supabase</h4>
+          <p>Cadre de développement React moderne + base de données PostgreSQL infogérée avec authentification intégrée. Votre base actuelle est déjà du PostgreSQL — la migration du schéma sera directe.</p>
+          <span class="vs-badge vb-green">Interface + Données</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h3 style="font-family:var(--font-display);font-size:20px;font-weight:600;letter-spacing:-.4px;color:var(--white);margin-bottom:20px">Pourquoi pas un outil de construction visuelle comme Lovable&nbsp;?</h3>
+  <div class="not-lovable">
+    <div class="nl-col">
+      <div class="nl-head"><div class="nl-dot rouge"></div><div class="nl-title rouge">❌ Les limites pour ce projet</div></div>
+      <ul class="nl-list">
+        <li><span>⚠️</span>Génère du code mais plafonne vite sur la complexité — 4 rôles, messagerie interne, abonnements — les galères sont assurées</li>
+        <li><span>⚠️</span>Dépendance à la plateforme — si elle change ou ferme, votre code est prisonnier</li>
+        <li><span>⚠️</span>Difficile à faire reprendre par un développeur extérieur — code généré souvent non-standard</li>
+        <li><span>⚠️</span>Capacité de montée en charge incertaine pour un service public avec fort trafic visé</li>
+      </ul>
+    </div>
+    <div class="nl-col">
+      <div class="nl-head"><div class="nl-dot verte"></div><div class="nl-title verte">✅ Claude Code + Vercel pour Show me the REX</div></div>
+      <ul class="nl-list">
+        <li><span>✅</span>Code Next.js standard sur votre dépôt GitHub — n'importe quel développeur peut reprendre à tout moment</li>
+        <li><span>✅</span>Supabase gère nativement les 4 rôles, la sécurité des données, les mises à jour en temps réel et le stockage</li>
+        <li><span>✅</span>Réseau mondial Vercel — montée en charge automatique, zéro gestion d'infrastructure</li>
+        <li><span>✅</span>Aussi rapide à construire avec Claude Code, mais sans les limitations d'un outil sans code</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 03 ROADMAP 8 SEMAINES -->
+<section class="section fade-in">
+  <span class="section-label">03 &mdash; La feuille de route</span>
+  <h2 class="section-title">8 semaines. Une livraison<br>par semaine. Aucune boîte noire.</h2>
+  <p class="section-intro">On part de votre V1 Symfony comme spécification fonctionnelle exacte. L'accès au code existant nous fait gagner une semaine. Chaque vendredi, vous avez une adresse de prévisualisation à tester.</p>
+  <div class="tl-wrap">
+
+    <div class="tl-item">
+      <div class="tl-spine"><div class="tl-circle">S1</div><div class="tl-line"></div></div>
+      <div class="tl-card">
+        <div class="tl-card-head"><span class="tl-theme">Mise en place &amp; architecture</span><span class="tl-badge tb-i">Infrastructure</span></div>
+        <div class="tl-tasks">
+          <div class="tl-task"><div class="td td-i"></div>Supabase — schéma complet (utilisateurs, retours d'expérience, entreprises, tags, messages, abonnements) transposé depuis le Symfony existant</div>
+          <div class="tl-task"><div class="td td-i"></div>Authentification 4 rôles (visiteur / client / administrateur / super-administrateur) + règles de sécurité</div>
+          <div class="tl-task"><div class="td td-i"></div>Dépôt Next.js 14 + charte graphique + déploiement Vercel automatique</div>
+          <div class="tl-task"><div class="td td-i"></div>Structure du gestionnaire de contenu — interface d'administration pour Eric, sans aucune ligne de code requise</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-spine"><div class="tl-circle">S2</div><div class="tl-line"></div></div>
+      <div class="tl-card">
+        <div class="tl-card-head"><span class="tl-theme">Partie publique — liste &amp; recherche</span><span class="tl-badge tb-f">Partie publique</span></div>
+        <div class="tl-tasks">
+          <div class="tl-task"><div class="td td-f"></div>Page d'accueil — vignettes de retours d'expérience, mise en avant éditoriale</div>
+          <div class="tl-task"><div class="td td-f"></div>Moteur de recherche en texte intégral + filtres par facettes (secteur, technologie, type d'acteur) — PostgreSQL natif</div>
+          <div class="tl-task"><div class="td td-f"></div>Page retour d'expérience complète : enjeu, solution, déroulement du projet, visuels et vidéos</div>
+          <div class="tl-task"><div class="td td-f"></div>Page entreprise + liste des retours associés + section Médias et Actualités</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-spine"><div class="tl-circle">S3</div><div class="tl-line"></div></div>
+      <div class="tl-card">
+        <div class="tl-card-head"><span class="tl-theme">Espace client — publication des retours</span><span class="tl-badge tb-p">Espace client</span></div>
+        <div class="tl-tasks">
+          <div class="tl-task"><div class="td td-p"></div>Formulaire de saisie d'un retour d'expérience — titre, contexte, enjeu, solution, tags, médias</div>
+          <div class="tl-task"><div class="td td-p"></div>Prévisualisation + publication / mise en pause / modification / suppression</div>
+          <div class="tl-task"><div class="td td-p"></div>Tableau de bord client — vues, mentions, partages, messages reçus en temps réel</div>
+          <div class="tl-task"><div class="td td-p"></div>Messagerie interne — réception et réponse aux demandes de contact des visiteurs</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-spine"><div class="tl-circle">S4</div><div class="tl-line"></div></div>
+      <div class="tl-card">
+        <div class="tl-card-head"><span class="tl-theme">Administration + espace visiteur</span><span class="tl-badge tb-b">Administration</span></div>
+        <div class="tl-tasks">
+          <div class="tl-task"><div class="td td-b"></div>Administration — gestion des retours, entreprises, utilisateurs, tags, catégories, médias — gestionnaire de contenu complet pour Eric</div>
+          <div class="tl-task"><div class="td td-b"></div>Administration — gestion des formules d'abonnement et des codes de réduction depuis l'interface</div>
+          <div class="tl-task"><div class="td td-b"></div>Visiteur — inscription, connexion, profil, favoris organisés en dossiers</div>
+          <div class="tl-task"><div class="td td-b"></div>Visiteur — demande de contact, messagerie interne, mentions et partage sur les réseaux sociaux</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-spine"><div class="tl-circle">S5</div><div class="tl-line"></div></div>
+      <div class="tl-card">
+        <div class="tl-card-head"><span class="tl-theme">Abonnements &amp; paiements en ligne</span><span class="tl-badge tb-b">Paiements</span></div>
+        <div class="tl-tasks">
+          <div class="tl-task"><div class="td td-b"></div>Intégration Stripe — formules, codes de réduction, périodes d'essai, parcours de paiement</div>
+          <div class="tl-task"><div class="td td-b"></div>Notifications automatiques — activation du compte à la souscription, renouvellements, échecs de paiement</div>
+          <div class="tl-task"><div class="td td-b"></div>Espace libre-service — vos clients gèrent leur abonnement eux-mêmes, sans vous contacter</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-spine"><div class="tl-circle">S6</div><div class="tl-line"></div></div>
+      <div class="tl-card">
+        <div class="tl-card-head"><span class="tl-theme">Tests, performance &amp; mise en production</span><span class="tl-badge tb-q">Tests</span></div>
+        <div class="tl-tasks">
+          <div class="tl-task"><div class="td td-q"></div>Tests complets sur tous les rôles — parcours visiteur, client et administrateur de bout en bout</div>
+          <div class="tl-task"><div class="td td-q"></div>Référencement et performance — indicateurs Web vitaux, balises méta, plan du site, conformité moteurs IA</div>
+          <div class="tl-task"><div class="td td-q"></div>Montée en charge — index Supabase optimisés, cache Vercel, ajustement des requêtes</div>
+          <div class="tl-task"><div class="td td-q"></div>Mise en production + configuration DNS + surveillance</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-spine"><div class="tl-circle">S7</div><div class="tl-line"></div></div>
+      <div class="tl-card">
+        <div class="tl-card-head"><span class="tl-theme">Ajustements &amp; retours post-lancement</span><span class="tl-badge tb-g">Ajustements</span></div>
+        <div class="tl-tasks">
+          <div class="tl-task"><div class="td td-g"></div>Recueil des premières remontées d'Eric et des utilisateurs bêta</div>
+          <div class="tl-task"><div class="td td-g"></div>Corrections légères de l'interface, du texte et des comportements</div>
+          <div class="tl-task"><div class="td td-g"></div>Ajustements des règles métier si des cas non prévus apparaissent</div>
+          <div class="tl-task"><div class="td td-g"></div>Vérification de la stabilité sur les 7 jours suivant le lancement</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-spine"><div class="tl-circle">S8</div></div>
+      <div class="tl-card">
+        <div class="tl-card-head"><span class="tl-theme">Formation &amp; prise en main autonome</span><span class="tl-badge tb-g">Formation</span></div>
+        <div class="tl-tasks">
+          <div class="tl-task"><div class="td td-g"></div>Séance de formation de 90 minutes — gestionnaire de contenu, tableau de bord, gestion des abonnements</div>
+          <div class="tl-task"><div class="td td-g"></div>Vidéos tutorielles enregistrées pour chaque fonctionnalité clé de l'interface d'administration</div>
+          <div class="tl-task"><div class="td td-g"></div>Documentation complète — guide d'utilisation pas-à-pas pour Eric</div>
+          <div class="tl-task"><div class="td td-g"></div>Passation officielle — vous repartez totalement autonome sur la plateforme</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- 04 AVANT/APRES — après la roadmap -->
+<section class="section dark fade-in">
+  <span class="section-label">04 &mdash; Ce que ça change concrètement</span>
+  <h2 class="section-title">Avant. Après.</h2>
+  <p class="section-intro">Ce que Show me the REX gagne au quotidien — pas en théorie, en situations réelles.</p>
+  <div class="avap-wrap">
+    <div class="avap-row avap-header-row">
+      <div class="avap-cell avant-head"><div class="avap-head-dot r"></div><div class="avap-head-label r">Aujourd'hui — Symfony / OVH</div></div>
+      <div class="avap-cell apres-head"><div class="avap-head-dot v"></div><div class="avap-head-label v">Après — Next.js + Supabase + Vercel</div></div>
+    </div>
+    <div class="avap-row">
+      <div class="avap-cell avant-bg"><div class="avap-situation">Modifier un texte</div><div class="avap-text rouge">Ticket au directeur technique → attente → déploiement → 3 jours minimum</div></div>
+      <div class="avap-cell apres-bg"><div class="avap-situation">Modifier un texte</div><div class="avap-text verte">Interface d'administration → 2 minutes → en ligne immédiatement</div></div>
+    </div>
+    <div class="avap-row">
+      <div class="avap-cell avant-bg"><div class="avap-situation">Propriété du code</div><div class="avap-text rouge">Code appartient au CTO. Un départ = catastrophe opérationnelle.</div></div>
+      <div class="avap-cell apres-bg"><div class="avap-situation">Propriété du code</div><div class="avap-text verte">Votre dépôt GitHub, votre Vercel. Propriété totale dès la livraison.</div></div>
+    </div>
+    <div class="avap-row">
+      <div class="avap-cell avant-bg"><div class="avap-situation">Ajouter une catégorie de tags</div><div class="avap-text rouge">Impossible sans développeur. Devis et délai à chaque évolution.</div></div>
+      <div class="avap-cell apres-bg"><div class="avap-situation">Ajouter une catégorie de tags</div><div class="avap-text verte">Interface d'administration → champ dans Supabase → en ligne en 5 minutes.</div></div>
+    </div>
+    <div class="avap-row">
+      <div class="avap-cell avant-bg"><div class="avap-situation">Incident technique à 3h du matin</div><div class="avap-text rouge">Infrastructure OVH manuelle. Eric qui gère en urgence.</div></div>
+      <div class="avap-cell apres-bg"><div class="avap-situation">Incident technique</div><div class="avap-text verte">Vercel + Supabase infogérés. Zéro infrastructure à gérer. Niveaux de service garantis.</div></div>
+    </div>
+    <div class="avap-row">
+      <div class="avap-cell avant-bg"><div class="avap-situation">Visibilité sur l'activité</div><div class="avap-text rouge">Aucun tableau de bord en temps réel. On ne sait pas ce qui se passe.</div></div>
+      <div class="avap-cell apres-bg"><div class="avap-situation">Visibilité sur l'activité</div><div class="avap-text verte">Tableau de bord Supabase : utilisateurs, retours publiés, abonnements actifs, messages — en temps réel.</div></div>
+    </div>
+  </div>
+  <div class="kpi-row">
+    <div class="kpi-card"><div class="kpi-num">6×</div><div class="kpi-label">Plus rapide pour modifier<br>le contenu en production</div></div>
+    <div class="kpi-card"><div class="kpi-num">100%</div><div class="kpi-label">Propriété du code<br>dès la livraison</div></div>
+    <div class="kpi-card"><div class="kpi-num">0</div><div class="kpi-label">Développeur externe requis<br>pour les évolutions courantes</div></div>
+  </div>
+</section>
+
+<!-- 05 DÉROULÉ DE MISSION — section LIGHT = textes noirs -->
+<section class="section light fade-in">
+  <span class="section-label" style="color:var(--accent)">05 &mdash; Déroulé de la mission</span>
+  <h2 class="section-title">Un appel par semaine.<br>Une livraison par semaine.<br>Toujours.</h2>
+  <p class="section-intro">Pas de boîte noire. Pas de trois mois sans nouvelles. On avance ensemble, semaine par semaine, avec une version testable à chaque livraison.</p>
+  <div class="mission-grid">
+    <div class="ms-list">
+      <div class="ms-item">
+        <div class="ms-num">01</div>
+        <div class="ms-body">
+          <h4>Réunion de lancement — 60 min</h4>
+          <p>Accès au code Symfony, revue complète des règles métier, schéma de base de données, cas particuliers. On aligne sur les priorités de la semaine 1. La feuille de route est validée ensemble avant de commencer à construire.</p>
+        </div>
+      </div>
+      <div class="ms-item">
+        <div class="ms-num">02</div>
+        <div class="ms-body">
+          <h4>Appel hebdomadaire — 30 min chaque vendredi</h4>
+          <p>On montre ce qui a été livré sur l'adresse de prévisualisation, on valide ensemble, on ajuste les priorités de la semaine suivante. Vous n'êtes jamais dans le flou.</p>
+        </div>
+      </div>
+      <div class="ms-item">
+        <div class="ms-num">03</div>
+        <div class="ms-body">
+          <h4>Canal Slack dédié en continu</h4>
+          <p>Chaque livraison partielle est postée avec le lien de prévisualisation Vercel. Vous voyez les progrès au fil de la semaine, pas seulement le vendredi.</p>
+        </div>
+      </div>
+      <div class="ms-item">
+        <div class="ms-num">04</div>
+        <div class="ms-body">
+          <h4>Formation finale — Semaine 8</h4>
+          <p>Séance de 90 minutes pour former Eric sur l'administration et le gestionnaire de contenu. Plus les vidéos tutorielles enregistrées et la documentation complète. Vous repartez totalement autonome.</p>
+        </div>
+      </div>
+    </div>
+    <div class="ms-card">
+      <div class="msc-item">
+        <div class="msc-ico blue">📋</div>
+        <div class="msc-body">
+          <h5>Accès au code dès la réunion de lancement</h5>
+          <p>Le Symfony existant est notre spécification fonctionnelle. Ça nous fait gagner une semaine entière sur la compréhension des règles métier.</p>
+        </div>
+      </div>
+      <div class="msc-item">
+        <div class="msc-ico green">🔑</div>
+        <div class="msc-body">
+          <h5>Votre dépôt GitHub, votre Vercel</h5>
+          <p>Tout est poussé sur vos propres comptes. Accès total à tout moment. Aucune dépendance à notre infrastructure.</p>
+        </div>
+      </div>
+      <div class="msc-item">
+        <div class="msc-ico violet">👁️</div>
+        <div class="msc-body">
+          <h5>Adresse de prévisualisation à chaque semaine</h5>
+          <p>Vercel génère une URL de prévisualisation à chaque publication. Vous testez la vraie plateforme avant que ça parte en production.</p>
+        </div>
+      </div>
+      <div class="msc-item">
+        <div class="msc-ico amber">💬</div>
+        <div class="msc-body">
+          <h5>WhatsApp pour les urgences</h5>
+          <p>Jules est joignable directement entre les appels. On ne disparaît pas entre deux semaines.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 POURQUOI OOO -->
+<section class="section dark fade-in">
+  <span class="section-label">06 &mdash; Pourquoi Out of Office</span>
+  <h2 class="section-title">Construit par des praticiens,<br>pour des praticiens.</h2>
+  <p class="section-intro">OOO n'est pas une agence qui théorise sur la génération de code par IA. On l'utilise sur nos propres outils depuis le premier jour.</p>
+  <div class="ps-grid">
+    <div class="ps-stat"><div class="ps-num a">+50</div><div class="ps-label">fondateurs accompagnés depuis le lancement</div></div>
+    <div class="ps-stat"><div class="ps-num g">8 sem.</div><div class="ps-label">durée moyenne d'un projet de reconstruction chez OOO</div></div>
+    <div class="ps-stat"><div class="ps-num w">+500</div><div class="ps-label">applications et outils construits par génération de code IA</div></div>
+    <div class="ps-stat"><div class="ps-num v">100%</div><div class="ps-label">des livrables en propriété totale client dès la livraison</div></div>
+  </div>
+  <div class="about-grid">
+    <div class="jules-wrap">
+      <div class="jules-photo">
+        <img src="https://lh3.googleusercontent.com/d/1xMBU-wjvsQe6q1PJghNFdrD7ATgUQrE1" alt="Jules Fléchet">
+      </div>
+      <div class="jules-name">Jules Fléchet</div>
+      <div class="jules-role">Fondateur · Out of Office</div>
+    </div>
+    <div class="about-text">
+      <p>Jules gère une agence elle-même transformée de A à Z par OOO. Il sait exactement où ça coince parce qu'il l'a vécu, résolu et construit sur sa propre boîte avant de le faire pour les autres.</p>
+      <p>La génération de code par IA n'est pas un concept chez OOO — c'est la méthode de travail quotidienne. Claude Code, Vercel, Supabase : on utilise ces outils sur tous nos projets internes, pas seulement chez nos clients.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 07 PRIX — une seule carte -->
+<section class="section fade-in">
+  <span class="section-label">07 &mdash; L&rsquo;investissement</span>
+  <h2 class="section-title">Transparent.<br>Sans surprise.</h2>
+  <p class="section-intro">Un projet unique, un tarif clair, deux versements. Et une option de suivi mensuel si vous souhaitez continuer à avancer après la livraison.</p>
+  <div style="max-width:520px;margin:0 auto">
+    <div class="price-card main">
+      <span class="pc-badge">Reconstruction Show me the REX</span>
+      <div class="pc-name">Reconstruction complète</div>
+      <div class="pc-desc">Huit semaines pour reconstruire Show me the REX de A à Z sur une architecture moderne — vous repartez propriétaire de votre code et autonome sur votre plateforme.</div>
+      <div class="pc-amount">5 900 €</div>
+      <div class="pc-freq">tarif unique &middot; deux versements égaux</div>
+      <div class="pc-split">
+        <div class="pc-split-row">
+          <span class="pc-split-label"><span class="pc-split-dot"></span>Versement 1 — au démarrage</span>
+          <span class="pc-split-amount">2 950 €</span>
+        </div>
+        <div class="pc-divider"></div>
+        <div class="pc-split-row">
+          <span class="pc-split-label"><span class="pc-split-dot e"></span>Versement 2 — début du mois 2</span>
+          <span class="pc-split-amount">2 950 €</span>
+        </div>
+      </div>
+      <ul class="pc-features">
+        <li><span class="pc-check">✓</span>Reconstruction complète en 8 semaines</li>
+        <li><span class="pc-check">✓</span>1 appel de 30 min par semaine</li>
+        <li><span class="pc-check">✓</span>Adresse de prévisualisation à chaque livraison</li>
+        <li><span class="pc-check">✓</span>Formation complète à la prise en main</li>
+        <li><span class="pc-check">✓</span>Propriété totale du code</li>
+        <li><span class="pc-check">✓</span>Documentation et vidéos tutorielles</li>
+      </ul>
+      <div class="price-retainer">
+        <div class="pr-left">
+          <strong>Suivi mensuel — optionnel</strong>
+          Évolutions, corrections, nouvelles fonctionnalités. Résiliable à tout moment, sans engagement minimum.
+        </div>
+        <div>
+          <div class="pr-price">450 €</div>
+          <div class="pr-freq">par mois</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 08 ENGAGEMENT + SIGNATURE -->
+<section class="section dark fade-in">
+  <span class="section-label">08 &mdash; Votre engagement</span>
+  <h2 class="section-title" style="text-align:center">Tout est aligné.<br>Il ne reste plus qu'à signer.</h2>
+  <p style="text-align:center;font-size:15px;color:var(--muted);max-width:480px;margin:0 auto 40px">Cochez la case, dessinez votre signature, et réservez le lancement.</p>
+  <div class="engage-wrap">
+
+    <div class="ec-single" onclick="toggleCheck(this)">
+      <div class="ec-box"></div>
+      <div class="ec-body">
+        <h4>Je suis partant — je valide cette proposition et souhaite démarrer dès que possible.</h4>
+        <p>Je comprends que c'est une reconstruction complète sur 8 semaines, que je fournis l'accès au code Symfony au démarrage, et que je suis disponible 30 minutes par semaine pour les appels de suivi.</p>
+      </div>
+    </div>
+
+    <div class="sig-wrap">
+      <div class="sig-info-row">
+        <div class="sig-info">
+          <h5>Le client</h5>
+          <p><strong>Eric Mattern</strong><br>Fondateur, Show me the REX<br>eric.mattern@showmetherex.com</p>
+        </div>
+        <div class="sig-info">
+          <h5>Le prestataire</h5>
+          <p><strong>Jules Fléchet</strong><br>Fondateur, Out of Office<br>jules@agenceooo.com</p>
+        </div>
+      </div>
+      <div class="sig-canvas-zone">
+        <div class="sig-canvas-label">Signature du client</div>
+        <div class="sig-canvas-name">Eric Mattern — Show me the REX</div>
+        <canvas id="sigCanvas" width="560" height="120"></canvas>
+        <div class="sig-canvas-actions">
+          <button class="sig-clear" onclick="clearSig()">Effacer</button>
+          <div class="sig-date" id="sig-date"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section" id="cta">
+  <div class="cta-grid-bg"></div>
+  <div class="cta-inner fade-in">
+    <div class="cta-eyebrow"><span class="cta-dot"></span>Proposition valable jusqu&rsquo;au 31 mai 2026</div>
+    <h2 class="cta-title">Prêt à construire<br>ça <em>ensemble</em>&nbsp;?</h2>
+    <p class="cta-sub">Une seule étape pour démarrer — réserver la réunion de lancement. On s'occupe du reste.</p>
+    <div class="cta-btns">
+      <a href="https://cal.com/out-of-office/kick-off-ooo" class="btn-kickoff" target="_blank">
+        <div class="btn-kickoff-ico">📅</div>
+        <span>Réserver la réunion de lancement</span>
+      </a>
+      <a href="https://wa.me/971585613772" target="_blank" class="btn-wa">
+        <span>💬</span>
+        <span>Une question ? WhatsApp Jules</span>
+      </a>
+    </div>
+    <div class="cta-trust">
+      <span>🔒 Paiement sécurisé Stripe</span>
+      <span>📄 Contrat DocuSeal</span>
+      <span>✓ Propriété totale du code</span>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <a class="footer-logo" href="https://agenceooo.com">
+    <img src="https://lh3.googleusercontent.com/d/1t8DOJoFuukd5qkhbgioJyxpZEiIUI0Qc" alt="Out of Office">
+  </a>
+  <div class="footer-right">
+    <a href="https://agenceooo.com">agenceooo.com</a>
+    <a href="mailto:jules@agenceooo.com">jules@agenceooo.com</a>
+    <span>Paris · Dubaï · 2026</span>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+function toggleCheck(el) {
+  el.classList.toggle('on');
+  el.querySelector('.ec-box').textContent = el.classList.contains('on') ? '✓' : '';
+}
+
+document.getElementById('sig-date').textContent = new Date().toLocaleDateString('fr-FR', {day:'numeric', month:'long', year:'numeric'});
+
+/* Canvas signature */
+const canvas = document.getElementById('sigCanvas');
+const ctx = canvas.getContext('2d');
+ctx.strokeStyle = '#ffffff';
+ctx.lineWidth = 2;
+ctx.lineCap = 'round';
+ctx.lineJoin = 'round';
+let drawing = false, lastX = 0, lastY = 0;
+
+function getPos(e) {
+  const r = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / r.width;
+  const scaleY = canvas.height / r.height;
+  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+  return [(clientX - r.left) * scaleX, (clientY - r.top) * scaleY];
+}
+
+canvas.addEventListener('mousedown', e => { drawing = true; [lastX, lastY] = getPos(e); });
+canvas.addEventListener('mousemove', e => {
+  if (!drawing) return;
+  const [x, y] = getPos(e);
+  ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+  [lastX, lastY] = [x, y];
+});
+canvas.addEventListener('mouseup', () => drawing = false);
+canvas.addEventListener('mouseleave', () => drawing = false);
+canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; [lastX, lastY] = getPos(e); }, { passive: false });
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  if (!drawing) return;
+  const [x, y] = getPos(e);
+  ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(x, y); ctx.stroke();
+  [lastX, lastY] = [x, y];
+}, { passive: false });
+canvas.addEventListener('touchend', () => drawing = false);
+
+function clearSig() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+</script>
+</body>
+</html>
